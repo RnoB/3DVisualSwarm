@@ -31,13 +31,32 @@ import numpy as np
 
 class Camera:
 
-    def position(self,*args):
+    def positionUpdate(self,*args):
         if len(args) == 1:
             bpy.data.objects['Camera'].location = mathutils.Vector(args[0])
         if len(args) == 3:
             bpy.data.objects['Camera'].location = mathutils.Vector((args[0],args[1],args[2]))
 
         self.position = bpy.data.objects['Camera'].location
+
+    def rotationUpdate(self,*args):
+        if len(args) == 1:
+            self.camera.rotation_euler = mathutils.Vector(args[0])+self.rotationOffset
+        if len(args) == 3:
+            self.camera.rotation_euler = mathutils.Vector((args[0],args[1],args[2]))+self.rotationOffset
+
+        self.rotation = self.camera.rotation_euler 
+
+    def rotate(self,*args):
+        if len(args) == 1:
+            self.camera.rotation_euler += mathutils.Vector(args[0])
+        if len(args) == 3:
+            self.camera.rotation_euler = mathutils.Vector((self.rotation.x+args[0],\
+                                                            self.rotation.y+args[1],\
+                                                            self.rotation.z+args[2]))
+
+        self.rotation = self.camera.rotation_euler 
+
 
     def Translate(self,*args):
         if len(args) == 1:
@@ -48,13 +67,15 @@ class Camera:
 
 
     def __init__(self,x=0,y=0,z=0):
+        self.rotationOffset = mathutils.Vector((math.pi/2.0,0,-math.pi/2.0))
         camera_data = bpy.data.cameras.new(name='Camera')
         self.camera = bpy.data.objects.new('Camera', camera_data)
         bpy.context.scene.collection.objects.link(self.camera)
         bpy.context.scene.camera = self.camera
         self.camera.data.type = 'PANO'
         self.camera.data.cycles.panorama_type = 'EQUIRECTANGULAR'
-        self.camera.rotation_euler = (-math.pi/2.0,0,math.pi/2.0)
+        self.camera.rotation_euler = (math.pi/2.0,0,-math.pi/2.0)
+        self.rotation = self.camera.rotation_euler
         bpy.data.objects['Camera'].location = mathutils.Vector((x,y,z))
         self.position = bpy.data.objects['Camera'].location
    
@@ -89,6 +110,32 @@ class Mesh:
         bpy.data.objects['Camera'].location = mathutils.Vector((x,y,z))
         self.position = bpy.data.objects['Camera'].location
 
+class ProjectedSine:
+
+    def __init__(self,size):
+        
+
+
+        self.theta = np.linspace(-np.pi/2,np.pi/2,size[1])
+        self.phi = np.linspace(-np.pi,np.pi,size[0])
+        
+        self.phi2d = np.array([self.phi,]*size[1])[:,:-1]
+        self.theta2d = np.array([self.theta,]*size[0]).transpose()[:,:-1]
+
+        self.sinThetaIm = np.sin(self.theta2d)
+        self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d)
+        self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d)
+        
+        self.dThetaIm =  np.array([[np.pi/size[1],]*size[0],]*size[1])[:,:-1]
+        self.dPhiIm = np.cos(self.theta2d)*np.array([[2*np.pi/size[0],]*size[0],]*size[1])[:,:-1]
+
+        self.sinTheta = np.matrix.flatten(self.sinThetaIm)
+        self.cosThetaCosPhi = np.matrix.flatten(self.cosThetaCosPhiIm)
+        self.cosThetaSinPhi = np.matrix.flatten(self.cosThetaSinPhiIm)
+        self.dTheta = np.matrix.flatten(self.dThetaIm)
+        self.dPhi = np.matrix.flatten(self.dPhiIm)
+
+
 
 class Projector:
 
@@ -112,8 +159,8 @@ class Projector:
 
 
 
-        bpy.context.scene.render.resolution_x = self.size+1
-        bpy.context.scene.render.resolution_y = self.size/2+1
+        bpy.context.scene.render.resolution_x = self.size[0]
+        bpy.context.scene.render.resolution_y = self.size[1]
         bpy.context.scene.cycles.samples = 1
         bpy.context.scene.cycles.preview_samples = 0
 
@@ -225,6 +272,24 @@ class Projector:
         basic_sphere.active_material = self.material0
         basic_sphere.location = mathutils.Vector((x,y,z))        
         basic_sphere.select_set(False)
+        self.listObjects.append(basic_sphere)
+        self.allVisualField = np.zeros((self.size[1],self.size[0]-1,len(self.listObjects)))
+
+
+    def computeVisualField(self,agent):
+        self.camera.positionUpdate(agent.location)
+        self.camera.rotationUpdate(agent.rotation_euler)
+        agent.hide_render = True
+        self.render()
+        agent.hide_render = False
+        
+
+    def computeAllVisualField(self):
+        
+        for k in range(0,len(self.listObjects)):
+            self.computeVisualField(self.listObjects[k])
+            self.allVisualField[:,:,k] = self.image()
+
 
     def moveCamera(self,*args):
         camera.translate(args)
@@ -233,12 +298,15 @@ class Projector:
         basic_sphere.location += mathutils.Vector((x,y,z)) 
 
     def image(self):
-        return np.reshape(self.pixels,(np.int(self.size/2)+1,self.size+1))
+        return np.reshape(self.pixels,(self.size[1],self.size[0]-1))
+
+    def visualFieldImage(self,idx):
+        return np.reshape(self.allVisualField[:,idx],(self.size[1],self.size[0]-1))
 
     def render(self,write = False,kFrame = 0):
         bpy.context.scene.render.filepath = os.path.join("c:/tmp/", ("render%06d.jpg" % kFrame))
         bpy.ops.render.render(write_still = write)
-        self.pixels = np.array(bpy.data.images['Viewer Node'].pixels)[::4]
+        self.pixels = np.array(bpy.data.images['Viewer Node'].pixels)[::4][self.mask]
 
 
     def listCollection(self):
@@ -258,12 +326,15 @@ class Projector:
 
     def __init__(self, size=512):
         self.cleanScene()
-        self.size = size
+        self.size = [size+1,np.int(size/2)+1]
         self.setupRender()
         self.defaultMaterial()
         self.camera = Camera()
+        self.sine = ProjectedSine(self.size)
+        self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
+        self.mask[self.size[0]-1::self.size[0]] = False
+        self.listObjects = []
 
-        
 
 
 
