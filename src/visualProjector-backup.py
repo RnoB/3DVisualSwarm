@@ -22,7 +22,6 @@
 
 
 import bpy
-import bpy_extras
 import bmesh
 import mathutils
 import math
@@ -113,15 +112,6 @@ class Mesh:
 
 class ProjectedSine:
 
-
-
-    def equirectangularToDirection(self,u,v):
-        rang = [-2*np.pi, np.pi, -np.pi, np.pi/2.0]
-        phi = rang[0] * u + rang[1];
-        theta = rang[2] * v + rang[3];
-        return phi,theta
-
-
     def stack(self,N):
         self.dPhiAll = np.array([self.dPhiIm]*N).transpose((1,2,0))
         self.dThetaAll = np.array([self.dThetaIm]*N).transpose((1,2,0))
@@ -131,25 +121,24 @@ class ProjectedSine:
         self.cosThetaSinPhiAll = np.array([self.cosThetaSinPhiIm]*N).transpose((1,2,0))
 
 
- 
+
 
     def __init__(self,size):
         
 
-        u = np.linspace(0,1,size[0])
-        v = np.linspace(0,1,size[1])
-        self.phi,self.theta = self.equirectangularToDirection(u,v)
+
+        self.theta = np.linspace(-np.pi/2,np.pi/2,size[1])
+        self.phi = np.linspace(-np.pi,np.pi,size[0])
         
-        
-        self.phi2d = np.array([self.phi,]*size[1])
-        self.theta2d = np.array([self.theta,]*size[0]).transpose()
+        self.phi2d = np.array([self.phi,]*size[1])[:,:-1]
+        self.theta2d = np.array([self.theta,]*size[0]).transpose()[:,:-1]
 
         self.sinThetaIm = np.sin(self.theta2d)
         self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d)
         self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d)
         
-        self.dThetaIm =  np.array([[np.pi/size[1],]*size[0],]*size[1])
-        self.dPhiIm = np.cos(self.theta2d)*np.array([[2*np.pi/size[0],]*size[0],]*size[1])
+        self.dThetaIm =  np.array([[np.pi/size[1],]*size[0],]*size[1])[:,:-1]
+        self.dPhiIm = np.cos(self.theta2d)*np.array([[2*np.pi/size[0],]*size[0],]*size[1])[:,:-1]
 
         self.sinTheta = np.matrix.flatten(self.sinThetaIm)
         self.cosThetaCosPhi = np.matrix.flatten(self.cosThetaCosPhiIm)
@@ -286,7 +275,7 @@ class Projector:
         # Construct the bmesh sphere and assign it to the blender mesh.
         bm = bmesh.new()
         #bmesh.ops.create_icosphere(bm, subdivisions=16,  diameter=1)
-        bmesh.ops.create_uvsphere(bm, u_segments=20, v_segments=20, diameter=1)
+        bmesh.ops.create_uvsphere(bm, u_segments=40, v_segments=40, diameter=1)
         bm.to_mesh(mesh)
         bm.free()
 
@@ -295,7 +284,7 @@ class Projector:
         basic_sphere.location = mathutils.Vector((x,y,z))        
         basic_sphere.select_set(False)
         self.listObjects.append(basic_sphere)
-        self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        self.allVisualField = np.zeros((self.size[1],self.size[0]-1,len(self.listObjects)))
         self.sine.stack(len(self.listObjects))
 
     def computeVisualField(self,agent):
@@ -322,28 +311,18 @@ class Projector:
         camera.translate(args)
 
     def moveObject(self,basic_sphere,x=0,y=0,z=0):
-        phi = basic_sphere.rotation_euler.z
-        dx = x*np.cos(phi) - y*np.sin(phi)
-        dy = x*np.sin(phi) + y*np.cos(phi)
-        dz = z
-        basic_sphere.location += mathutils.Vector((dx,dy,dz)) 
-
-    def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
-        x = basic_sphere.rotation_euler.x
-        y = basic_sphere.rotation_euler.y
-        z = basic_sphere.rotation_euler.z
-        basic_sphere.rotation_euler = mathutils.Euler((x+dx,y+dy,z+dz),"XYZ") 
+        basic_sphere.location += mathutils.Vector((x,y,z)) 
 
     def image(self):
-        return np.reshape(self.pixels,(self.size[1],self.size[0]))
+        return np.reshape(self.pixels,(self.size[1],self.size[0]-1))
 
     def visualFieldImage(self,idx):
-        return np.reshape(self.allVisualField[:,idx],(self.size[1],self.size[0]))
+        return np.reshape(self.allVisualField[:,idx],(self.size[1],self.size[0]-1))
 
     def render(self,write = False,kFrame = 0):
         bpy.context.scene.render.filepath = os.path.join("c:/tmp/", ("render%06d.jpg" % kFrame))
         bpy.ops.render.render(write_still = write)
-        self.pixels = np.array(bpy.data.images['Viewer Node'].pixels)[::4]#[self.mask]
+        self.pixels = np.array(bpy.data.images['Viewer Node'].pixels)[::4][self.mask]
 
 
     def listCollection(self):
@@ -363,19 +342,13 @@ class Projector:
 
     def __init__(self, size=512):
         self.cleanScene()
-        if size%2 == 0:
-            size += 1
-        size2 = np.int(size/2)
-        if size2%2 == 0:
-            size2 += 1
-        self.size = [size,size2]
-
+        self.size = [size+1,np.int(size/2)+1]
         self.setupRender()
         self.defaultMaterial()
         self.camera = Camera()
         self.sine = ProjectedSine(self.size)
-        #self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
-        #self.mask[self.size[0]-1::self.size[0]] = False
+        self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
+        self.mask[self.size[0]-1::self.size[0]] = False
         self.listObjects = []
 
 
