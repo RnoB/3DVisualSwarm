@@ -1,7 +1,7 @@
 # 3DVisualSwarm
-An accurate 3D visual field projection extractio using Blender Cycles to make collective behavior simulation. The cycles renderer offers panoramic equirectangular projection. This provides a direct way to compute the projection of the visual field in very direction.
+An accurate 3D visual field projection extraction using Blender Cycles to make collective behavior simulation. The cycles renderer offers panoramic equirectangular projection. This provides a direct way to compute the projection of the visual field in very direction.
 
-This simulator should be considered the preffered version for computations and simulations related to the 3d projected visual field. There are many compromises to take into account (rasterisation, computation time, complexity of the scene...). Unless better algorithms are coming to compute multiple point of views in a given scene, Blender cycles is
+This simulator should be considered the preferred version for computations and simulations related to the 3d projected visual field. There are many compromises to take into account (rasterisation, computation time, complexity of the scene...). Unless better algorithms are coming to compute multiple point of views in a given scene, Blender cycles is
 
 
 ## Blender Python Modules
