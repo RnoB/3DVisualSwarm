@@ -30,6 +30,9 @@ import numpy
 import os
 import numpy as np
 
+radTodDeg = 180/np.pi 
+
+
 class Camera:
 
     def positionUpdate(self,*args):
@@ -118,7 +121,7 @@ class ProjectedSine:
     def equirectangularToDirection(self,u,v):
         rang = [-2*np.pi, np.pi, -np.pi, np.pi/2.0]
         phi = rang[0] * u + rang[1];
-        theta = rang[2] * v + rang[3];
+        theta = - (rang[2] * v + rang[3]);
         return phi,theta
 
 
@@ -144,18 +147,25 @@ class ProjectedSine:
         self.phi2d = np.array([self.phi,]*size[1])
         self.theta2d = np.array([self.theta,]*size[0]).transpose()
 
-        self.sinThetaIm = np.sin(self.theta2d)
-        self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d)
-        self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d)
-        
         self.dThetaIm =  np.array([[np.pi/size[1],]*size[0],]*size[1])
         self.dPhiIm = np.cos(self.theta2d)*np.array([[2*np.pi/size[0],]*size[0],]*size[1])
+
+
+
+        self.dThetadPhiIm = self.dThetaIm*self.dPhiIm
+
+        self.sinThetaIm = np.sin(self.theta2d) * self.dThetadPhiIm
+        self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d) * self.dThetadPhiIm 
+        self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d) * self.dThetadPhiIm
+        
+
+        self.dTheta = np.matrix.flatten(self.dThetaIm)
+        self.dPhi = np.matrix.flatten(self.dPhiIm)
 
         self.sinTheta = np.matrix.flatten(self.sinThetaIm)
         self.cosThetaCosPhi = np.matrix.flatten(self.cosThetaCosPhiIm)
         self.cosThetaSinPhi = np.matrix.flatten(self.cosThetaSinPhiIm)
-        self.dTheta = np.matrix.flatten(self.dThetaIm)
-        self.dPhi = np.matrix.flatten(self.dPhiIm)
+
 
 
 
@@ -183,7 +193,7 @@ class Projector:
 
         bpy.context.scene.render.resolution_x = self.size[0]
         bpy.context.scene.render.resolution_y = self.size[1]
-        bpy.context.scene.cycles.samples = 1
+        bpy.context.scene.cycles.samples = 65536
         bpy.context.scene.cycles.preview_samples = 0
 
         bpy.context.scene.cycles.max_bounces = 0
@@ -208,7 +218,7 @@ class Projector:
         bpy.context.scene.cycles.min_transparent_bounces = 0
         bpy.context.scene.cycles.light_sampling_threshold = 0
 
-        bpy.context.scene.cycles.use_adaptive_sampling = False
+        bpy.context.scene.cycles.use_adaptive_sampling = True
         bpy.context.scene.cycles.use_denoising = False
         bpy.context.scene.cycles.blur_glossy = 0
 
@@ -314,9 +324,10 @@ class Projector:
 
     def derivateAllVisualField(self):
         self.allVisualFieldDPhi =\
-         (np.roll(self.allVisualField[:,:,:],1,1)-np.roll(self.allVisualField[:,:,:],-1,1))/2.0
+         (np.roll(self.allVisualField[:,:,:],1,1)-np.roll(self.allVisualField[:,:,:],-1,1))
         self.allVisualFieldDTheta =\
-         np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)/2.0
+         np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)
+        self.allVisualFieldContour = (self.allVisualFieldDTheta!=0) + (self.allVisualFieldDPhi!=0)
 
     def moveCamera(self,*args):
         camera.translate(args)
@@ -332,7 +343,7 @@ class Projector:
         x = basic_sphere.rotation_euler.x
         y = basic_sphere.rotation_euler.y
         z = basic_sphere.rotation_euler.z
-        basic_sphere.rotation_euler = mathutils.Euler((x+dx,y+dy,z+dz),"XYZ") 
+        basic_sphere.rotation_euler = mathutils.Euler((x+dx*radTodDeg,y+dy*radTodDeg,z+dz*radTodDeg),"XYZ") 
 
     def image(self):
         return np.reshape(self.pixels,(self.size[1],self.size[0]))

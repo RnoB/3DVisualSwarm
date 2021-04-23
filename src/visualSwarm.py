@@ -28,22 +28,148 @@ import math
 import numpy
 import os
 import numpy as np
+import visualProjector as vp
+import random
 
-def projectedSine(size):
-    sizeR = [size+1,np.int(size/2)+1]
+
+path = 'c:/users/renaud/Documents/VisualModel/'
+
+def pather(path,expId):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    path = path  + expId+ '/'
+    if not os.path.exists(path):
+        os.makedirs(path)
+    print(path)
+    return path
+
+def pathFile(path,name="positions.csv"):
+    filepath = os.path.join(path, name)
+    fd = open(filepath,'wb')
+    fd.close()
+    return filepath
 
 
-    theta = np.linspace(-np.pi/2,np.pi/2,sizeR[1])
-    phi = np.linspace(-np.pi,np.pi,sizeR[0])
-    phi2d = np.array([phi,]*sizeR[1])
-    theta2d = np.array([theta,]*sizeR[0]).transpose()
-    #sinThetaIm = np.sin(theta2d)
-    #cosThetaCosPhiIm = np.cos(theta2d) * np.cos(phi2d)
-    #cosThetaSinPhiIm = np.cos(theta2d) * np.sin(phi2d)
-    
-    dTheta =  [[np.pi/sizeR[1],]*sizeR[0],]*sizeR[1]
-    dPhi = np.cos(theta2d)*[[2*np.pi/sizeR[0],]*sizeR[0],]*sizeR[1]
+class Simulator:
 
-    sinTheta = np.matrix.flatten(np.sin(theta2d))
-    cosThetaCosPhi = np.matrix.flatten(np.cos(theta2d) * np.cos(phi2d))
-    cosThetaSinPhi = np.matrix.flatten(np.cos(theta2d) * np.sin(phi2d))
+
+    # def writeCsv(X,N,U,name,path,writeMode = 0):
+    #     filepath = os.path.join(path, name)
+    #     if writeMode == 0:
+    #         fd = open(filepath,'wb')
+    #     elif writeMode == 1:
+    #         checkFile = True
+    #         while checkFile:
+    #             try:
+    #                 fd = open(filepath,'ab')
+    #                 checkFile = False
+    #             except Exception as e:
+    #                 traceback.print_exc()
+    #                 print()
+    #     nId=np.zeros((10,1))
+    #     nId = np.arange(0,N)
+    #     wri = np.c_[nId,X]
+    #     wri = np.c_[wri,U]
+        
+    #     np.savetxt(fd,np.c_[nId,X,U],delimiter=',',fmt= '%5.5f')
+
+    #     fd.close()
+
+
+    def integrator(self):
+        self.vIntegral[:,0] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
+        self.vIntegral[:,1] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
+        self.vIntegral[:,2] = np.sum(self.proj.allVisualField*self.proj.sine.sinThetaAll,axis = (0,1))
+
+        self.vIntegral[:,3] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
+        self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
+        self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
+
+
+
+    def computeVelocity(self):
+
+
+        self.du[:,0] = (self.drag * (self.u0 - self.u[:,0] ) + self.parametersV[0,0] * ( self.parametersV[0,1] * self.vIntegral[:,0] + self.parametersV[0,2] * self.vIntegral[:,3] ) )
+        self.du[:,1] =  self.parametersV[1,0] * (( self.parametersV[1,1] * self.vIntegral[:,1] + self.parametersV[1,2] * self.vIntegral[:,4] ))
+        self.du[:,2] =  ( -self.drag * self.u[:,2] + self.parametersV[2,0] * ( self.parametersV[2,1] * self.vIntegral[:,2] + self.parametersV[2,2] * self.vIntegral[:,5] ))
+
+        self.u += self.du*self.dt
+
+        self.dx = self.u*self.dt
+        self.dx[:,1] = self.du[:,1] * self.dt
+
+
+    def updatePositions(self):
+        positions = np.zeros((self.N,3))
+        for k in range(0,self.N):
+            obj = self.proj.listObjects[k]
+            self.proj.rotateObject(obj,dz=self.dx[k,1])
+            self.proj.moveObject(obj,x=self.dx[k,0],z=self.dx[k,2])
+            positions = [k,obj.location.x,obj.location.y,obj.location.z,
+                            obj.rotation_euler.x,obj.rotation_euler.y,obj.rotation_euler.z]
+            self.positionWrite.append(positions)
+
+
+    def writePositions(self):
+        fd = open(self.filePath,'ab')
+        np.savetxt(fd,np.array(self.positionWrite),delimiter=',',fmt= '%5.5f')
+
+        fd.close()
+        self.positionWrite = []
+
+    def startSimulation(self,tMax = 0):
+        if tMax > 0:
+            self.tMax = tMax
+        for t in range(0,np.int(self.tMax/self.dt)):
+            self.proj.computeAllVisualField()
+            self.proj.derivateAllVisualField()
+            self.integrator()
+            self.computeVelocity()
+            self.updatePositions()
+            if len(self.positionWrite)>100:
+                self.writePositions()
+
+
+    def initializeSwarm(self,R = 20,dim = 3):
+
+        for k in range(0,self.N):
+            x = R*random.random()-R/2
+            y = R*random.random()-R/2
+            if self.dim == 3:
+                z = 0#R*random.random()-R/2
+            else:
+                z = 0
+            phi = 2*np.pi*random.random()-np.pi
+            print(x,y,z)
+            print(phi)
+            self.proj.addObject(x,y,z)
+            self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
+            obj = self.proj.listObjects[k]
+            positions = [k,obj.location.x,obj.location.y,obj.location.z,
+                            obj.rotation_euler.x,obj.rotation_euler.y,obj.rotation_euler.z]
+            self.positionWrite.append(positions)
+
+
+
+    def __init__(self,size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
+        self.N = N
+        self.dim = 3
+        self.dt = dt
+        self.tMax = tMax
+        self.drag = drag
+        self.vIntegral = np.zeros((3,2))
+        self.u = np.zeros((N,3))
+        self.du = np.zeros((N,3))
+        self.dx = np.zeros((N,3))
+        self.vIntegral = np.zeros((N,6))
+        self.u0 = u0
+        self.u[:,0] = u0
+        self.parametersV = np.array(parametersV)
+
+        self.positionWrite = []
+
+        self.path = pather(path,expId)
+        self.filePath = pathFile(self.path)
+        self.proj = vp.Projector(size = size)
+        self.initializeSwarm(dim = dim)
