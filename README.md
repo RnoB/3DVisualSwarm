@@ -1,8 +1,12 @@
+# Project abandonned for now
+
+Finall, Ray casting does not seem to be a good solution to compute fastly and reliably multiple points of view, a different version is in progress. I keep the project as a reference.
+
+
 # 3DVisualSwarm
 An accurate 3D visual field projection extraction using Blender Cycles to make collective behavior simulation. The cycles renderer offers panoramic equirectangular projection. This provides a direct way to compute the projection of the visual field in very direction.
 
-This simulator should be considered the preferred version for computations and simulations related to the 3d projected visual field. There are many compromises to take into account (rasterisation, computation time, complexity of the scene...). Unless better algorithms are coming to compute multiple point of views in a given scene, Blender cycles is
-
+This simulator should be considered the preferred version for computations and simulations related to the 3d projected visual field. There are many compromises to take into account (rasterisation, computation time, complexity of the scene...). 
 
 ## Blender Python Modules
 
