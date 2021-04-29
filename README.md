@@ -1,6 +1,6 @@
 # Project abandonned for now
 
-Finall, Ray casting does not seem to be a good solution to compute fastly and reliably multiple points of view, a different version is in progress. I keep the project as a reference.
+Finally, Ray casting does not seem to be a good solution to compute fastly and reliably multiple points of view, a different version is in progress. I keep the project as a reference.
 
 
 # 3DVisualSwarm
