@@ -182,13 +182,13 @@ class Scene:
         Xs = cartesianToSpherical(X)
         print(Xs)
         for k in range(0,np.shape(X)[0]):
-            #try:
+            try:
                 vIdxTmp = self.drawSphere(Xs[k,:],1,self.size)
-            #except:
-                print(Xs[k,:])
-            #try:
+            except:
+                pass
+            try:
                 vIdx = np.vstack([vIdx,vIdxTmp])
-            #except:
+            except:
                 vIdx = vIdxTmp
         V = np.zeros([self.size[1],self.size[0]])
         try:
