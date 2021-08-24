@@ -88,10 +88,10 @@ class ProjectedSine:
 
     def __init__(self,size):
         
-        dPhi = 2*np.pi/(size[0]-1)
+        dPhi = 2*np.pi/(size[0])
         dTheta = np.pi/(size[1]-1)
         
-        self.phi = np.linspace(-np.pi,np.pi,size[0])
+        self.phi = np.linspace(-np.pi+dPhi,np.pi,size[0])
         self.theta = np.linspace(-np.pi/2,np.pi/2,size[1])
         
         
@@ -125,7 +125,7 @@ class Scene:
 
 
     def drawSphere(self,Xs,R,size):
-        dPhi = 2*np.pi/(size[0]-1)
+        dPhi = 2*np.pi/(size[0])
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
         phi0 = Xs[1]
@@ -140,7 +140,7 @@ class Scene:
         if thetaN == 1:
             thetaIdx = np.floor(size[1]/2) + np.round(((theta0/dTheta)))
 
-            phiIdx = np.floor(size[0]/2) + round(phi0 / dPhi)
+            phiIdx = (np.floor(size[0]/2) + round(phi0 / dPhi))%size[0]
             vIdx = np.array([phiIdx,thetaIdx])
         else:
             theta = np.linspace(thetaMin,thetaMax,thetaN)
@@ -162,10 +162,11 @@ class Scene:
             phiMin =  (np.floor(size[0]/2) + round((phi0 - phiLim) / dPhi))
 
             idx = []
+
             for thetaIdx,phiIdxMin,phiIdxMax in zip(thetaIdx,phiMin,phiMax):
 
                 if phiIdxMax-phiIdxMin >size[0] or phiIdxMax == -2147483648:
-                    phiIdx = np.arange(0,size[0])
+                    phiIdx = np.arange(0,size[0])%size[0]
 
 
                 else:
@@ -177,10 +178,19 @@ class Scene:
         return roundInt(vIdx)
 
 
+    def rotateReferential(self,k,X):
+        rotZ = self.rotation[k][2]
+        x = np.cos(rotZ)*X[:,0] + np.sin(rotZ)*X[:,1]
+        y = -np.sin(rotZ)*X[:,0] + np.cos(rotZ)*X[:,1]
+        X[:,0] = x
+        X[:,1] = y
+        return X
+
     def computeVisualField(self,k):
         X = np.delete(self.position - self.position[k,:],k,0)
+        X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
-        print(Xs)
+
         for k in range(0,np.shape(X)[0]):
             try:
                 vIdxTmp = self.drawSphere(Xs[k,:],1,self.size)
@@ -198,13 +208,60 @@ class Scene:
             
         return V
 
+
+    def computeAllVisualField(self):
+        
+        for k in range(0,len(self.position)):
+            
+            self.allVisualField[:,:,k] = self.computeVisualField(k)
+
+    def derivateAllVisualField(self):
+        self.allVisualFieldDPhi =\
+         (np.roll(self.allVisualField[:,:,:],1,1)-np.roll(self.allVisualField[:,:,:],-1,1))
+        self.allVisualFieldDTheta =\
+         np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)
+        self.allVisualFieldContour = (self.allVisualFieldDTheta!=0) + (self.allVisualFieldDPhi!=0)
+
+
+
+
+    def getLength(self):
+        return len(self.position)
+
+
     def addObject(self,position = (0,0,0),rotation = (0,0,0),bodySize = 1):
         self.position = np.vstack((self.position,position))
         self.rotation = np.vstack((self.rotation,rotation))
         np.append(self.bodySize,bodySize)
+        self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
+        self.sine.stack(len(self.position))
+        return self.getLength()-1
+
+    def rotateObject(self,idx,rotation = (0,0,0)):
+        self.rotation[idx] += rotation
+
+    def rotationObject(self,idx,rotation = (0,0,0)):
+        self.rotation[idx] = rotation
+
+    def rotatePhiObject(self,idx,rotation = 0):
+        self.rotation[idx][2] += rotation
+
+
+    def translateObject(self,idx,translation = (0,0,0)):
+        self.position[idx] += translation
+
+    def translateLinearObject(self,idx,X = 0,Z = 0):
+        phi = self.rotation[idx][2]
+        self.position[idx] += [X * np.cos(phi),X * np.sin(phi),Z]
+
+    def positionObject(self,idx,translation = (0,0,0)):
+        self.position[idx] = translation
+
+
+
 
     def __init__(self, size=512):
-        if size%2 == 0:
+        if size%2 == 1:
             size += 1
         size2 = np.int(size/2)
         if size2%2 == 0:
@@ -213,7 +270,7 @@ class Scene:
 
         self.sine = ProjectedSine(self.size)
 
-        self.listObjects = []
+
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
         self.bodySize = np.zeros((0))

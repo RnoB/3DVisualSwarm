@@ -21,9 +21,8 @@
 # SOFTWARE.
 
 
-import bpy
-import bmesh
-import mathutils
+
+
 import math
 import numpy
 import os
@@ -77,13 +76,13 @@ class Simulator:
 
 
     def integrator(self):
-        self.vIntegral[:,0] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
-        self.vIntegral[:,1] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
-        self.vIntegral[:,2] = np.sum(self.proj.allVisualField*self.proj.sine.sinThetaAll,axis = (0,1))
+        self.vIntegral[:,0] = np.sum(self.scene.allVisualField*self.scene.sine.cosThetaCosPhiAll,axis = (0,1))
+        self.vIntegral[:,1] = np.sum(self.scene.allVisualField*self.scene.sine.cosThetaSinPhiAll,axis = (0,1))
+        self.vIntegral[:,2] = np.sum(self.scene.allVisualField*self.scene.sine.sinThetaAll,axis = (0,1))
 
-        self.vIntegral[:,3] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
-        self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
-        self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
+        self.vIntegral[:,3] = np.sum(self.scene.allVisualFieldContour*self.scene.sine.cosThetaCosPhiAll,axis = (0,1))
+        self.vIntegral[:,4] = np.sum(self.scene.allVisualFieldContour*self.scene.sine.cosThetaSinPhiAll,axis = (0,1))
+        self.vIntegral[:,5] = np.sum(self.scene.allVisualFieldContour*self.scene.sine.sinThetaAll,axis = (0,1))
 
 
 
@@ -101,19 +100,26 @@ class Simulator:
 
 
     def updatePositions(self):
-        positions = np.zeros((self.N,3))
-        for k in range(0,self.N):
-            obj = self.proj.listObjects[k]
-            self.proj.rotateObject(obj,dz=self.dx[k,1])
-            self.proj.moveObject(obj,x=self.dx[k,0],z=self.dx[k,2])
-            positions = [k,obj.location.x,obj.location.y,obj.location.z,
-                            obj.rotation_euler.x,obj.rotation_euler.y,obj.rotation_euler.z]
-            self.positionWrite.append(positions)
 
+        for obj in range(0,self.N):
+            
+            self.scene.rotatePhiObject(obj,rotation = self.dx[obj,1])
+            self.scene.translateLinearObject(obj,X=self.dx[obj,0],Z=self.dx[obj,2])
+        self.appendPositionToWriter()
+
+
+    def appendPositionToWriter(self):
+        wri = np.hstack((self.idxs,self.scene.position,self.scene.rotation))
+        try:
+            self.positionWrite = np.vstack((self.positionWrite,wri))
+        except:
+
+            self.positionWrite = wri
 
     def writePositions(self):
         fd = open(self.filePath,'ab')
-        np.savetxt(fd,np.array(self.positionWrite),delimiter=',',fmt= '%5.5f')
+        
+        np.savetxt(fd,self.positionWrite,delimiter=',',fmt= '%5.5f')
 
         fd.close()
         self.positionWrite = []
@@ -122,39 +128,37 @@ class Simulator:
         if tMax > 0:
             self.tMax = tMax
         for t in range(0,np.int(self.tMax/self.dt)):
-            self.proj.computeAllVisualField()
-            self.proj.derivateAllVisualField()
+            self.scene.computeAllVisualField()
+            self.scene.derivateAllVisualField()
             self.integrator()
             self.computeVelocity()
             self.updatePositions()
-            if len(self.positionWrite)>100:
+            if len(self.positionWrite)>10:
                 self.writePositions()
 
 
-    def initializeSwarm(self,R = 20,dim = 3):
+    def initializeSwarm(self,Rmax = 10):
 
         for k in range(0,self.N):
-            x = R*random.random()-R/2
-            y = R*random.random()-R/2
+            x = Rmax*random.random()-Rmax/2
+            y = Rmax*random.random()-Rmax/2
             if self.dim == 3:
-                z = 0#R*random.random()-R/2
+                z = Rmax*random.random()-Rmax/2
             else:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
-            print(x,y,z)
-            print(phi)
-            self.proj.addObject(x,y,z)
-            self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
-            obj = self.proj.listObjects[k]
-            positions = [k,obj.location.x,obj.location.y,obj.location.z,
-                            obj.rotation_euler.x,obj.rotation_euler.y,obj.rotation_euler.z]
-            self.positionWrite.append(positions)
+
+            self.scene.addObject((x,y,z),(0,0,phi),self.bodySize)
+            
+        self.appendPositionToWriter()
 
 
 
-    def __init__(self,size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
+    def __init__(self,size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = .1,bodySize = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
+        self.positionWrite = []
         self.N = N
-        self.dim = 3
+        self.idxs = np.arange(0,N).reshape(N,1)
+        self.dim = dim
         self.dt = dt
         self.tMax = tMax
         self.drag = drag
@@ -166,10 +170,10 @@ class Simulator:
         self.u0 = u0
         self.u[:,0] = u0
         self.parametersV = np.array(parametersV)
-
+        self.bodySize = bodySize
         self.positionWrite = []
 
         self.path = pather(path,expId)
         self.filePath = pathFile(self.path)
-        self.proj = vp.Projector(size = size)
-        self.initializeSwarm(dim = dim)
+        self.scene = vp.Scene(size = size)
+        self.initializeSwarm()
