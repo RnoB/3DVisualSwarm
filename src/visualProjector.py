@@ -23,9 +23,10 @@
 
 import numpy as np
 import scipy.spatial as sc
-
+from numba import jit
 
 radTodDeg = 180/np.pi 
+
 
 def round(x, base=1):
     return base * np.round(x/base)
@@ -171,8 +172,9 @@ class Scene:
 
                 else:
                     phiIdx = np.arange(phiIdxMin,phiIdxMax+1)%size[0]
-
-                idxLine = np.vstack([phiIdx,thetaIdx*np.ones(len(phiIdx))]).T
+                idxLine = np.empty((len(phiIdx),2))
+                idxLine[:,1].fill(thetaIdx)
+                idxLine[:,0] = phiIdx
                 idx.append(idxLine)
             vIdx = np.concatenate(idx)
         return roundInt(vIdx)
@@ -190,16 +192,19 @@ class Scene:
         X = np.delete(self.position - self.position[k,:],k,0)
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
-
+        vIdx2 = []
         for k in range(0,np.shape(X)[0]):
             try:
                 vIdxTmp = self.drawSphere(Xs[k,:],1,self.size)
             except:
                 pass
             try:
-                vIdx = np.vstack([vIdx,vIdxTmp])
+                vIdx2.append(vIdxTmp)
+                #vIdx = np.vstack([vIdx,vIdxTmp])
             except:
-                vIdx = vIdxTmp
+                #vIdx = vIdxTmp
+                pass
+        vIdx = np.vstack(vIdx2)
         V = np.zeros([self.size[1],self.size[0]])
         try:
             V[vIdx[:,1],vIdx[:,0]] = 1
