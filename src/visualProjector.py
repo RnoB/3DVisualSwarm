@@ -127,13 +127,13 @@ class Scene:
 
     def drawSphere(self,Xs,R,size):
 
-        phiIdxList = np.tile(np.arange(0,size[0]),3)
 
+        vIdxIdx = 0
         dPhi = 2*np.pi/(size[0])
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
         phi0 = Xs[1]
-        
+
         #i don't know what approximation to use
         #thetaApp = np.arcsin(R/Xs[0])
         thetaApp = np.arctan2(R,Xs[0])
@@ -145,10 +145,11 @@ class Scene:
             thetaIdx = np.floor(size[1]/2) + np.round(((theta0/dTheta)))
 
             phiIdx = (np.floor(size[0]/2) + round(phi0 / dPhi))%size[0]
-            vIdx = np.array([phiIdx,thetaIdx])
+            self.vIdx[0,:] = np.array([phiIdx,thetaIdx])
+            vIdxIdx = 1
         else:
             theta = np.linspace(thetaMin,thetaMax,thetaN)
-            
+
             thetaSpace = theta - round(theta0,dTheta)
 
             theta[theta > np.pi/2.0] = np.pi - theta[theta > np.pi/2.0]
@@ -166,26 +167,33 @@ class Scene:
             phiMin =  (np.floor(size[0]/2) + round((phi0 - phiLim) / dPhi))
 
             idx = []
+            idx2 = []
 
             for thetaIdx,phiIdxMin,phiIdxMax in zip(thetaIdx,phiMin,phiMax):
 
                 if phiIdxMax-phiIdxMin >size[0] or phiIdxMax == -2147483648:
-                    idxLine = np.empty((size[0],2), dtype='int')
-                    idxLine[:,1].fill(thetaIdx)
-                    idxLine[:,0] = phiIdxList[0:size[0]]
-
+                    
+                    self.vIdx[vIdxIdx:vIdxIdx+size[0],1] = thetaIdx
+                    self.vIdx[vIdxIdx:vIdxIdx+size[0],0] = self.phiIdxList[0:size[0]]
+                    vIdxIdx+=size[0]
 
                 else:
                     #phiIdx = np.arange(phiIdxMin,phiIdxMax+1)
                     #phiIdx = phiIdx%size[0]
                     idx0 = int(phiIdxMin+size[0])
                     idx1 = int(phiIdxMax+1+size[0])
-                    idxLine = np.empty((idx1-idx0,2), dtype='int')
-                    idxLine[:,1].fill(thetaIdx)
-                    idxLine[:,0] = phiIdxList[idx0:idx1]
-                idx.append(idxLine)
-            vIdx = np.concatenate(idx)
-        return vIdx
+                    
+                    self.vIdx[vIdxIdx:vIdxIdx+idx1-idx0,1] = thetaIdx
+                    self.vIdx[vIdxIdx:vIdxIdx+idx1-idx0,0] = self.phiIdxList[idx0:idx1]
+                    vIdxIdx += idx1-idx0
+
+
+                
+                #idxLine = np.empty((len(phiIdx),2))
+                #idxLine[:,1].fill(thetaIdx)
+                #idxLine[:,0] = phiIdx
+
+        return self.vIdx[0:vIdxIdx]
 
 
     def rotateReferential(self,k,X):
@@ -287,6 +295,9 @@ class Scene:
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
         self.bodySize = np.zeros((0))
+
+        self.phiIdxList = np.tile(np.arange(0,self.size[0]),3)
+        self.vIdx = np.empty((self.size[0]*self.size[1],2), dtype='int')
 
 
 
