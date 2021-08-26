@@ -126,6 +126,9 @@ class Scene:
 
 
     def drawSphere(self,Xs,R,size):
+
+        phiIdxList = np.tile(np.arange(0,size[0]),3)
+
         dPhi = 2*np.pi/(size[0])
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
@@ -167,17 +170,22 @@ class Scene:
             for thetaIdx,phiIdxMin,phiIdxMax in zip(thetaIdx,phiMin,phiMax):
 
                 if phiIdxMax-phiIdxMin >size[0] or phiIdxMax == -2147483648:
-                    phiIdx = np.arange(0,size[0])%size[0]
+                    idxLine = np.empty((size[0],2), dtype='int')
+                    idxLine[:,1].fill(thetaIdx)
+                    idxLine[:,0] = phiIdxList[0:size[0]]
 
 
                 else:
-                    phiIdx = np.arange(phiIdxMin,phiIdxMax+1)%size[0]
-                idxLine = np.empty((len(phiIdx),2))
-                idxLine[:,1].fill(thetaIdx)
-                idxLine[:,0] = phiIdx
+                    #phiIdx = np.arange(phiIdxMin,phiIdxMax+1)
+                    #phiIdx = phiIdx%size[0]
+                    idx0 = int(phiIdxMin+size[0])
+                    idx1 = int(phiIdxMax+1+size[0])
+                    idxLine = np.empty((idx1-idx0,2), dtype='int')
+                    idxLine[:,1].fill(thetaIdx)
+                    idxLine[:,0] = phiIdxList[idx0:idx1]
                 idx.append(idxLine)
             vIdx = np.concatenate(idx)
-        return roundInt(vIdx)
+        return vIdx
 
 
     def rotateReferential(self,k,X):
