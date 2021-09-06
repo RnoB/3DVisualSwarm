@@ -20,10 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
+from numba import jit
 import numpy as np
 import scipy.spatial as sc
-from numba import jit
+
 
 radTodDeg = 180/np.pi 
 
@@ -131,7 +131,7 @@ class Scene:
         dPhi = 2*np.pi/(size[0])
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
-        phi0 = Xs[1]
+        phi0 = (np.pi+Xs[1])%(2*np.pi)-np.pi
 
         #i don't know what approximation to use
         #thetaApp = np.arcsin(R/Xs[0])
@@ -144,9 +144,10 @@ class Scene:
             thetaIdx = np.floor(size[1]/2) + np.round(((theta0/dTheta)))
 
             phiIdx = (np.floor(size[0]/2) + round(phi0 / dPhi))%size[0]
-            vIdx = np.array([phiIdx,thetaIdx])
+            vIdx = np.array([phiIdx,thetaIdx], dtype='int')
         else:
-            theta = np.linspace(thetaMin,thetaMax,thetaN)
+            #theta = np.linspace(thetaMin,thetaMax,thetaN)
+            theta = thetaMin+(thetaMax-thetaMin)*(self.phiIdxList[0:thetaN]/(thetaN-1))
 
             thetaSpace = theta - round(theta0,dTheta)
 
@@ -182,7 +183,9 @@ class Scene:
                     idx1 = int(phiIdxMax+1+size[0])
                     idxLine = np.empty((idx1-idx0,2), dtype='int')
                     idxLine[:,1].fill(thetaIdx)
+                    
                     idxLine[:,0] = self.phiIdxList[idx0:idx1]
+
 
 
 
@@ -194,6 +197,7 @@ class Scene:
                 idx.append(idxLine)
 
             vIdx = np.concatenate(idx)
+
         return vIdx
 
 
@@ -211,16 +215,9 @@ class Scene:
         Xs = cartesianToSpherical(X)
         vIdx2 = []
         for k in range(0,np.shape(X)[0]):
-            try:
-                vIdxTmp = self.drawSphere(Xs[k,:],1,self.size)
-            except:
-                pass
-            try:
-                vIdx2.append(vIdxTmp)
-                #vIdx = np.vstack([vIdx,vIdxTmp])
-            except:
-                #vIdx = vIdxTmp
-                pass
+            vIdxTmp = self.drawSphere(Xs[k,:],1,self.size)
+
+            vIdx2.append(vIdxTmp)
         vIdx = np.vstack(vIdx2)
         V = np.zeros([self.size[1],self.size[0]])
         try:
@@ -259,6 +256,16 @@ class Scene:
         self.sine.stack(len(self.position))
         return self.getLength()-1
 
+    def addObjects(self,position = (0,0,0),rotation = (0,0,0),bodySize = 1):
+        self.position = np.vstack((self.position,position))
+        self.rotation = np.vstack((self.rotation,rotation))
+        np.append(self.bodySize,bodySize)
+        self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
+        return self.getLength()-1
+
+    def finalizeAdd(self):
+        self.sine.stack(len(self.position))
+
     def rotateObject(self,idx,rotation = (0,0,0)):
         self.rotation[idx] += rotation
 
@@ -282,7 +289,7 @@ class Scene:
 
 
 
-    def __init__(self, size=512):
+    def __init__(self, size=512,parallel = False):
         if size%2 == 1:
             size += 1
         size2 = np.int(size/2)
@@ -297,7 +304,7 @@ class Scene:
         self.rotation = np.zeros((0,3))
         self.bodySize = np.zeros((0))
 
-        self.phiIdxList = np.tile(np.arange(0,self.size[0]),3)
+        self.phiIdxList = np.tile(np.arange(0,self.size[0], dtype='int'),3)
 
 
 
