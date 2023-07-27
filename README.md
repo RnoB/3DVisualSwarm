@@ -1,16 +1,22 @@
-# Project abandonned for now
+# ~~Project abandonned for now~~
 
-Finally, Ray casting does not seem to be a good solution to compute fastly and reliably multiple points of view, a different version is in progress. I keep the project as a reference.
+~~Finally, Ray casting does not seem to be a good solution to compute fastly and reliably multiple points of view, a different version is in progress. I keep the project as a reference.~~
 
+# Back in business!!
+
+There are still no good solutions to compute multiple spherical point of view with complex objects. So back to blender! 
 
 # 3DVisualSwarm
-An accurate 3D visual field projection extraction using Blender Cycles to make collective behavior simulation. The cycles renderer offers panoramic equirectangular projection. This provides a direct way to compute the projection of the visual field in very direction.
+An accurate 3D visual field projection extraction using Blender Cycles to make collective behavior simulation. The cycles renderer offers panoramic equirectangular projection. This provides a direct way to compute the projection of the visual field in every direction.
 
 This simulator should be considered the preferred version for computations and simulations related to the 3d projected visual field. There are many compromises to take into account (rasterisation, computation time, complexity of the scene...). 
 
 ## Blender Python Modules
 
-The software should run directly inside Blender, but for automation purpose it is useful to use Blender bpy as a python module. The option to build Blender as a Python module is not officially supported. The module needs to be build directly on the machine. Also, to avoid writing each frame to the HDD, a viewer node is used (https://ammous88.wordpress.com/2015/01/16/blender-access-render-results-pixels-directly-from-python-2/). However rendering to the viewer node is disabled in background mode and the code should be modified before compilation (https://blender.stackexchange.com/questions/69230/python-render-script-different-outcome-when-run-in-background/81240#81240). This has been tested with Windows 10, blender 2.93 and python 3.9. 
+The software should run directly inside Blender, but for automation purpose it is useful to use Blender bpy as a python module. The option to build Blender as a Python module is not officially supported. The module needs to be build directly on the machine. Also, to avoid writing each frame to the HDD, a viewer node is used (https://ammous88.wordpress.com/2015/01/16/blender-access-render-results-pixels-directly-from-python-2/). However rendering to the viewer node is disabled in background mode and the code should be modified before compilation (https://blender.stackexchange.com/questions/69230/python-render-script-different-outcome-when-run-in-background/81240#81240). This has been tested with Windows 10, blender 2.93 and python 3.9. This has failed with Ubuntu Server 22.02.3, Blender 3.6 and Python 3.10. For Linux, I advise now to prepare a Virtual Machine with [Rocky 8](https://rockylinux.org/) as it is the preffered way to compile release versions of Blender. Be sure to read all those sections before you start.
+
+### Rocky 8 Release Build Environment
+https://wiki.blender.org/wiki/Building_Blender/Other/Rocky8ReleaseEnvironment
 
 ### Building Blender as a Python Module
 https://wiki.blender.org/wiki/Building_Blender/Other/BlenderAsPyModule
