@@ -197,7 +197,7 @@ class Projector:
 
 
 
-        if dim == 2:
+        if self.dim == 2:
             bpy.context.scene.render.resolution_percentage = 25
             bpy.context.scene.render.resolution_x = 4*self.size[0]
             bpy.context.scene.render.resolution_y = 4*self.size[1]
