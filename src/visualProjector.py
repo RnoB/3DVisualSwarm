@@ -376,7 +376,7 @@ class Projector:
         self.cleanScene()
         if size%2 == 0:
             size += 1
-        size2 = np.int(size/2)
+        size2 = int(size/2)
         if size2%2 == 0:
             size2 += 1
         self.size = [size,size2]
