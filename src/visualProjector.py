@@ -197,7 +197,7 @@ class Projector:
 
 
         bpy.context.scene.render.resolution_x = self.size[0]
-        ìf self.dim == 3:
+        if self.dim == 3:
             bpy.context.scene.render.resolution_y = self.size[1]
         else:
             bpy.context.scene.render.resolution_y = 1
