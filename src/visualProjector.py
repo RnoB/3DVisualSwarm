@@ -389,7 +389,7 @@ class Projector:
         self.dim = dim
         if size%2 == 0:
             size += 1
-        if dim == 2
+        if dim == 2:
             self.size = [size,1]
         else:
             size2 = int(size/2)
