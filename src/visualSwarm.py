@@ -32,7 +32,7 @@ import visualProjector as vp
 import random
 
 
-path = 'c:/users/renaud/Documents/VisualModel/'
+path = '~/tmp/'
 
 def pather(path,expId):
     if not os.path.exists(path):

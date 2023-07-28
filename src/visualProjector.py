@@ -171,7 +171,7 @@ class ProjectedSine:
 
 class Projector:
 
-    def setupRender(self):
+    def setupRender(self,samples = 1):
         bpy.context.scene.render.engine = 'CYCLES'
 
 
@@ -193,7 +193,7 @@ class Projector:
 
         bpy.context.scene.render.resolution_x = self.size[0]
         bpy.context.scene.render.resolution_y = self.size[1]
-        bpy.context.scene.cycles.samples = 65536
+        bpy.context.scene.cycles.samples = samples
         bpy.context.scene.cycles.preview_samples = 0
 
         bpy.context.scene.cycles.max_bounces = 0
@@ -234,8 +234,8 @@ class Projector:
         bpy.context.scene.render.threads_mode = 'FIXED'
         bpy.context.scene.render.threads = 1
 
-        bpy.context.scene.render.tile_x = 64
-        bpy.context.scene.render.tile_y = 64
+        #bpy.context.scene.render.tile_x = 64
+        #bpy.context.scene.render.tile_y = 64
 
         #bpy.context.object.data.clip_start = 0.1
         #bpy.context.object.data.clip_end = 10000
@@ -296,7 +296,7 @@ class Projector:
         # Construct the bmesh sphere and assign it to the blender mesh.
         bm = bmesh.new()
         #bmesh.ops.create_icosphere(bm, subdivisions=16,  diameter=1)
-        bmesh.ops.create_uvsphere(bm, u_segments=20, v_segments=20, diameter=1)
+        bmesh.ops.create_uvsphere(bm, u_segments=20, v_segments=20, radius=.5)
         bm.to_mesh(mesh)
         bm.free()
 
