@@ -70,8 +70,8 @@ class Camera:
         self.position = bpy.data.objects['Camera'].location
 
     def camera2d(self):
-        proj.camera.camera.data.cycles.latitude_max = 0
-        proj.camera.camera.data.cycles.latitude_min = 0
+        self.camera.data.cycles.latitude_max = 0
+        self.camera.data.cycles.latitude_min = 0
 
     def __init__(self,x=0,y=0,z=0,dim = 3):
         self.rotationOffset = mathutils.Vector((math.pi/2.0,0,-math.pi/2.0))
@@ -86,7 +86,7 @@ class Camera:
         bpy.data.objects['Camera'].location = mathutils.Vector((x,y,z))
         self.position = bpy.data.objects['Camera'].location
         if dim == 2:
-            camera2d()
+            self.camera2d()
    
 
 class Mesh:
