@@ -196,11 +196,15 @@ class Projector:
 
 
 
-        bpy.context.scene.render.resolution_x = self.size[0]
-        if self.dim == 3:
-            bpy.context.scene.render.resolution_y = self.size[1]
+
+        if dim == 2:
+            bpy.context.scene.render.resolution_percentage = 25
+            bpy.context.scene.render.resolution_x = 4*self.size[0]
+            bpy.context.scene.render.resolution_y = 4*self.size[1]
         else:
-            bpy.context.scene.render.resolution_y = 1
+            bpy.context.scene.render.resolution_x = self.size[0]
+            bpy.context.scene.render.resolution_y = self.size[1]
+
         bpy.context.scene.cycles.samples = samples
         bpy.context.scene.cycles.preview_samples = 0
 
@@ -385,10 +389,13 @@ class Projector:
         self.dim = dim
         if size%2 == 0:
             size += 1
-        size2 = int(size/2)
-        if size2%2 == 0:
-            size2 += 1
-        self.size = [size,size2]
+        if dim == 2
+            self.size = [size,1]
+        else:
+            size2 = int(size/2)
+            if size2%2 == 0:
+                size2 += 1
+            self.size = [size,size2]
 
         self.setupRender()
         self.defaultMaterial()
