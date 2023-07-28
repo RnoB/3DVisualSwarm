@@ -69,8 +69,11 @@ class Camera:
             bpy.data.objects['Camera'].location += mathutils.Vector((args[0],args[1],args[2]))
         self.position = bpy.data.objects['Camera'].location
 
+    def camera2d(self):
+        proj.camera.camera.data.cycles.latitude_max = 0
+        proj.camera.camera.data.cycles.latitude_min = 0
 
-    def __init__(self,x=0,y=0,z=0):
+    def __init__(self,x=0,y=0,z=0,dim = 3):
         self.rotationOffset = mathutils.Vector((math.pi/2.0,0,-math.pi/2.0))
         camera_data = bpy.data.cameras.new(name='Camera')
         self.camera = bpy.data.objects.new('Camera', camera_data)
@@ -82,6 +85,8 @@ class Camera:
         self.rotation = self.camera.rotation_euler
         bpy.data.objects['Camera'].location = mathutils.Vector((x,y,z))
         self.position = bpy.data.objects['Camera'].location
+        if dim == 2:
+            camera2d()
    
 
 class Mesh:
@@ -192,7 +197,10 @@ class Projector:
 
 
         bpy.context.scene.render.resolution_x = self.size[0]
-        bpy.context.scene.render.resolution_y = self.size[1]
+        ìf self.dim == 3:
+            bpy.context.scene.render.resolution_y = self.size[1]
+        else:
+            bpy.context.scene.render.resolution_y = 1
         bpy.context.scene.cycles.samples = samples
         bpy.context.scene.cycles.preview_samples = 0
 
@@ -372,8 +380,9 @@ class Projector:
             obj.select_set(True)
             bpy.ops.object.delete()
 
-    def __init__(self, size=512):
+    def __init__(self, size=512,dim = 3):
         self.cleanScene()
+        self.dim = dim
         if size%2 == 0:
             size += 1
         size2 = int(size/2)
@@ -383,7 +392,7 @@ class Projector:
 
         self.setupRender()
         self.defaultMaterial()
-        self.camera = Camera()
+        self.camera = Camera(dim = dim)
         self.sine = ProjectedSine(self.size)
         #self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
         #self.mask[self.size[0]-1::self.size[0]] = False
