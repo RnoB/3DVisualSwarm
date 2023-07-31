@@ -382,11 +382,15 @@ class Projector:
     def toPosition(self,basic_sphere,x=0,y=0,z=0):
         basic_sphere.location = mathutils.Vector((x,y,z)) 
 
+
+    def toScale(self,basic_sphere,x=0,y=0,z=0):
+        basic_sphere.scale = mathutils.Vector((x,y,z)) 
+
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         x = basic_sphere.rotation_euler.x
         y = basic_sphere.rotation_euler.y
         z = basic_sphere.rotation_euler.z
-        basic_sphere.rotation_euler = mathutils.Euler((x+dx*radTodDeg,y+dy*radTodDeg,z+dz*radTodDeg),"XYZ") 
+        basic_sphere.rotation_euler = mathutils.Euler((x+dx,y+dy,z+dz),"XYZ") 
 
     def image(self):
         return np.reshape(self.pixels,(self.size[1],self.size[0]))
