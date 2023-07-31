@@ -182,7 +182,10 @@ class Projector:
 
         bpy.context.scene.render.resolution_percentage = 100
         bpy.context.scene.use_nodes = True
-        bpy.context.scene.render.image_settings.color_mode = 'BW'
+        if self.colors:
+            bpy.context.scene.render.image_settings.color_mode = 'RGB'
+        else:
+            bpy.context.scene.render.image_settings.color_mode = 'BW'
         tree = bpy.context.scene.node_tree
         links = tree.links
 
@@ -279,17 +282,37 @@ class Projector:
         bg.inputs[1].default_value = 1.0
 
 
-    def defaultMaterial(self):
+    def defaultMaterial(self,name = "white",texture = False):
 
-        self.material0 = bpy.data.materials.new(name="white")
-        self.material0.use_nodes = True
-        self.material0.node_tree.nodes.remove(self.material0.node_tree.nodes.get('Principled BSDF'))
-        material_output = self.material0.node_tree.nodes.get('Material Output')
-        emission = self.material0.node_tree.nodes.new('ShaderNodeEmission')
-        emission.inputs[0].default_value = (1, 1, 1, 1)
+        material0 = bpy.data.materials.new(name=name)
+        material0.use_nodes = True
+        nodes = material0.node_tree.nodes
+        nodes.remove(nodes.get('Principled BSDF'))
+        material_output = nodes.get('Material Output')
+        emission = nodes.new('ShaderNodeEmission')
+
+        if texture:
+            texCoord = nodes.new(type='ShaderNodeTexCoord')
+            vectorAdd = nodes.new(type='ShaderNodeVectorMath')
+            vectorAdd.operation = "ADD"
+            vectorAdd.inputs[1].default_value = np.random.rand(3)
+            noise = nodes.new(type='ShaderNodeTexNoise')
+            noise.noise_dimensions = "3D"
+            noise.inputs[1].default_value = 7.6
+            noise.inputs[2].default_value = 0
+            noise.inputs[3].default_value = 0
+            noise.inputs[4].default_value = 16
+            separateRGB = nodes.new(type='ShaderNodeSeparateRGB')
+            material0.node_tree.links.new(vectorAdd.inputs[0], texCoord.outputs[0])
+            material0.node_tree.links.new(noise.inputs[0], vectorAdd.outputs[0])
+            material0.node_tree.links.new(separateRGB.inputs[0], noise.outputs[1])
+            material0.node_tree.links.new(emission.inputs[0], separateRGB.outputs[0])
+        else:
+            emission.inputs[0].default_value = (1, 1, 1, 1)
         #material.use_transparent_shadow = False
         #material.sample_as_light = False
-        self.material0.node_tree.links.new(material_output.inputs[0], emission.outputs[0])
+        material0.node_tree.links.new(material_output.inputs[0], emission.outputs[0])
+        return material0
 
     def addObject(self,x=0,y=0,z=0,name = "agent"):
         mesh = bpy.data.meshes.new(name)
@@ -313,7 +336,11 @@ class Projector:
         bm.free()
 
         basic_sphere.select_set(True)
-        basic_sphere.active_material = self.material0
+        if self.texture:
+            material1 = self.defaultMaterial(name = "tex_"+str(np.random.randint(1e9)),texture = self.texture)
+            basic_sphere.active_material = material1
+        else:
+            basic_sphere.active_material = self.material0
         basic_sphere.location = mathutils.Vector((x,y,z))        
         basic_sphere.select_set(False)
         self.listObjects.append(basic_sphere)
@@ -384,7 +411,7 @@ class Projector:
             obj.select_set(True)
             bpy.ops.object.delete()
 
-    def __init__(self, size=512,dim = 3):
+    def __init__(self, size=512,dim = 3,texture = False,colors = False):
         self.cleanScene()
         self.dim = dim
         if size%2 == 0:
@@ -398,9 +425,10 @@ class Projector:
             if size2%2 == 0:
                 size2 += 1
             self.size = [size,size2]
-
+        self.texture = texture
+        self.colors = colors
         self.setupRender()
-        self.defaultMaterial()
+        self.material0 = self.defaultMaterial()
         self.camera = Camera(dim = dim)
         self.sine = ProjectedSine(self.size)
         #self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
