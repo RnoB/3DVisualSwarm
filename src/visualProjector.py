@@ -298,10 +298,10 @@ class Projector:
             vectorAdd.inputs[1].default_value = np.random.rand(3)
             noise = nodes.new(type='ShaderNodeTexNoise')
             noise.noise_dimensions = "3D"
-            noise.inputs[2].default_value = 10+10*np.random.random()
+            noise.inputs[2].default_value = 5+10*np.random.random()
             noise.inputs[3].default_value = 0
             noise.inputs[4].default_value = 0
-            noise.inputs[5].default_value = 4+2*np.random.random()
+            noise.inputs[5].default_value = 2+2*np.random.random()
             separateRGB = nodes.new(type='ShaderNodeSeparateRGB')
             material0.node_tree.links.new(vectorAdd.inputs[0], texCoord.outputs[0])
             material0.node_tree.links.new(noise.inputs[0], vectorAdd.outputs[0])
@@ -377,6 +377,10 @@ class Projector:
         dy = x*np.sin(phi) + y*np.cos(phi)
         dz = z
         basic_sphere.location += mathutils.Vector((dx,dy,dz)) 
+
+
+    def toPosition(self,basic_sphere,x=0,y=0,z=0):
+        basic_sphere.location = mathutils.Vector((x,y,z)) 
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         x = basic_sphere.rotation_euler.x
