@@ -201,15 +201,18 @@ class Projector:
 
 
         if self.dim == 2:
-            bpy.context.scene.render.resolution_percentage = 25
-            bpy.context.scene.render.resolution_x = 4*self.size[0]
-            bpy.context.scene.render.resolution_y = 4*self.size[1]
-            #bpy.context.scene.render.use_border = True
-            #bpy.context.scene.render.use_crop_to_border = True
-            #bpy.context.scene.render.border_max_x = 0
-            #bpy.context.scene.render.border_max_x = 1
-            #bpy.context.scene.render.border_min_y = 0
-            #bpy.context.scene.render.border_max_y = .25
+            #bpy.context.scene.render.resolution_percentage = 25
+            #bpy.context.scene.render.resolution_x = 4*self.size[0]
+            #bpy.context.scene.render.resolution_y = 4*self.size[1]
+            bpy.context.scene.render.resolution_x = self.size[0]
+            bpy.context.scene.render.resolution_y = self.size[1]
+            
+            bpy.context.scene.render.use_border = True
+            bpy.context.scene.render.use_crop_to_border = True
+            bpy.context.scene.render.border_max_x = 0
+            bpy.context.scene.render.border_max_x = 1
+            bpy.context.scene.render.border_min_y = 0
+            bpy.context.scene.render.border_max_y = .25
         else:
             bpy.context.scene.render.resolution_x = self.size[0]
             bpy.context.scene.render.resolution_y = self.size[1]
