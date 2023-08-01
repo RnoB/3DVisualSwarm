@@ -207,9 +207,9 @@ class Projector:
             bpy.context.scene.render.use_border = True
             bpy.context.scene.render.use_crop_to_border = True
             bpy.context.scene.render.border_max_x = 0
-            bpy.context.scene.render.border_max_x = self.size[0]
+            bpy.context.scene.render.border_max_x = 1
             bpy.context.scene.render.border_min_y = 0
-            bpy.context.scene.render.border_max_y = 1
+            bpy.context.scene.render.border_max_y = .25
         else:
             bpy.context.scene.render.resolution_x = self.size[0]
             bpy.context.scene.render.resolution_y = self.size[1]
@@ -275,6 +275,8 @@ class Projector:
 
         bpy.context.scene.world.cycles.volume_sampling = 'MULTIPLE_IMPORTANCE'
 
+        bpy.context.scene.render.use_compositing = False
+        bpy.context.scene.render.use_sequencer = False
 
 
 
