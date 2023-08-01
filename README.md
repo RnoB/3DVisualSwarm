@@ -57,9 +57,9 @@ Blender is printing a lot of stuff like that.
 ```console
 Fra:1 Mem:9.41M (Peak 9.59M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
 ```
-It's a mess when doing simulations.
+It's a mess when doing simulations and a source of slowdown. Let's get rid of it too.
 
-So in source/blender/render/intern/pipeline.cc lines ~204 to ~212 can be commented
+So in source/blender/render/intern/pipeline.cc lines ~204 to ~215 should be commented
 ```C
   fprintf(stdout,
           TIP_("Fra:%d Mem:%.2fM (Peak %.2fM) "),
@@ -70,4 +70,12 @@ So in source/blender/render/intern/pipeline.cc lines ~204 to ~212 can be comment
   fprintf(stdout, TIP_("| Time:%s | "), info_time_str);
 
   fprintf(stdout, "%s", rs->infostr);
+
+  /* Flush stdout to be sure python callbacks are printing stuff after blender. */
+  fflush(stdout);
+```
+and lines ~221 and ~222
+```C
+  fputc('\n', stdout);
+  fflush(stdout);
 ```
