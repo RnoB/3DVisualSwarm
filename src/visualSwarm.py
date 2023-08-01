@@ -154,7 +154,7 @@ class Simulator:
 
     def __init__(self,size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
         self.N = N
-        self.dim = 3
+        self.dim = dim
         self.dt = dt
         self.tMax = tMax
         self.drag = drag
