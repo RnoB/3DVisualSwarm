@@ -201,9 +201,14 @@ class Projector:
 
 
         if self.dim == 2:
-            bpy.context.scene.render.resolution_percentage = 25
-            bpy.context.scene.render.resolution_x = 4*self.size[0]
-            bpy.context.scene.render.resolution_y = 4*self.size[1]
+            #bpy.context.scene.render.resolution_percentage = 25
+            bpy.context.scene.render.resolution_x = self.size[0]
+            bpy.context.scene.render.resolution_y = 4#self.size[1]
+            bpy.context.scene.render.use_border = True
+            bpy.context.scene.render.border_max_x = 0
+            bpy.context.scene.render.border_max_x = self.size[0]
+            bpy.context.scene.render.border_min_y = 0
+            bpy.context.scene.render.border_max_y = 1
         else:
             bpy.context.scene.render.resolution_x = self.size[0]
             bpy.context.scene.render.resolution_y = self.size[1]
@@ -217,9 +222,11 @@ class Projector:
         bpy.context.scene.cycles.transparent_max_bounces = 0
         bpy.context.scene.cycles.transmission_bounces = 0
         bpy.context.scene.cycles.volume_bounces = 0
+        bpy.context.scene.cycles.ao_bounces = 0
+        bpy.context.scene.cycles.ao_bounces_render = 0
 
 
-        bpy.context.scene.cycles.max_subdivisions = 1
+        bpy.context.scene.cycles.max_subdivisions = 0
         bpy.context.scene.cycles.sample_all_lights_indirect = 0
         bpy.context.scene.cycles.sample_all_lights_direct = 0
 
@@ -233,18 +240,20 @@ class Projector:
         bpy.context.scene.cycles.min_transparent_bounces = 0
         bpy.context.scene.cycles.light_sampling_threshold = 0
 
-        bpy.context.scene.cycles.use_adaptive_sampling = True
+        bpy.context.scene.cycles.use_adaptive_sampling = False
         bpy.context.scene.cycles.use_denoising = False
         bpy.context.scene.cycles.blur_glossy = 0
 
-        bpy.context.scene.cycles.volume_step_rate = 100
-        bpy.context.scene.cycles.volume_max_steps = 10
+        bpy.context.scene.cycles.volume_step_rate = 1
+        bpy.context.scene.cycles.volume_max_steps = 1
         bpy.context.scene.render.use_simplify = False
 
 
         bpy.context.scene.render.use_motion_blur = False
 
         bpy.context.scene.cycles.pixel_filter_type = 'BOX'
+
+        bpy.context.scene.cycles.use_guiding = True
 
         bpy.context.scene.render.threads_mode = 'FIXED'
         bpy.context.scene.render.threads = 1
