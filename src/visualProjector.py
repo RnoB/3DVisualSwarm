@@ -141,18 +141,22 @@ class ProjectedSine:
 
  
 
-    def __init__(self,size):
+    def __init__(self,size,dim = 3):
         
 
         u = np.linspace(0,1,size[0])
         v = np.linspace(0,1,size[1])
         self.phi,self.theta = self.equirectangularToDirection(u,v)
-        
+        if dim == 2:
+            self.theta[0] = 0
         
         self.phi2d = np.array([self.phi,]*size[1])
         self.theta2d = np.array([self.theta,]*size[0]).transpose()
 
-        self.dThetaIm =  np.array([[np.pi/size[1],]*size[0],]*size[1])
+        if dim == 2:
+            self.dThetaIm =  np.array([[1,]*size[0],]*size[1])
+        else:
+            self.dThetaIm =  np.array([[np.pi/size[1],]*size[0],]*size[1])
         self.dPhiIm = np.cos(self.theta2d)*np.array([[2*np.pi/size[0],]*size[0],]*size[1])
 
 
@@ -452,7 +456,7 @@ class Projector:
         self.setupRender()
         self.material0 = self.defaultMaterial()
         self.camera = Camera(dim = dim)
-        self.sine = ProjectedSine(self.size)
+        self.sine = ProjectedSine(self.size,self.dim)
         #self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
         #self.mask[self.size[0]-1::self.size[0]] = False
         self.listObjects = []
