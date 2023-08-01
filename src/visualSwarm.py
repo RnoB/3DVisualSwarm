@@ -121,7 +121,7 @@ class Simulator:
     def startSimulation(self,tMax = 0):
         if tMax > 0:
             self.tMax = tMax
-        for t in range(0,np.int(self.tMax/self.dt)):
+        for t in range(0,int(self.tMax/self.dt)):
             self.proj.computeAllVisualField()
             self.proj.derivateAllVisualField()
             self.integrator()
