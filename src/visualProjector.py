@@ -275,7 +275,6 @@ class Projector:
 
         bpy.context.scene.world.cycles.volume_sampling = 'MULTIPLE_IMPORTANCE'
 
-        bpy.context.scene.render.use_compositing = False
         bpy.context.scene.render.use_sequencer = False
 
 
