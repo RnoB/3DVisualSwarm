@@ -417,7 +417,7 @@ class Projector:
         return np.reshape(self.allVisualField[:,idx],(self.size[1],self.size[0]))
 
     def render(self,write = False,kFrame = 0):
-        bpy.context.scene.render.filepath = os.path.join("c:/tmp/", ("render%06d.jpg" % kFrame))
+        #bpy.context.scene.render.filepath = os.path.join("c:/tmp/", ("render%06d.jpg" % kFrame))
         bpy.ops.render.render(write_still = write)
         self.pixels = np.array(bpy.data.images['Viewer Node'].pixels)[::4]#[self.mask]
 

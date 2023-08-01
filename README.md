@@ -52,3 +52,22 @@ After these changes, the pixels array gets properly updated in background mode.
 
 ---
 
+### Removing Blender Verbosity
+Blender is printing a lot of stuff like that.
+```console
+Fra:1 Mem:9.41M (Peak 9.59M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+```
+It's a mess when doing simulations.
+
+So in source/blender/render/intern/pipeline.cc lines ~204 to ~212 can be commented
+```C
+  fprintf(stdout,
+          TIP_("Fra:%d Mem:%.2fM (Peak %.2fM) "),
+          rs->cfra,
+          megs_used_memory,
+          megs_peak_memory);
+
+  fprintf(stdout, TIP_("| Time:%s | "), info_time_str);
+
+  fprintf(stdout, "%s", rs->infostr);
+```
