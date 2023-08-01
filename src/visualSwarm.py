@@ -171,5 +171,5 @@ class Simulator:
 
         self.path = pather(path,expId)
         self.filePath = pathFile(self.path)
-        self.proj = vp.Projector(size = size)
+        self.proj = vp.Projector(size = size,dim = dim)
         self.initializeSwarm(dim = dim)

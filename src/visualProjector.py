@@ -439,8 +439,8 @@ class Projector:
         if size%2 == 0:
             size += 1
         if dim == 2:
-            if size>16383:
-                size = 16383
+            if size>65534:
+                size = 65534
             self.size = [size,1]
         else:
             size2 = int(size/2)
