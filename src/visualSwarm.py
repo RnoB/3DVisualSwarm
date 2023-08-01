@@ -77,9 +77,9 @@ class Simulator:
 
 
     def integrator(self):
-        self.vIntegral[:,0] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
-        self.vIntegral[:,1] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
-        self.vIntegral[:,2] = np.sum(self.proj.allVisualField*self.proj.sine.sinThetaAll,axis = (0,1))
+        self.vIntegral[:,0] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
+        self.vIntegral[:,1] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
+        self.vIntegral[:,2] = np.sum(self.proj.allVisualField*self.proj.sine.sinThetaAllD,axis = (0,1))
 
         self.vIntegral[:,3] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
         self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))

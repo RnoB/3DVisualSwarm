@@ -138,6 +138,10 @@ class ProjectedSine:
         self.cosThetaCosPhiAll = np.array([self.cosThetaCosPhiIm]*N).transpose((1,2,0))
         self.cosThetaSinPhiAll = np.array([self.cosThetaSinPhiIm]*N).transpose((1,2,0))
 
+        self.sinThetaAllD = np.array([self.sinThetaImD]*N).transpose((1,2,0))
+        self.cosThetaCosPhiAllD = np.array([self.cosThetaCosPhiImD]*N).transpose((1,2,0))
+        self.cosThetaSinPhiAllD = np.array([self.cosThetaSinPhiImD]*N).transpose((1,2,0))
+
 
  
 
@@ -163,9 +167,13 @@ class ProjectedSine:
 
         self.dThetadPhiIm = self.dThetaIm*self.dPhiIm
 
-        self.sinThetaIm = np.sin(self.theta2d) * self.dThetadPhiIm
-        self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d) * self.dThetadPhiIm 
-        self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d) * self.dThetadPhiIm
+        self.sinThetaIm = np.sin(self.theta2d) 
+        self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d)  
+        self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d) 
+        
+        self.sinThetaImD = np.sin(self.theta2d) * self.dThetadPhiIm
+        self.cosThetaCosPhiImD = np.cos(self.theta2d) * np.cos(self.phi2d) * self.dThetadPhiIm 
+        self.cosThetaSinPhiImD = np.cos(self.theta2d) * np.sin(self.phi2d) * self.dThetadPhiIm
         
 
         self.dTheta = np.matrix.flatten(self.dThetaIm)
@@ -300,7 +308,7 @@ class Projector:
         bg.inputs[1].default_value = 1.0
 
 
-    def changeThreadsNumber(self,nThreads = 1):
+    def setThreads(self,nThreads = 1):
         bpy.context.scene.render.threads = nThreads
 
     def defaultMaterial(self,name = "white",texture = False):
