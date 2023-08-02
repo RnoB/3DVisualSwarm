@@ -170,11 +170,14 @@ class Projector:
     def render(self,agent):
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
+        rot = agent.getHpr()
+        phi = sine.phi + pos.x
+
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
-                x = 10000*self.sine.cosThetaCosPhiIm[j,k]
-                y = 10000*self.sine.cosThetaSinPhiIm[j,k]
-                z = 10000*self.sine.sinThetaIm[j,k]
+                x = 10000*np.cos(sine.theta[j])*np.cos(sine.phi[k])
+                y = 10000*np.cos(sine.theta[j])*np.sin(sine.phi[k])
+                z = 10000*np.sin(sine.theta[j])
                 result = self.world.rayTestClosest(pos,pc.Point3(x,y,z))
                 if result.hasHit():
                     V[j,k] = 1
