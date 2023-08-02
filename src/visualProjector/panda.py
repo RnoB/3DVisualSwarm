@@ -124,6 +124,7 @@ class Projector:
         
         for k in range(0,len(self.listObjects)):
             V = self.computeVisualField(self.listObjects[k])
+            print(V)
             self.allVisualField[:,:,k] = np.copy(V)
 
     def derivateAllVisualField(self):
