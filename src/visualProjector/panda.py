@@ -22,7 +22,9 @@
 
 
 from panda3d.core import loadPrcFileData
-
+loadPrcFileData("", "window-type none" ) # Make sure we don't need a graphics engine (Will also prevent X errors / Display errors when starting on linux without X server)
+loadPrcFileData("", "audio-library-name null" ) # Prevent ALSA errors
+base = ShowBase()
 import panda3d.core as pc
 import panda3d.bullet as bullet
 import math
@@ -97,9 +99,6 @@ class ProjectedSine:
 class Projector:
 
     def setupRender(self):
-        loadPrcFileData("", "window-type none" ) # Make sure we don't need a graphics engine (Will also prevent X errors / Display errors when starting on linux without X server)
-        loadPrcFileData("", "audio-library-name null" ) # Prevent ALSA errors
-        self.base = ShowBase()
         self.world = bullet.BulletWorld()
    
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
