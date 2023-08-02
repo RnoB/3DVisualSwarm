@@ -152,9 +152,9 @@ class Projector:
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         a = basic_sphere.getHpr()
-        dx *= radTodDeg
-        dy *= radTodDeg
-        dz *= radTodDeg
+        #dx *= radTodDeg
+        #dy *= radTodDeg
+        #dz *= radTodDeg
         basic_sphere.setHpr(basic_sphere,pc.Vec3(dx,dy,dz)) 
 
     def render(self,agent):
