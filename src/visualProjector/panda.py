@@ -147,11 +147,11 @@ class Projector:
 
 
     def toScale(self,basic_sphere,x=0,y=0,z=0):
-        basic_sphere.setScale(Vec3(x,y,z)) 
+        basic_sphere.setScale(pc.Vec3(x,y,z)) 
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         a = basic_sphere.getHpr()
-        basic_sphere.setHpr(Vec3(a.x+dx,a.y+dy,a.z+dz)) 
+        basic_sphere.setHpr(pc.Vec3(a.x+dx,a.y+dy,a.z+dz)) 
 
     def render(self,agent):
         V = np.zeros((len(theta),len(phi),))
