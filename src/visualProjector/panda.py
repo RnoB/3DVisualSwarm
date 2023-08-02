@@ -171,7 +171,7 @@ class Projector:
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
         rot = agent.getHpr()
-        phi = sine.phi + pos.x
+        phi = sine.phi + rot.z
 
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
