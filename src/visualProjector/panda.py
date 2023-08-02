@@ -169,6 +169,7 @@ class Projector:
                 result = self.world.rayTestClosest(pos,pc.Point3(x,y,z))
                 if result.hasHit():
                     V[j,k] = 1
+        print("V1 : " + str(V))
         return V
 
     def cleanScene(self):
