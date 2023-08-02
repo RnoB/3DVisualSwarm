@@ -103,7 +103,7 @@ class Projector:
         self.world = bullet.BulletWorld()
    
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
-        shape = self.bullet.BulletSphereShape(radius)
+        shape = bullet.BulletSphereShape(radius)
 
         node = bullet.BulletRigidBodyNode(name)
         node.addShape(shape)
