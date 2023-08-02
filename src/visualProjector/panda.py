@@ -151,6 +151,7 @@ class Projector:
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         a = basic_sphere.getHpr()
+        print(dz)
         print(pc.Vec3(a.x+dx,a.y+dy,a.z+dz))
         basic_sphere.setHpr(pc.Vec3(a.x+dx,a.y+dy,a.z+dz)) 
 
