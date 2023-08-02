@@ -100,11 +100,16 @@ class Simulator:
         positions = np.zeros((self.N,3))
         for k in range(0,self.N):
             obj = self.proj.listObjects[k]
-            print(self.dx)
             self.proj.rotateObject(obj,dz=self.dx[k,1])
             self.proj.moveObject(obj,x=self.dx[k,0],z=self.dx[k,2])
-            positions = [k,obj.location.x,obj.location.y,obj.location.z,
-                            obj.rotation_euler.x,obj.rotation_euler.y,obj.rotation_euler.z]
+            if self.engine == "panda":
+                location = obj.getPos()
+                rotation = obj.getHpr()
+            else:
+                location = obj.location
+                rotation = obj.rotation_euler
+            positions = [k,location.x,location.y,location.z,
+                            rotation.x,rotation.y,rotation.z]
             self.positionWrite.append(positions)
 
 
