@@ -408,11 +408,14 @@ class Projector:
         basic_sphere.location += mathutils.Vector((dx,dy,dz)) 
 
 
-    def toPosition(self,basic_sphere,x=0,y=0,z=0):
+    def setPosition(self,basic_sphere,x=0,y=0,z=0):
         basic_sphere.location = mathutils.Vector((x,y,z)) 
 
+    def getPosition(self,basic_sphere,x=0,y=0,z=0):
+        return np.array(basic_sphere.location) 
 
-    def toScale(self,basic_sphere,x=0,y=0,z=0):
+
+    def setScale(self,basic_sphere,x=0,y=0,z=0):
         basic_sphere.scale = mathutils.Vector((x,y,z)) 
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
