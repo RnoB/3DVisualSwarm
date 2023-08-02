@@ -142,7 +142,7 @@ class Simulator:
             self.proj.addObject(x,y,z)
             self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
             obj = self.proj.listObjects[k]
-            if engine == "panda":
+            if self.engine == "panda":
                 location = obj.getPos()
                 rotation = obj.getHpr()
             else:
