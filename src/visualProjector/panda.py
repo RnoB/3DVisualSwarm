@@ -154,10 +154,10 @@ class Projector:
         basic_sphere.setHpr(pc.Vec3(a.x+dx,a.y+dy,a.z+dz)) 
 
     def render(self,agent):
-        V = np.zeros(self.size)
+        V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
-        for k in range(0,size[0]):
-            for j in range(0,size[1]):
+        for k in range(0,self.size[0]):
+            for j in range(0,self.size[1]):
                 x = 10000*sine.cosThetaCosPhiIm[j,k]
                 y = 10000*sine.cosThetaSinPhiIm[j,k]
                 z = 10000*sine.sinTheta[j,k]
