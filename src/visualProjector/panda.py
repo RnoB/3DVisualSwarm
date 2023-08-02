@@ -30,7 +30,8 @@ import numpy
 import os
 import numpy as np
 
-radTodDeg = 180/np.pi 
+radToDeg = 180.0/np.pi 
+degToRad = np.pi/180.0 
 
 
 class ProjectedSine:
@@ -136,7 +137,7 @@ class Projector:
 
 
     def moveObject(self,basic_sphere,x=0,y=0,z=0):
-        phi = basic_sphere.getHpr().z
+        phi = basic_sphere.getHpr().z*degToRad
         dx = x*np.cos(phi) - y*np.sin(phi)
         dy = x*np.sin(phi) + y*np.cos(phi)
         dz = z

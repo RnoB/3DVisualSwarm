@@ -139,7 +139,7 @@ class Simulator:
             x = R*random.random()-R/2
             y = R*random.random()-R/2
             if self.dim == 3:
-                z = 0#R*random.random()-R/2
+                z = R*random.random()-R/2
             else:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
