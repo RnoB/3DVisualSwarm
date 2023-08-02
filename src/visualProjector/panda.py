@@ -154,13 +154,13 @@ class Projector:
         basic_sphere.setHpr(pc.Vec3(a.x+dx,a.y+dy,a.z+dz)) 
 
     def render(self,agent):
-        V = np.zeros((len(theta),len(phi),))
+        V = np.zeros(self.size)
         pos = agent.getPos()
         for k in range(0,len(phi)):
             for j in range(0,len(theta)):
-                x = 10000*np.cos(theta[j])*np.cos(phi[k])
-                y = 10000*np.cos(theta[j])*np.sin(phi[k])
-                z = 10000*np.sin(theta[j])
+                x = 10000*sine.cosThetaCosPhiIm[j,k]
+                y = 10000*sine.cosThetaSinPhiIm[j,k]
+                z = 10000*sine.sinTheta[j,k]
                 result = world.rayTestClosest(pos,pc.Point3(x,y,z))
                 if result.hasHit():
                     V[j,k] = 1
