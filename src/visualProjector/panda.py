@@ -156,8 +156,8 @@ class Projector:
     def render(self,agent):
         V = np.zeros(self.size)
         pos = agent.getPos()
-        for k in range(0,len(phi)):
-            for j in range(0,len(theta)):
+        for k in range(0,size[0]):
+            for j in range(0,size[1]):
                 x = 10000*sine.cosThetaCosPhiIm[j,k]
                 y = 10000*sine.cosThetaSinPhiIm[j,k]
                 z = 10000*sine.sinTheta[j,k]
