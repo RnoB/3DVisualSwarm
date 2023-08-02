@@ -21,14 +21,11 @@
 # SOFTWARE.
 
 
-import bpy
-import bmesh
 import mathutils
 import math
 import numpy
 import os
 import numpy as np
-import visualProjector as vp
 import random
 
 
@@ -146,13 +143,25 @@ class Simulator:
             self.proj.addObject(x,y,z)
             self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
             obj = self.proj.listObjects[k]
-            positions = [k,obj.location.x,obj.location.y,obj.location.z,
-                            obj.rotation_euler.x,obj.rotation_euler.y,obj.rotation_euler.z]
+            if engine == "panda"
+                location = obj.location
+                rotation = obj.rotation_euler
+            else if engine == "panda"
+                location = obj.getPos()
+                rotation = obj.getHpr()
+            positions = [k,location.x,location.y,location.z,
+                            rotation.x,rotation.y,rotation.z]
             self.positionWrite.append(positions)
 
 
 
-    def __init__(self,size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
+    def __init__(self,engine = "blender",size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
+        
+        self.engine = engine
+        if engine == "panda":
+            from visualProjector import panda as vp
+        else:
+            from visualProjector import blender as vp
         self.N = N
         self.dim = dim
         self.dt = dt
