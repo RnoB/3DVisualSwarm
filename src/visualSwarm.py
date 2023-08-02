@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 
-import mathutils
 import math
 import numpy
 import os
