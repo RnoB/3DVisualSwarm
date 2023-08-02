@@ -100,6 +100,7 @@ class Simulator:
         positions = np.zeros((self.N,3))
         for k in range(0,self.N):
             obj = self.proj.listObjects[k]
+            print(self.dx)
             self.proj.rotateObject(obj,dz=self.dx[k,1])
             self.proj.moveObject(obj,x=self.dx[k,0],z=self.dx[k,2])
             positions = [k,obj.location.x,obj.location.y,obj.location.z,
@@ -137,8 +138,6 @@ class Simulator:
             else:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
-            print(x,y,z)
-            print("phi : " + str(phi))
             self.proj.addObject(x,y,z)
 
             self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
