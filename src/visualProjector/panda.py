@@ -117,15 +117,14 @@ class Projector:
         self.sine.stack(len(self.listObjects))
 
     def computeVisualField(self,agent):
-        self.render(agent)
-        print("agent : " +str(agent))
+        V = self.render(agent)
+        return V
         
 
     def computeAllVisualField(self):
         
         for k in range(0,len(self.listObjects)):
             V = self.computeVisualField(self.listObjects[k])
-            print("v : "+str(V))
             self.allVisualField[:,:,k] = np.copy(V)
 
     def derivateAllVisualField(self):
@@ -153,14 +152,11 @@ class Projector:
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         a = basic_sphere.getHpr()
-        print(dz)
-        print(pc.Vec3(a.x+dx,a.y+dy,a.z+dz))
         basic_sphere.setHpr(pc.Vec3(a.x+dx,a.y+dy,a.z+dz)) 
 
     def render(self,agent):
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
-        print("pos : "+str(pos))
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
                 x = 10000*self.sine.cosThetaCosPhiIm[j,k]
@@ -169,7 +165,6 @@ class Projector:
                 result = self.world.rayTestClosest(pos,pc.Point3(x,y,z))
                 if result.hasHit():
                     V[j,k] = 1
-        print("V1 : " + str(V))
         return V
 
     def cleanScene(self):
