@@ -144,11 +144,17 @@ class Projector:
         basic_sphere.setPos(basic_sphere,pc.Vec3(dx,dy,dz))  
 
 
-    def setPosition(self,basic_sphere,x=0,y=0,z=0):
+    def setPosition(self,basic_sphere):
         basic_sphere.setPos(pc.Vec3(x,y,z)) 
 
     def getPosition(self,basic_sphere,x=0,y=0,z=0):
         return np.array(basic_sphere.getPos()) 
+
+    def setRotation(self,basic_sphere,x=0,y=0,z=0):
+        basic_sphere.setHpr(pc.Vec3(x,y,z)) 
+
+    def getRotation(self,basic_sphere):
+        return np.array(basic_sphere.getHpr()) 
 
 
     def setScale(self,basic_sphere,x=0,y=0,z=0):

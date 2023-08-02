@@ -411,8 +411,15 @@ class Projector:
     def setPosition(self,basic_sphere,x=0,y=0,z=0):
         basic_sphere.location = mathutils.Vector((x,y,z)) 
 
-    def getPosition(self,basic_sphere,x=0,y=0,z=0):
+    def getPosition(self,basic_sphere):
         return np.array(basic_sphere.location) 
+
+
+    def setRotation(self,basic_sphere,x=0,y=0,z=0):
+        basic_sphere.rotation_euler = mathutils.Euler((x,y,z),"XYZ") 
+
+    def getRotation(self,basic_sphere):
+        return np.array(basic_sphere.rotation_euler) 
 
 
     def setScale(self,basic_sphere,x=0,y=0,z=0):
