@@ -155,7 +155,7 @@ class Projector:
         dx *= radTodDeg
         dy *= radTodDeg
         dz *= radTodDeg
-        basic_sphere.setHpr(basic.sphere,pc.Vec3(dx,dy,dz)) 
+        basic_sphere.setHpr(basic_sphere,pc.Vec3(dx,dy,dz)) 
 
     def render(self,agent):
         V = np.zeros((self.size[1],self.size[0]))
