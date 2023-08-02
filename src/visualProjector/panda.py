@@ -25,7 +25,6 @@ from panda3d.core import loadPrcFileData
 
 import panda3d.core as pc
 import panda3d.bullet as bullet
-import mathutils
 import math
 import numpy
 import os
