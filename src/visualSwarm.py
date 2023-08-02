@@ -138,8 +138,9 @@ class Simulator:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
             print(x,y,z)
-            print(phi)
+            print("phi : " + str(phi))
             self.proj.addObject(x,y,z)
+
             self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
             obj = self.proj.listObjects[k]
             if self.engine == "panda":
