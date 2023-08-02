@@ -118,14 +118,14 @@ class Projector:
 
     def computeVisualField(self,agent):
         self.render(agent)
-        print(agent)
+        print("agent : " +str(agent))
         
 
     def computeAllVisualField(self):
         
         for k in range(0,len(self.listObjects)):
             V = self.computeVisualField(self.listObjects[k])
-            print(V)
+            print("v : "+str(V))
             self.allVisualField[:,:,k] = np.copy(V)
 
     def derivateAllVisualField(self):
@@ -160,7 +160,7 @@ class Projector:
     def render(self,agent):
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
-        print(pos)
+        print("pos : "+str(pos))
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
                 x = 10000*self.sine.cosThetaCosPhiIm[j,k]
