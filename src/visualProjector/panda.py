@@ -137,7 +137,7 @@ class Projector:
 
 
     def moveObject(self,basic_sphere,x=0,y=0,z=0):
-        phi = basic_sphere.getHpr().z*degToRad
+        phi = basic_sphere.getHpr().z
         dx = x*np.cos(phi) - y*np.sin(phi)
         dy = x*np.sin(phi) + y*np.cos(phi)
         dz = z
@@ -181,6 +181,7 @@ class Projector:
                 result = self.world.rayTestClosest(pos,pc.Point3(x,y,z))
                 if result.hasHit():
                     V[j,k] = 1
+        print(V)
         return V
 
     def cleanScene(self):
