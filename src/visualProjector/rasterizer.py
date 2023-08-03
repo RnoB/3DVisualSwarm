@@ -241,8 +241,8 @@ class Projector:
                     idxPhi = int(round((np.pi+Xs[j,1])/dPhi  ))
                     dP = int(round(np.arctan2(self.bodySize[j],Xs[j,0])/dPhi   ))
                     m2 = np.arange(idxPhi-dP,idxPhi+dP+1)
-                    m2[m2<0]=size[0]+m2[m2<0]
-                    m2=m2%size[0]
+                    m2[m2<0]=self.size[0]+m2[m2<0]
+                    m2=m2%self.size[0]
                     V[m2] = 1  
         else:
             vIdx2 = []
