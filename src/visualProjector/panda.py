@@ -108,7 +108,7 @@ class Projector:
 
         node = bullet.BulletRigidBodyNode(name)
         node.addShape(shape)
-
+        node.setKinematic(True)
         sphere = render.attachNewNode(node)
         sphere.setPos(x, y, z)
 
@@ -172,7 +172,7 @@ class Projector:
         pos = agent.getPos()
         rot = agent.getHpr()
         phi = self.sine.phi + rot.z
-        print(phi)
+
         
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
