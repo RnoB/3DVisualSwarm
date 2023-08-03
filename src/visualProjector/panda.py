@@ -170,7 +170,7 @@ class Projector:
         basic_sphere.setHpr(basic_sphere,pc.Vec3(dx,dy,dz)) 
 
     def render(self,agent):
-        simP.proj.world.doPhysics(1)
+        self.world.doPhysics(1)
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
         rot = agent.getHpr()
