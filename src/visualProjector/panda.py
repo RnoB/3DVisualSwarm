@@ -114,7 +114,7 @@ class Projector:
         sphere.setPos(x, y, z)
 
         self.world.attachRigidBody(node)
-        self.listObjects.append(pc.NodePath.anyPath(sphere))
+        self.listObjects.append(node)
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         self.sine.stack(len(self.listObjects))
 
