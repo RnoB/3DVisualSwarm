@@ -264,7 +264,7 @@ class Projector:
 
 
     def moveObject(self,basic_sphere,x=0,y=0,z=0):
-        phi = self.rotation[k,2]
+        phi = self.rotation[basic_sphere,2]
         dx = x*np.cos(phi) - y*np.sin(phi)
         dy = x*np.sin(phi) + y*np.cos(phi)
         dz = z
