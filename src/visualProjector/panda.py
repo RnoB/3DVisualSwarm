@@ -172,8 +172,8 @@ class Projector:
         pos = agent.getPos()
         rot = agent.getHpr()
         phi = self.sine.phi + rot.z
-        print(pos)
-        print(rot)
+        print(phi)
+        
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
                 x = 10000*np.cos(self.sine.theta[j])*np.cos(phi[k])
