@@ -223,7 +223,7 @@ class Projector:
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
-        return self.getLength()-1
+        
 
 
     def computeVisualField(self,agent):
