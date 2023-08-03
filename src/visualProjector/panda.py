@@ -172,7 +172,8 @@ class Projector:
         pos = agent.getPos()
         rot = agent.getHpr()
         phi = self.sine.phi + rot.z
-
+        print(pos)
+        print(rot)
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
                 x = 10000*np.cos(self.sine.theta[j])*np.cos(phi[k])
@@ -181,7 +182,7 @@ class Projector:
                 result = self.world.rayTestClosest(pos,pc.Point3(x,y,z))
                 if result.hasHit():
                     V[j,k] = 1
-        print(V)
+        
         return V
 
     def cleanScene(self):
