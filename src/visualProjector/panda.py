@@ -123,9 +123,12 @@ class Projector:
         V = self.render(agent)
         return V
         
+    def updatePhysics(self):
+        self.world.doPhysics(1)
+
 
     def computeAllVisualField(self):
-        
+        self.updatePhysics()
         for k in range(0,len(self.listObjects)):
             V = self.computeVisualField(self.listObjects[k])
             self.allVisualField[:,:,k] = np.copy(V)
@@ -170,7 +173,6 @@ class Projector:
         basic_sphere.setHpr(basic_sphere,pc.Vec3(dx,dy,dz)) 
 
     def render(self,agent):
-        self.world.doPhysics(1)
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
         rot = agent.getHpr()
