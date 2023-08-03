@@ -109,7 +109,7 @@ class Projector:
         node = bullet.BulletRigidBodyNode(name)
         node.addShape(shape)
         node.setMass(0.0)
-        node.setKinematic(True)
+        #node.setKinematic(True)
         sphere = render.attachNewNode(node)
         sphere.setPos(x, y, z)
 
