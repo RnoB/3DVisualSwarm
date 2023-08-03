@@ -108,8 +108,9 @@ class Projector:
 
         node = bullet.BulletRigidBodyNode(name)
         node.addShape(shape)
-        node.setMass(1.0)
+        node.setMass(0.0)
         node.setKinematic(True)
+
         sphere = render.attachNewNode(node)
         sphere.setPos(x, y, z)
 
@@ -169,6 +170,7 @@ class Projector:
         basic_sphere.setHpr(basic_sphere,pc.Vec3(dx,dy,dz)) 
 
     def render(self,agent):
+        simP.proj.world.doPhysics(1)
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
         rot = agent.getHpr()
