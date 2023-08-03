@@ -31,7 +31,7 @@ def round(x, base=1):
     return base * np.round(x/base)
 
 def roundInt(x):
-    return np.round(x).astype(np.int)
+    return np.round(x).astype(int)
 
 
 def computeAllDistance(X):
