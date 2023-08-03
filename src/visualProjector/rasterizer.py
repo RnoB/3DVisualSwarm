@@ -138,7 +138,7 @@ class Projector:
         dPhi = 2*np.pi/(size[0])
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
-        phi0 = (np.pi+Xs[1])%(2*np.pi)-np.pi
+        phi0 = -((np.pi+Xs[1])%(2*np.pi)-np.pi)
 
         #i don't know what approximation to use
         #thetaApp = np.arcsin(R/Xs[0])
@@ -219,7 +219,7 @@ class Projector:
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
         self.position = np.vstack((self.position,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
-        np.append(self.bodySize,2*radius)
+        np.append(self.bodySize,radius)
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
