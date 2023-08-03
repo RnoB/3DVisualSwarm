@@ -323,7 +323,7 @@ class Projector:
         self.texture = texture
         self.colors = colors
    
-        self.sine = ProjectedSine(self.size)
+        self.sine = ProjectedSine(self.size,self.dim)
 
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))

@@ -155,7 +155,7 @@ class Simulator:
 
 
 
-    def __init__(self,engine = "blender",size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
+    def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = 1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
         
         self.engine = engine
         if engine == "panda":
