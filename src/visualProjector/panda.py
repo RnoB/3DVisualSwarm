@@ -176,9 +176,9 @@ class Projector:
         
         for k in range(0,self.size[0]):
             for j in range(0,self.size[1]):
-                x = pos+10000*np.cos(self.sine.theta[j])*np.cos(phi[k])
-                y = pos+10000*np.cos(self.sine.theta[j])*np.sin(phi[k])
-                z = pos+10000*np.sin(self.sine.theta[j])
+                x = pos.x+10000*np.cos(self.sine.theta[j])*np.cos(phi[k])
+                y = pos.y+10000*np.cos(self.sine.theta[j])*np.sin(phi[k])
+                z = pos.z+10000*np.sin(self.sine.theta[j])
                 result = self.world.rayTestClosest(pos,pc.Point3(x,y,z))
                 if result.hasHit():
                     V[j,k] = 1
