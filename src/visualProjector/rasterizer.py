@@ -238,7 +238,7 @@ class Projector:
             Xs = Xs[Xs[:, 0].argsort()[::-1]]
             for j in range(0,np.shape(X)[0]):
                 if Xs[j,0]>0:
-                    idxPhi = int(round((np.pi+Xs[j,1])/dPhi  ))
+                    idxPhi = int(round(-(np.pi+Xs[j,1])/dPhi  ))
                     dP = int(round(np.arctan2(self.bodySize[j],Xs[j,0])/dPhi   ))
                     m2 = np.arange(idxPhi-dP,idxPhi+dP+1)
                     m2[m2<0]=self.size[0]+m2[m2<0]
