@@ -231,18 +231,32 @@ class Projector:
         X = np.delete(self.position - self.position[k,:],k,0)
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
-        vIdx2 = []
-        for j in range(0,np.shape(X)[0]):
-            vIdxTmp = self.drawSphere(Xs[j,:],self.bodySize[j],self.size)
+        if self.dim == 2:
+            dPhi = 2*np.pi/(self.size[0])
+            V = np.zeros(self.size[0])                
+            #loop through all individuals
+            Xs = Xs[Xs[:, 0].argsort()[::-1]]
+            for j in range(0,np.shape(X)[0]):
+                if Rv[j,0]>0:
+                    idxPhi = int(round((math.pi+Xs[j,1])/dPhi  ))
+                    dP = int(round(np.arctan2(self.bodySize[j],Xs[j,0])/dPhi   ))
+                    m2 = np.arange(idxPhi-dP,idxPhi+dP+1)
+                    m2[m2<0]=(2*nPhi+1)+m2[m2<0]
+                    m2=m2%(2*nPhi+1)
+                    V[m2] = 1  
+        else:
+            vIdx2 = []
+            for j in range(0,np.shape(X)[0]):
+                vIdxTmp = self.drawSphere(Xs[j,:],self.bodySize[j],self.size)
 
-            vIdx2.append(vIdxTmp)
-        vIdx = np.vstack(vIdx2)
-        V = np.zeros([self.size[1],self.size[0]])
-        try:
-            V[vIdx[:,1],vIdx[:,0]] = 1
-        except:
-            V[vIdx[1],vIdx[0]] = 1
-            
+                vIdx2.append(vIdxTmp)
+            vIdx = np.vstack(vIdx2)
+            V = np.zeros([self.size[1],self.size[0]])
+            try:
+                V[vIdx[:,1],vIdx[:,0]] = 1
+            except:
+                V[vIdx[1],vIdx[0]] = 1
+
         return V
         
     def updatePhysics(self):
