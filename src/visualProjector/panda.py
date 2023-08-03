@@ -118,6 +118,7 @@ class Projector:
         self.listObjects.append(sphere)
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         self.sine.stack(len(self.listObjects))
+        self.updatePhysics()
 
     def computeVisualField(self,agent):
         V = self.render(agent)

@@ -102,12 +102,10 @@ class Simulator:
             obj = self.proj.listObjects[k]
             self.proj.rotateObject(obj,dz=self.dx[k,1])
             self.proj.moveObject(obj,x=self.dx[k,0],z=self.dx[k,2])
-            if self.engine == "panda":
-                location = obj.getPos()
-                rotation = obj.getHpr()
-            else:
-                location = obj.location
-                rotation = obj.rotation_euler
+            
+            location = self.proj.getPositon(obj)
+            rotation = self.proj.getRotation(obj)
+            
             positions = [k,location.x,location.y,location.z,
                             rotation.x,rotation.y,rotation.z]
             self.positionWrite.append(positions)
@@ -164,8 +162,10 @@ class Simulator:
         self.engine = engine
         if engine == "panda":
             from visualProjector import panda as vp
-        else:
+        elif engine == "blender"
             from visualProjector import blender as vp
+        else:
+            from visualProjector import rasterizer as vp
         self.N = N
         self.dim = dim
         self.dt = dt
