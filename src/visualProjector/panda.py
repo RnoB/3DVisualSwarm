@@ -111,12 +111,12 @@ class Projector:
         
 
         sphere = render.attachNewNode(node)
+        sphere.setPos(x, y, z)
 
         self.world.attachRigidBody(node)
-        self.listObjects.append(sphere)
+        self.listObjects.append(pc.NodePath.anyPath(sphere))
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         self.sine.stack(len(self.listObjects))
-        sphere.setPos(x, y, z)
 
     def computeVisualField(self,agent):
         V = self.render(agent)
