@@ -106,8 +106,8 @@ class Simulator:
             location = self.proj.getPosition(obj)
             rotation = self.proj.getRotation(obj)
             
-            positions = [k,location.x,location.y,location.z,
-                            rotation.x,rotation.y,rotation.z]
+            positions = [k,location[0],location[1],location[2],
+                            rotation[0],rotation[1],rotation[2]]
             self.positionWrite.append(positions)
 
 
@@ -148,9 +148,9 @@ class Simulator:
 
             location = self.proj.getPosition(obj)
             rotation = self.proj.getRotation(obj)
-            
-            positions = [k,location.x,location.y,location.z,
-                            rotation.x,rotation.y,rotation.z]
+
+            positions = [k,location[0],location[1],location[2],
+                            rotation[0],rotation[1],rotation[2]]
             self.positionWrite.append(positions)
 
 
