@@ -162,7 +162,7 @@ class Simulator:
         self.engine = engine
         if engine == "panda":
             from visualProjector import panda as vp
-        elif engine == "blender"
+        elif engine == "blender":
             from visualProjector import blender as vp
         else:
             from visualProjector import rasterizer as vp
