@@ -237,7 +237,7 @@ class Projector:
             #loop through all individuals
             Xs = Xs[Xs[:, 0].argsort()[::-1]]
             for j in range(0,np.shape(X)[0]):
-                if Rv[j,0]>0:
+                if Xs[j,0]>0:
                     idxPhi = int(round((math.pi+Xs[j,1])/dPhi  ))
                     dP = int(round(np.arctan2(self.bodySize[j],Xs[j,0])/dPhi   ))
                     m2 = np.arange(idxPhi-dP,idxPhi+dP+1)
