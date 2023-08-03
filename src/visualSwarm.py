@@ -103,7 +103,7 @@ class Simulator:
             self.proj.rotateObject(obj,dz=self.dx[k,1])
             self.proj.moveObject(obj,x=self.dx[k,0],z=self.dx[k,2])
             
-            location = self.proj.getPositon(obj)
+            location = self.proj.getPosition(obj)
             rotation = self.proj.getRotation(obj)
             
             positions = [k,location.x,location.y,location.z,
@@ -146,7 +146,7 @@ class Simulator:
             self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
             obj = self.proj.listObjects[k]
 
-            location = self.proj.getPositon(obj)
+            location = self.proj.getPosition(obj)
             rotation = self.proj.getRotation(obj)
             
             positions = [k,location.x,location.y,location.z,
