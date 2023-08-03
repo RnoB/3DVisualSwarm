@@ -313,7 +313,7 @@ class Projector:
 
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
-        self.bodySize = np.zeros((0))
+        self.bodySize = []
 
         self.phiIdxList = np.tile(np.arange(0,self.size[0], dtype='int'),3)
         self.listObjects = []
