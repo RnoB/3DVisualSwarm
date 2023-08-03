@@ -109,12 +109,12 @@ class Projector:
         node = bullet.BulletRigidBodyNode(name)
         node.addShape(shape)
         
-
+        node.setKinematic(True)
         sphere = render.attachNewNode(node)
         sphere.setPos(x, y, z)
 
         self.world.attachRigidBody(node)
-        self.listObjects.append(node)
+        self.listObjects.append(sphere)
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         self.sine.stack(len(self.listObjects))
 
