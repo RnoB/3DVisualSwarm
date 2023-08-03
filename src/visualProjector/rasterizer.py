@@ -219,7 +219,7 @@ class Projector:
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
         self.position = np.vstack((self.position,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
-        np.append(self.bodySize,radius)
+        self.bodySize.append(radius)
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
@@ -232,8 +232,8 @@ class Projector:
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
         vIdx2 = []
-        for k in range(0,np.shape(X)[0]):
-            vIdxTmp = self.drawSphere(Xs[k,:],1,self.size)
+        for j in range(0,np.shape(X)[0]):
+            vIdxTmp = self.drawSphere(Xs[j,:],self.bodySize[j],self.size)
 
             vIdx2.append(vIdxTmp)
         vIdx = np.vstack(vIdx2)
