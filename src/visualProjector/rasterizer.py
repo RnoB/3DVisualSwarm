@@ -271,13 +271,13 @@ class Projector:
 
 
     def setPosition(self,basic_sphere,x=0,y=0,z=0):
-        self.position[basic_sphere]=np.array((dx,dy,dz))
+        self.position[basic_sphere]=np.array((x,y,z))
 
     def getPosition(self,basic_sphere):
         return self.position[basic_sphere]
 
     def setRotation(self,basic_sphere,x=0,y=0,z=0):
-        self.rotation[basic_sphere]=np.array((dx,dy,dz)) 
+        self.rotation[basic_sphere]=np.array((x,y,z)) 
 
     def getRotation(self,basic_sphere):
         return self.rotation[basic_sphere]
