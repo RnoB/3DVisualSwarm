@@ -325,7 +325,7 @@ class Projector:
         print("agent : "+str(agent))
         k = agent
         X = np.delete(self.position - self.position[k,:],k,0)
-        sca = np.delete(self.scale - self.sca[k,:],k,0)
+        sca = np.delete(self.scale,k,0)
         #X = self.position - self.position[k,:]
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
