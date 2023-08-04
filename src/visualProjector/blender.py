@@ -73,7 +73,7 @@ class Camera:
         self.camera.data.cycles.latitude_max = 0
         self.camera.data.cycles.latitude_min = 0
 
-    def __init__(self,x=0,y=0,z=0,dim = 3,size = (500,201)):
+    def __init__(self,x=0,y=0,z=0,dim = 3,size = [500,201]):
         self.rotationOffset = mathutils.Vector((math.pi/2.0,0,-math.pi/2.0))
         camera_data = bpy.data.cameras.new(name='Camera')
         self.camera = bpy.data.objects.new('Camera', camera_data)
