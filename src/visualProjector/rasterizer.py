@@ -256,16 +256,15 @@ class Projector:
             x2 = r * np.cos(psi) + .5 * (np.cos(psi0) * np.cos(psi2) + anis * np.sin(psi0) * np.sin(psi2))
             y2 = r * np.sin(psi) + .5 * (np.sin(psi0) * np.cos(psi2) - anis * np.cos(psi0) * np.sin(psi2))
             
-            V = np.zeros((step,))
             
-            dPsi1 = int((step-1) * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
-            dPsi2 = int((step-1) * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
+            dPsi1 = int((self.size[0]-1) * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
+            dPsi2 = int((self.size[0]-1) * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
             
-            dPsi1 = int((step-1) * (np.arctan2(y1,x1))/(2*np.pi)) + (step-1)/2
-            dPsi2 = int((step-1) * (np.arctan2(y2,x2))/(2*np.pi)) + (step-1)/2
-            dP = np.arange(dPsi1,dPsi2,1).astype(int)
-            dP[dP<0] = dP[dP<0] + step
-            dP %= step
+            dPsi1 = int((self.size[0]-1) * (np.arctan2(y1,x1))/(2*np.pi)) + (self.size[0]-1)/2
+            dPsi2 = int((self.size[0]-1) * (np.arctan2(y2,x2))/(2*np.pi)) + (self.size[0]-1)/2
+            vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
+            vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
+            vIdx=vIdx%self.size[0]
         return vIdx
 
 
