@@ -314,7 +314,7 @@ class Projector:
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
         self.position = np.vstack((self.position,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
-        self.scale = np.vstack((self.scale,np.array(2*radius,2*radius,2*radius)))
+        self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
