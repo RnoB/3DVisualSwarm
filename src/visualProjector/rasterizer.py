@@ -311,7 +311,7 @@ class Projector:
 
     def __init__(self, size=512,dim = 3,texture = False,colors = False):
         self.dim = dim
-        if size%2 == 0:
+        if size%2 == 1:
             size += 1
         if dim == 2:
             self.size = [size,1]

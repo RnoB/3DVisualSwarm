@@ -87,6 +87,8 @@ class Camera:
         self.position = bpy.data.objects['Camera'].location
         if dim == 2:
             self.camera2d()
+        else:
+            self.camera.data.cycles.longitude_max = np.pi * ( 1 - 2/self.size[0] )
    
 
 class Mesh:
@@ -124,7 +126,7 @@ class ProjectedSine:
 
 
     def equirectangularToDirection(self,u,v):
-        rang = [-2*np.pi, np.pi, -np.pi, np.pi/2.0]
+        rang = [-2*np.pi, np.pi*(1-2/len(u)), -np.pi, np.pi/2.0]
         phi = rang[0] * u + rang[1];
         theta = - (rang[2] * v + rang[3]);
         return phi,theta
@@ -461,7 +463,7 @@ class Projector:
     def __init__(self, size=512,dim = 3,texture = False,colors = False):
         self.cleanScene()
         self.dim = dim
-        if size%2 == 0:
+        if size%2 == 1:
             size += 1
         if dim == 2:
             if size>65534:
