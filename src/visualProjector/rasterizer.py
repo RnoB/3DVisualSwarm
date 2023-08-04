@@ -227,7 +227,7 @@ class Projector:
         for j in range(0,np.shape(X)[0]):
             if Xs[j,0]>0:
                 vIdxTmp = self.drawDisk(Xs[j,:],dPhi,self.bodySize[j])
-                VIdx2.append(vIdxTmp)
+                vIdx2.append(vIdxTmp)
         vIdx = np.stack(VIdx)
         V[vIdx] = 1
         return V  
