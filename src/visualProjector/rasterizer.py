@@ -265,7 +265,6 @@ class Projector:
             x2 = r * np.cos(psi) + .5 * (np.cos(psi0) * np.cos(psi2) + anis * np.sin(psi0) * np.sin(psi2))
             y2 = r * np.sin(psi) + .5 * (np.sin(psi0) * np.cos(psi2) - anis * np.cos(psi0) * np.sin(psi2))
             
-            V = np.zeros((step,))
             
             dPsi1 = int(step * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
             dPsi2 = int(step * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
