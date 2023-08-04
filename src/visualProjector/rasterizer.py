@@ -278,7 +278,7 @@ class Projector:
 
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
-            print(self.scale[j])
+            print("j : "+str(self.scale[j]))
             if Xs[j,0]>0:
                 print(self.scale[j])
                 vIdxTmp = self.drawDisk(Xs[j,:],dPhi,self.scale[j],self.rotation[j])
