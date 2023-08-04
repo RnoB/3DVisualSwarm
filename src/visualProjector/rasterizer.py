@@ -321,7 +321,7 @@ class Projector:
 
 
     def computeVisualField(self,agent):
-        print("agent : "+str(k))
+        print("agent : "+str(agent))
         k = agent
         #X = np.delete(self.position - self.position[k,:],k,0)
         X = self.position - self.position[k,:]
