@@ -173,6 +173,10 @@ class Projector:
         #dz *= radTodDeg
         basic_sphere.setHpr(basic_sphere,pc.Vec3(dx,dy,dz)) 
 
+    def getObjects(self,idx = 0):
+        return proj.listObjects[idx]
+
+        
     def render(self,agent):
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()

@@ -434,6 +434,12 @@ class Projector:
         z = basic_sphere.rotation_euler.z
         basic_sphere.rotation_euler = mathutils.Euler((x+dx,y+dy,z+dz),"XYZ") 
 
+
+    def getObjects(self,idx = 0):
+        return proj.listObjects[idx]
+
+
+
     def image(self):
         return np.reshape(self.pixels,(self.size[1],self.size[0]))
 
