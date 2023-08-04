@@ -215,7 +215,7 @@ class Projector:
         return vIdx
 
     def drawDisk(self,Xs,dPhi,scale = [1,1,1],rotation = [0,0,0]):
-        print(scale)
+        #print(scale)
         if scale[1] == scale[0]:
             R = scale[0]/2.0
             idxPhi = int(round(-(np.pi+Xs[1])/dPhi  ))
@@ -278,7 +278,7 @@ class Projector:
 
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
-            print("j : "+str(self.scale[j]))
+            print("j : "+str(j)+ "-" + str(self.scale[j]))
             if Xs[j,0]>0:
                 print(self.scale[j])
                 vIdxTmp = self.drawDisk(Xs[j,:],dPhi,self.scale[j],self.rotation[j])
@@ -321,6 +321,7 @@ class Projector:
 
 
     def computeVisualField(self,agent):
+        print("agent : "+str(k))
         k = agent
         #X = np.delete(self.position - self.position[k,:],k,0)
         X = self.position - self.position[k,:]
