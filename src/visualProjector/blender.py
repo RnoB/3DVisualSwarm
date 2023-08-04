@@ -85,10 +85,11 @@ class Camera:
         self.rotation = self.camera.rotation_euler
         bpy.data.objects['Camera'].location = mathutils.Vector((x,y,z))
         self.position = bpy.data.objects['Camera'].location
+        self.camera.data.cycles.longitude_max = np.pi * ( 1 - 2/self.size[0] )
         if dim == 2:
             self.camera2d()
-        else:
-            self.camera.data.cycles.longitude_max = np.pi * ( 1 - 2/self.size[0] )
+        
+            
    
 
 class Mesh:
