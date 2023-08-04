@@ -207,20 +207,30 @@ class Projector:
 
         return vIdx
 
+    def drawDisk(self,Xs,dPhi):
+        idxPhi = int(round(-(np.pi+Xs[j,1])/dPhi  ))
+        dP = int(round(np.arctan2(self.bodySize[j],Xs[j,0])/dPhi   ))
+        vIdx = np.arange(idxPhi-dP,idxPhi+dP+1)
+        vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
+        vIdx=vIdx%self.size[0]
+        return vIdx
+
+
 
     def vision2d(self,X,Xs):
         dPhi = 2*np.pi/(self.size[0])
         V = np.zeros(self.size[0])                
         #loop through all individuals
         Xs = Xs[Xs[:, 0].argsort()[::-1]]
+
+        vIdx2 = []
+
         for j in range(0,np.shape(X)[0]):
             if Xs[j,0]>0:
-                idxPhi = int(round(-(np.pi+Xs[j,1])/dPhi  ))
-                dP = int(round(np.arctan2(self.bodySize[j],Xs[j,0])/dPhi   ))
-                m2 = np.arange(idxPhi-dP,idxPhi+dP+1)
-                m2[m2<0]=self.size[0]+m2[m2<0]
-                m2=m2%self.size[0]
-                V[m2] = 1
+                vIdxTmp = self.drawDisk(Xs,dPhi)
+                VIdx2.append(vIdxTmp)
+        vIdx = np.stack(VIdx)
+        V[vIdx] = 1
         return V  
 
     def vision3d(self,X,Xs):
