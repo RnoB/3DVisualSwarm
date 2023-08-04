@@ -127,10 +127,10 @@ class ProjectedSine:
 
     def equirectangularToDirection(self,u,v):
         rang = [-2*np.pi, np.pi*(1-2/len(u)), -np.pi, np.pi/2.0]
-        #phi = rang[0] * u + rang[1];
-        phi = -np.arange(-np.pi,np.pi,2*np.pi/len(u))
+        phi = rang[0] * u + rang[1];
+        #phi = np.flip(np.arange(-np.pi,np.pi,2*np.pi/len(u)))
         theta = - (rang[2] * v + rang[3]);
-        return phi,theta
+        return phi[:-1],theta
 
 
     def stack(self,N):
@@ -151,7 +151,7 @@ class ProjectedSine:
     def __init__(self,size,dim = 3):
         
 
-        u = np.linspace(0,1,size[0])
+        u = np.linspace(0,1,size[0]+1)
         v = np.linspace(0,1,size[1])
         self.phi,self.theta = self.equirectangularToDirection(u,v)
         if dim == 2:
