@@ -146,10 +146,11 @@ class Projector:
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
         phi0 = -((np.pi+Xs[1])%(2*np.pi)-np.pi)
-
-        #i don't know what approximation to use
-        #thetaApp = np.arcsin(R/Xs[0])
-        thetaApp = np.arctan2(R,Xs[0])
+        if self.tanApprox:
+            thetaApp = np.arctan2(R,Xs[0])
+        else:
+            thetaApp = np.arcsin(R/Xs[0])
+            
         thetaMin = round(theta0-thetaApp,dTheta)
         thetaMax = round(theta0+thetaApp,dTheta)
         thetaN = 1+roundInt((thetaMax-thetaMin)/dTheta)
@@ -219,7 +220,10 @@ class Projector:
         if scale[1] == scale[0]:
             R = scale[0]/2.0
             idxPhi = int(round(-(np.pi+Xs[1])/dPhi  ))
-            dP = int(round(np.arctan2(R,Xs[0])/dPhi   ))
+            if self.tanApprox:
+                dP = int(round(np.arctan2(R,Xs[0])/dPhi   ))
+            else:
+                dP = int(round(np.arcsin(R,Xs[0])/dPhi   ))
             vIdx = np.arange(idxPhi-dP,idxPhi+dP+1)
             vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
             vIdx=vIdx%self.size[0]
@@ -383,7 +387,7 @@ class Projector:
         self.rotation[basic_sphere]+=np.array((dx,dy,dz))
 
     def getObjects(self,idx = 0):
-        return proj.listObjects[idx]
+        return self.listObjects[idx]
 
     def cleanScene(self):
         pass
@@ -403,7 +407,7 @@ class Projector:
         self.colors = colors
    
         self.sine = ProjectedSine(self.size,self.dim)
-
+        self.tanApprox = False
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
         self.scale = np.zeros((0,3))

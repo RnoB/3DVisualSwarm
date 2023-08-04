@@ -436,7 +436,7 @@ class Projector:
 
 
     def getObjects(self,idx = 0):
-        return proj.listObjects[idx]
+        return self.listObjects[idx]
 
 
 

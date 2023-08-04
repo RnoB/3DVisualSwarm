@@ -174,7 +174,7 @@ class Projector:
         basic_sphere.setHpr(basic_sphere,pc.Vec3(dx,dy,dz)) 
 
     def getObjects(self,idx = 0):
-        return proj.listObjects[idx]
+        return self.listObjects[idx]
 
 
     def render(self,agent):
