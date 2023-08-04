@@ -229,6 +229,8 @@ class Projector:
             r0 = scale[0]
             r1 = scale[1]
             psi0 = rotation[2]
+
+            print((x,y,self.size[0],r0,r1,psi0))
             
             psi =np.arctan2(y,x)
     
