@@ -73,7 +73,7 @@ class Camera:
         self.camera.data.cycles.latitude_max = 0
         self.camera.data.cycles.latitude_min = 0
 
-    def __init__(self,x=0,y=0,z=0,dim = 3):
+    def __init__(self,x=0,y=0,z=0,dim = 3,size = (500,201)):
         self.rotationOffset = mathutils.Vector((math.pi/2.0,0,-math.pi/2.0))
         camera_data = bpy.data.cameras.new(name='Camera')
         self.camera = bpy.data.objects.new('Camera', camera_data)
@@ -85,7 +85,7 @@ class Camera:
         self.rotation = self.camera.rotation_euler
         bpy.data.objects['Camera'].location = mathutils.Vector((x,y,z))
         self.position = bpy.data.objects['Camera'].location
-        self.camera.data.cycles.longitude_max = np.pi * ( 1 - 2/self.size[0] )
+        self.camera.data.cycles.longitude_max = np.pi * ( 1 - 2/size[0] )
         if dim == 2:
             self.camera2d()
         
@@ -479,7 +479,7 @@ class Projector:
         self.colors = colors
         self.setupRender()
         self.material0 = self.defaultMaterial()
-        self.camera = Camera(dim = dim)
+        self.camera = Camera(dim = dim,size = size)
         self.sine = ProjectedSine(self.size,self.dim)
         #self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
         #self.mask[self.size[0]-1::self.size[0]] = False
