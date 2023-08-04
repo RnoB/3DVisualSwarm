@@ -369,12 +369,13 @@ class Projector:
 
 
     def setScale(self,basic_sphere,x=0,y=0,z=0):
-        scale[basic_sphere] = np.array((x,y,z))
+        self.scale[basic_sphere] = np.array((x,y,z))
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         self.rotation[basic_sphere]+=np.array((dx,dy,dz))
 
-
+    def getObjects(self,idx = 0):
+        return proj.listObjects[idx]
 
     def cleanScene(self):
         pass
