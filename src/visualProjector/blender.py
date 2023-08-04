@@ -479,7 +479,7 @@ class Projector:
         self.colors = colors
         self.setupRender()
         self.material0 = self.defaultMaterial()
-        self.camera = Camera(dim = dim,size = size)
+        self.camera = Camera(dim = dim,size = self.size)
         self.sine = ProjectedSine(self.size,self.dim)
         #self.mask = np.ones((self.size[0]*self.size[1]), dtype=bool)
         #self.mask[self.size[0]-1::self.size[0]] = False
