@@ -226,8 +226,8 @@ class Projector:
         else:
             y = Xs[1]
             x = Xs[0]
-            r0 = scale[0]/2.0
-            r1 = scale[1]/2.0
+            r0 = scale[0]
+            r1 = scale[1]
             psi0 = rotation[2]
             
             psi =np.arctan2(y,x)
@@ -257,8 +257,8 @@ class Projector:
             y2 = r * np.sin(psi) + .5 * (np.sin(psi0) * np.cos(psi2) - anis * np.cos(psi0) * np.sin(psi2))
             
             
-            dPsi1 = int((self.size[0]-1) * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
-            dPsi2 = int((self.size[0]-1) * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
+            #dPsi1 = int((self.size[0]-1) * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
+            #dPsi2 = int((self.size[0]-1) * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
             
             dPsi1 = int((self.size[0]-1) * (np.arctan2(y1,x1))/(2*np.pi)) + (self.size[0]-1)/2
             dPsi2 = int((self.size[0]-1) * (np.arctan2(y2,x2))/(2*np.pi)) + (self.size[0]-1)/2
@@ -280,7 +280,6 @@ class Projector:
 
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
-            print("j : "+str(j)+ "-" + str(scale[j]))
             if Xs[j,0]>0:
                 vIdxTmp = self.drawDisk(Xs[j,:],dPhi,scale[j],rotation[j])
                 vIdx2.append(vIdxTmp)
@@ -322,7 +321,6 @@ class Projector:
 
 
     def computeVisualField(self,agent):
-        print("agent : "+str(agent))
         k = agent
         X = np.delete(self.position - self.position[k,:],k,0)
         sca = np.delete(self.scale,k,0)
