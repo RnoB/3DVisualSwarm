@@ -322,7 +322,8 @@ class Projector:
 
     def computeVisualField(self,agent):
         k = agent
-        X = np.delete(self.position - self.position[k,:],k,0)
+        #X = np.delete(self.position - self.position[k,:],k,0)
+        X = self.position - self.position[k,:]
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
         if self.dim == 2:
