@@ -270,18 +270,19 @@ class Projector:
 
 
 
-    def vision2d(self,X,Xs):
+    def vision2d(self,X,Xs,scale):
         dPhi = 2*np.pi/(self.size[0])
         V = np.zeros(self.size[0])                
         #loop through all individuals
-        Xs = Xs[Xs[:, 0].argsort()[::-1]]
+        sort
+        scale = scale[sort]
+        Xs = Xs[sort]
 
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
-            print("j : "+str(j)+ "-" + str(self.scale[j]))
+            print("j : "+str(j)+ "-" + str(scale[j]))
             if Xs[j,0]>0:
-                print(self.scale[j])
-                vIdxTmp = self.drawDisk(Xs[j,:],dPhi,self.scale[j],self.rotation[j])
+                vIdxTmp = self.drawDisk(Xs[j,:],dPhi,scale[j],self.rotation[j])
                 vIdx2.append(vIdxTmp)
         vIdx = np.stack(vIdx2)
         V[vIdx] = 1
@@ -313,7 +314,7 @@ class Projector:
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
         self.position = np.vstack((self.position,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
-        self.scale.append((2*radius,2*radius,2*radius))
+        self.scale.stack((2*radius,2*radius,2*radius))
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
@@ -323,8 +324,9 @@ class Projector:
     def computeVisualField(self,agent):
         print("agent : "+str(agent))
         k = agent
-        #X = np.delete(self.position - self.position[k,:],k,0)
-        X = self.position - self.position[k,:]
+        X = np.delete(self.position - self.position[k,:],k,0)
+        sca = np.delete(self.scale - self.sca[k,:],k,0)
+        #X = self.position - self.position[k,:]
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
         if self.dim == 2:
@@ -403,7 +405,7 @@ class Projector:
 
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
-        self.scale = []
+        self.scale = np.zeros((0,3))
 
         self.phiIdxList = np.tile(np.arange(0,self.size[0], dtype='int'),3)
         self.listObjects = []
