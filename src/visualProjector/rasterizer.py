@@ -274,7 +274,7 @@ class Projector:
         dPhi = 2*np.pi/(self.size[0])
         V = np.zeros(self.size[0])                
         #loop through all individuals
-        sort
+        sort = Xs[:, 0].argsort()[::-1]
         scale = scale[sort]
         Xs = Xs[sort]
 
