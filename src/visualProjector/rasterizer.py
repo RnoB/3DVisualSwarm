@@ -262,9 +262,9 @@ class Projector:
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
         if self.dim == 2:
-            V = vision2d(X,Xs) 
+            V = self.vision2d(X,Xs) 
         else:
-            V = vision3d(X,Xs)
+            V = self.vision3d(X,Xs)
 
         return V
         
