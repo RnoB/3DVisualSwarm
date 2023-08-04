@@ -226,7 +226,7 @@ class Projector:
                 if Xs[0]>R:
                     dP = int(round(np.arcsin(R/Xs[0])/dPhi   ))
                 else:
-                    dP = np.pi
+                    dP = int(round(np.pi/dPhi   ))
             vIdx = np.arange(idxPhi-dP,idxPhi+dP+1)
             vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
             vIdx=vIdx%self.size[0]
