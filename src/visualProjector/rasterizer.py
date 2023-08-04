@@ -68,6 +68,13 @@ def cartesianToSpherical(X,rp = None,rs = None):
     Xs[:,1] = np.arctan2(X[:,1], X[:,0])
     return Xs
 
+def angleDiff(A1, A2):
+    A1 = (A1 + np.pi) % (2 * np.pi) - np.pi
+    A2 = (A2 + np.pi) % (2 * np.pi) - np.pi
+    A = A1 - A2
+    A = (A + np.pi) % (2 * np.pi) - np.pi
+    return A
+
 
 class ProjectedSine:
 
@@ -132,9 +139,9 @@ class ProjectedSine:
 
 class Projector:
 
-    def drawSphere(self,Xs,R,size):
+    def drawSphere(self,Xs,scale,size):
 
-
+        R = scale[0]/2.0
         dPhi = 2*np.pi/(size[0])
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
@@ -207,12 +214,57 @@ class Projector:
 
         return vIdx
 
-    def drawDisk(self,Xs,dPhi,R):
-        idxPhi = int(round(-(np.pi+Xs[1])/dPhi  ))
-        dP = int(round(np.arctan2(R,Xs[0])/dPhi   ))
-        vIdx = np.arange(idxPhi-dP,idxPhi+dP+1)
-        vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
-        vIdx=vIdx%self.size[0]
+    def drawDisk(self,Xs,dPhi,scale = [1,1,1],rotation = [0,0,0]):
+        if scale[1] == scale[0]:
+            R = scale[0]
+            idxPhi = int(round(-(np.pi+Xs[1])/dPhi  ))
+            dP = int(round(np.arctan2(R,Xs[0])/dPhi   ))
+            vIdx = np.arange(idxPhi-dP,idxPhi+dP+1)
+            vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
+            vIdx=vIdx%self.size[0]
+        else:
+            y = Xs[1]
+            x = Xs[0]
+            r0 = scale[0]/2.0
+            r1 = scale[1]/2.0
+            psi0 = rot[2]
+            
+            psi =np.arctan2(y,x)
+    
+            r = np.sqrt(x**2 + y**2)
+            
+            psiEff = angleDiff(psi,psi0)
+            
+            anis = r1/(r0)
+            
+            anis2 = anis**2
+            
+            r2 = (r**2)/2 
+            
+            alpha = np.sqrt( - anis2 + r2*((anis2+1)+(anis2-1)*np.cos(2*psiEff)))
+            
+            y01 = ( r *np.cos(psiEff) - 1) * anis
+            
+            psi1 =   2*np.arctan((alpha - r * np.sin(psiEff))/y01)
+            
+            psi2 = -  2* np.arctan((alpha + r * np.sin(psiEff))/y01)
+            
+            
+            x1 = r * np.cos(psi) + .5 * (np.cos(psi0) * np.cos(psi1) + anis * np.sin(psi0) * np.sin(psi1))
+            y1 = r * np.sin(psi) + .5 * (np.sin(psi0) * np.cos(psi1) - anis * np.cos(psi0) * np.sin(psi1))
+            x2 = r * np.cos(psi) + .5 * (np.cos(psi0) * np.cos(psi2) + anis * np.sin(psi0) * np.sin(psi2))
+            y2 = r * np.sin(psi) + .5 * (np.sin(psi0) * np.cos(psi2) - anis * np.cos(psi0) * np.sin(psi2))
+            
+            V = np.zeros((step,))
+            
+            dPsi1 = int((step-1) * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
+            dPsi2 = int((step-1) * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
+            
+            dPsi1 = int((step-1) * (np.arctan2(y1,x1))/(2*np.pi)) + (step-1)/2
+            dPsi2 = int((step-1) * (np.arctan2(y2,x2))/(2*np.pi)) + (step-1)/2
+            dP = np.arange(dPsi1,dPsi2,1).astype(int)
+            dP[dP<0] = dP[dP<0] + step
+            dP %= step
         return vIdx
 
 
@@ -226,7 +278,7 @@ class Projector:
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
             if Xs[j,0]>0:
-                vIdxTmp = self.drawDisk(Xs[j,:],dPhi,self.bodySize[j])
+                vIdxTmp = self.drawDisk(Xs[j,:],dPhi,self.scale[j],self.rotation[j])
                 vIdx2.append(vIdxTmp)
         vIdx = np.stack(vIdx2)
         V[vIdx] = 1
@@ -235,7 +287,7 @@ class Projector:
     def vision3d(self,X,Xs):
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
-            vIdxTmp = self.drawSphere(Xs[j,:],self.bodySize[j],self.size)
+            vIdxTmp = self.drawSphere(Xs[j,:],self.scale[j],self.size)
 
             vIdx2.append(vIdxTmp)
         vIdx = np.vstack(vIdx2)
@@ -258,7 +310,7 @@ class Projector:
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
         self.position = np.vstack((self.position,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
-        self.bodySize.append(radius)
+        self.scale.append((2*radius,2*radius,2*radius))
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
@@ -317,7 +369,7 @@ class Projector:
 
 
     def setScale(self,basic_sphere,x=0,y=0,z=0):
-        pass
+        scale[basic_sphere] = np.array((x,y,z))
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         self.rotation[basic_sphere]+=np.array((dx,dy,dz))
@@ -345,7 +397,7 @@ class Projector:
 
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
-        self.bodySize = []
+        self.scale = []
 
         self.phiIdxList = np.tile(np.arange(0,self.size[0], dtype='int'),3)
         self.listObjects = []
