@@ -228,7 +228,7 @@ class Projector:
             x = Xs[0]
             r0 = scale[0]/2.0
             r1 = scale[1]/2.0
-            psi0 = rot[2]
+            psi0 = rotation[2]
             
             psi =np.arctan2(y,x)
     
@@ -276,13 +276,14 @@ class Projector:
         #loop through all individuals
         sort = Xs[:, 0].argsort()[::-1]
         scale = scale[sort]
+        rotation = rotation[sort]
         Xs = Xs[sort]
 
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
             print("j : "+str(j)+ "-" + str(scale[j]))
             if Xs[j,0]>0:
-                vIdxTmp = self.drawDisk(Xs[j,:],dPhi,scale[j],self.rotation[j])
+                vIdxTmp = self.drawDisk(Xs[j,:],dPhi,scale[j],rotation[j])
                 vIdx2.append(vIdxTmp)
         vIdx = np.stack(vIdx2)
         V[vIdx] = 1
@@ -326,11 +327,12 @@ class Projector:
         k = agent
         X = np.delete(self.position - self.position[k,:],k,0)
         sca = np.delete(self.scale,k,0)
+        rot = np.delete(self.rotation,k,0)
         #X = self.position - self.position[k,:]
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
         if self.dim == 2:
-            V = self.vision2d(X,Xs,sca) 
+            V = self.vision2d(X,Xs,sca,rot) 
         else:
             V = self.vision3d(X,Xs)
 
