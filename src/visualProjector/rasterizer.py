@@ -208,8 +208,8 @@ class Projector:
         return vIdx
 
     def drawDisk(self,Xs,dPhi):
-        idxPhi = int(round(-(np.pi+Xs[j,1])/dPhi  ))
-        dP = int(round(np.arctan2(self.bodySize[j],Xs[j,0])/dPhi   ))
+        idxPhi = int(round(-(np.pi+Xs[1])/dPhi  ))
+        dP = int(round(np.arctan2(self.bodySize[j],Xs[0])/dPhi   ))
         vIdx = np.arange(idxPhi-dP,idxPhi+dP+1)
         vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
         vIdx=vIdx%self.size[0]
@@ -224,10 +224,9 @@ class Projector:
         Xs = Xs[Xs[:, 0].argsort()[::-1]]
 
         vIdx2 = []
-
         for j in range(0,np.shape(X)[0]):
             if Xs[j,0]>0:
-                vIdxTmp = self.drawDisk(Xs,dPhi)
+                vIdxTmp = self.drawDisk(Xs[j,:],dPhi)
                 VIdx2.append(vIdxTmp)
         vIdx = np.stack(VIdx)
         V[vIdx] = 1
