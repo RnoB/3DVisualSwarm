@@ -164,7 +164,7 @@ class Projector:
 
 
     def setScale(self,basic_sphere,x=0,y=0,z=0):
-        basic_sphere.setScale(pc.Vec3(x,y,z)) 
+        basic_sphere.setScale(sx=x,sy=y,sz=z)
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
         a = basic_sphere.getHpr()
@@ -176,7 +176,7 @@ class Projector:
     def getObjects(self,idx = 0):
         return proj.listObjects[idx]
 
-        
+
     def render(self,agent):
         V = np.zeros((self.size[1],self.size[0]))
         pos = agent.getPos()
