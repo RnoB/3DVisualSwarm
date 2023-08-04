@@ -270,7 +270,7 @@ class Projector:
 
 
 
-    def vision2d(self,X,Xs,scale):
+    def vision2d(self,X,Xs,scale,rotation):
         dPhi = 2*np.pi/(self.size[0])
         V = np.zeros(self.size[0])                
         #loop through all individuals
