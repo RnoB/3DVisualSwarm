@@ -215,6 +215,7 @@ class Projector:
         return vIdx
 
     def drawDisk(self,Xs,dPhi,scale = [1,1,1],rotation = [0,0,0]):
+        print(scale)
         if scale[1] == scale[0]:
             R = scale[0]/2.0
             idxPhi = int(round(-(np.pi+Xs[1])/dPhi  ))
