@@ -237,7 +237,7 @@ class Projector:
             r1 = scale[1]/2.0
             psi0 = rotation[2]
 
-            print("x : "+str((x,y,self.size[0],r0,r1,psi0)))
+
             
             uc = (x * np.cos(psi0) - y * np.sin(psi0))/r0
             us = (x * np.sin(psi0) + y * np.cos(psi0))/r1            
@@ -251,14 +251,14 @@ class Projector:
             ex2 = r0 * np.cos(theta2)
             ey2 = r1 * np.sin(theta2)
 
-            print(ex1,ey1,ex2,ey2)
+
             psi0 = -psi0
             x1 = x + ex1 * np.cos(psi0) + ey1 * np.sin(psi0)
             y1 = y + ex1 * np.sin(psi0) - ey1 * np.cos(psi0)
             x2 = x + ex2 * np.cos(psi0) + ey2 * np.sin(psi0)
             y2 = y + ex2 * np.sin(psi0) - ey2 * np.cos(psi0)
             
-            print((x1,y1,x2,y2))
+
             dPsi1 = int(self.size[0] * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
             dPsi2 = int(self.size[0] * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
             vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
@@ -283,6 +283,7 @@ class Projector:
             if Xs[j,0]>0:
                 vIdxTmp = self.drawDisk(Xs[j,:],dPhi,scale[j],rotation[j])
                 vIdx2.append(vIdxTmp)
+        print(vIdx)
         vIdx = np.stack(vIdx2)
         V[vIdx] = 1
         return V  
