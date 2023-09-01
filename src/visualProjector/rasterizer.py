@@ -231,7 +231,7 @@ class Projector:
             vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
             vIdx=vIdx%self.size[0]
         else:
-            y = Xs[0]*np.sin(Xs[1])
+            y = -Xs[0]*np.sin(Xs[1])
             x = Xs[0]*np.cos(Xs[1])
             r0 = scale[0]/2.0
             r1 = scale[1]/2.0
