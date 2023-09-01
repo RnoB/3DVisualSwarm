@@ -250,7 +250,7 @@ class Projector:
             ey1 = r1 * np.sin(theta1)
             ex2 = r0 * np.cos(theta2)
             ey2 = r1 * np.sin(theta2)
-
+            psi0 = -psi0
             x1 = x + ex1 * np.cos(psi0) + ey1 * np.sin(psi0)
             y1 = y + ex1 * np.sin(psi0) - ey1 * np.cos(psi0)
             x2 = x + ex2 * np.cos(psi0) + ey2 * np.sin(psi0)
