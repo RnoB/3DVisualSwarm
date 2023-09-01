@@ -233,8 +233,8 @@ class Projector:
         else:
             y = Xs[1]
             x = Xs[0]
-            r0 = scale[0]
-            r1 = scale[1]
+            r0 = scale[0]/2.0
+            r1 = scale[1]/2.0
             psi0 = rotation[2]
 
             print((x,y,self.size[0],r0,r1,psi0))
