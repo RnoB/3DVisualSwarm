@@ -256,7 +256,7 @@ class Projector:
             x2 = x + ex2 * np.cos(psi0) + ey2 * np.sin(psi0)
             y2 = y + ex2 * np.sin(psi0) - ey2 * np.cos(psi0)
             
-            
+            print((x1,y1,x2,y2))
             dPsi1 = int(self.size[0] * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
             dPsi2 = int(self.size[0] * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
             vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
