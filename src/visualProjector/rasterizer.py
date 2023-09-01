@@ -239,35 +239,26 @@ class Projector:
 
             print((x,y,self.size[0],r0,r1,psi0))
             
-            psi =np.arctan2(y,x)
+            uc = (x * np.cos(psi0) - y * np.sin(psi0))/r0
+            us = (x * np.sin(psi0) + y * np.cos(psi0))/r1            
             
-            r = np.sqrt(x**2 + y**2)
+            delta = np.sqrt(us**2-(1-uc**2))
+            theta1 = 2*np.arctan((-delta+us)/(1-uc)) 
+            theta2 = 2*np.arctan((delta+us)/(1-uc))
             
-            psiEff = angleDiff(psi,psi0)
-            
-            anis = r1/(r0)
-            
-            anis2 = anis**2
-            
-            r2 = (r**2)/2 
-            
-            alpha = np.sqrt( - anis2 + r2*((anis2+1)+(anis2-1)*np.cos(2*psiEff)))
-            
-            y01 = ( r *np.cos(psiEff) - 1) * anis
-            
-            psi1 =   2*np.arctan((alpha - r * np.sin(psiEff))/y01)
-            
-            psi2 = -  2* np.arctan((alpha + r * np.sin(psiEff))/y01)
+            ex1 = r0 * np.cos(theta1)
+            ey1 = r1 * np.sin(theta1)
+            ex2 = r0 * np.cos(theta2)
+            ey2 = r1 * np.sin(theta2)
+
+            x1 = x + ex1 * np.cos(psi0) + ey1 * np.sin(psi0)
+            y1 = y + ex1 * np.sin(psi0) - ey1 * np.cos(psi0)
+            x2 = x + ex2 * np.cos(psi0) + ey2 * np.sin(psi0)
+            y2 = y + ex2 * np.sin(psi0) - ey2 * np.cos(psi0)
             
             
-            x1 = r * np.cos(psi) + .5 * (np.cos(psi0) * np.cos(psi1) + anis * np.sin(psi0) * np.sin(psi1))
-            y1 = r * np.sin(psi) + .5 * (np.sin(psi0) * np.cos(psi1) - anis * np.cos(psi0) * np.sin(psi1))
-            x2 = r * np.cos(psi) + .5 * (np.cos(psi0) * np.cos(psi2) + anis * np.sin(psi0) * np.sin(psi2))
-            y2 = r * np.sin(psi) + .5 * (np.sin(psi0) * np.cos(psi2) - anis * np.cos(psi0) * np.sin(psi2))
-            
-            
-            dPsi1 = int(self.size[0] * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
-            dPsi2 = int(self.size[0] * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
+            dPsi1 = int(self.size[0] * (np.pi+np.arctan(y1,x1))/(2*np.pi))
+            dPsi2 = int(self.size[0] * (np.pi+np.arctan(y2,x2))/(2*np.pi))
             vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
             
             vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
