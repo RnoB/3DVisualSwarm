@@ -283,8 +283,8 @@ class Projector:
             if Xs[j,0]>0:
                 vIdxTmp = self.drawDisk(Xs[j,:],dPhi,scale[j],rotation[j])
                 vIdx2.append(vIdxTmp)
-        print(vIdx2)
-        vIdx = np.stack(vIdx2)
+
+        vIdx = np.hstack(vIdx2)
         V[vIdx] = 1
         return V  
 
