@@ -237,7 +237,7 @@ class Projector:
             r1 = scale[1]/2.0
             psi0 = rotation[2]
 
-            print((x,y,self.size[0],r0,r1,psi0))
+            print("x : "+str(x,y,self.size[0],r0,r1,psi0))
             
             uc = (x * np.cos(psi0) - y * np.sin(psi0))/r0
             us = (x * np.sin(psi0) + y * np.cos(psi0))/r1            
