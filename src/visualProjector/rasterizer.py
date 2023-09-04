@@ -270,7 +270,7 @@ class Projector:
                 if self.insideInvisible:
                     vIdx = []
                 else:
-                    vIdx = int(np.arange(0,self.size[0],1))
+                    vIdx = np.arange(0,self.size[0],1).astype(int)
 
         return vIdx
 
@@ -394,7 +394,7 @@ class Projector:
     def cleanScene(self):
         pass
 
-    def __init__(self, size=512,dim = 3,texture = False,colors = False,tanApprox = False,insideInvisible = False):
+    def __init__(self, size=512,dim = 3,texture = False,colors = False,tanApprox = False,insideInvisible = True):
         self.dim = dim
         if size%2 == 1:
             size += 1
