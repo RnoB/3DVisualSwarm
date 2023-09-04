@@ -292,6 +292,7 @@ class Projector:
                 vIdx2.append(vIdxTmp)
 
         vIdx = np.hstack(vIdx2)
+        print(vIdx)
         V[vIdx] = 1
         return V  
 
