@@ -268,7 +268,7 @@ class Projector:
                 vIdx=vIdx%self.size[0]
             except:
                 if self.insideInvisible:
-                    vIdx = [].astype(int)
+                    vIdx = []
                 else:
                     vIdx = np.arange(0,self.size[0],1).astype(int)
 
@@ -291,8 +291,7 @@ class Projector:
                 vIdxTmp = self.drawDisk(Xs[j,:],dPhi,scale[j],rotation[j])
                 vIdx2.append(vIdxTmp)
 
-        vIdx = np.hstack(vIdx2)
-        print(vIdx)
+        vIdx = np.hstack(vIdx2).astype(int)
         V[vIdx] = 1
         return V  
 
