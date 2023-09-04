@@ -268,7 +268,7 @@ class Projector:
                 vIdx=vIdx%self.size[0]
             except:
                 if self.insideInvisible:
-                    vIdx = []
+                    vIdx = [].astype(int)
                 else:
                     vIdx = np.arange(0,self.size[0],1).astype(int)
 
