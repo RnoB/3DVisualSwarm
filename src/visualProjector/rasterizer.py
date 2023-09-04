@@ -231,40 +231,47 @@ class Projector:
             vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
             vIdx=vIdx%self.size[0]
         else:
-            y = -Xs[0]*np.sin(Xs[1])
-            x = Xs[0]*np.cos(Xs[1])
-            r0 = scale[0]/2.0
-            r1 = scale[1]/2.0
-            psi0 = rotation[2]
+            try:
+                y = -Xs[0]*np.sin(Xs[1])
+                x = Xs[0]*np.cos(Xs[1])
+                r0 = scale[0]/2.0
+                r1 = scale[1]/2.0
+                psi0 = rotation[2]
 
 
-            
-            uc = (x * np.cos(psi0) - y * np.sin(psi0))/r0
-            us = (x * np.sin(psi0) + y * np.cos(psi0))/r1            
-            
-            delta = np.sqrt(us**2-(1-uc**2))
-            theta1 = 2*np.arctan((-delta+us)/(1-uc)) 
-            theta2 = 2*np.arctan((delta+us)/(1-uc))
-            
-            ex1 = r0 * np.cos(theta1)
-            ey1 = r1 * np.sin(theta1)
-            ex2 = r0 * np.cos(theta2)
-            ey2 = r1 * np.sin(theta2)
+                
+                uc = (x * np.cos(psi0) - y * np.sin(psi0))/r0
+                us = (x * np.sin(psi0) + y * np.cos(psi0))/r1            
+                
+                delta = np.sqrt(us**2-(1-uc**2))
+                theta1 = 2*np.arctan((-delta+us)/(1-uc)) 
+                theta2 = 2*np.arctan((delta+us)/(1-uc))
+                
+                ex1 = r0 * np.cos(theta1)
+                ey1 = r1 * np.sin(theta1)
+                ex2 = r0 * np.cos(theta2)
+                ey2 = r1 * np.sin(theta2)
 
 
-            psi0 = -psi0
-            x1 = x + ex1 * np.cos(psi0) + ey1 * np.sin(psi0)
-            y1 = y + ex1 * np.sin(psi0) - ey1 * np.cos(psi0)
-            x2 = x + ex2 * np.cos(psi0) + ey2 * np.sin(psi0)
-            y2 = y + ex2 * np.sin(psi0) - ey2 * np.cos(psi0)
-            
+                psi0 = -psi0
+                x1 = x + ex1 * np.cos(psi0) + ey1 * np.sin(psi0)
+                y1 = y + ex1 * np.sin(psi0) - ey1 * np.cos(psi0)
+                x2 = x + ex2 * np.cos(psi0) + ey2 * np.sin(psi0)
+                y2 = y + ex2 * np.sin(psi0) - ey2 * np.cos(psi0)
+                
 
-            dPsi1 = int(self.size[0] * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
-            dPsi2 = int(self.size[0] * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
-            vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
-            
-            vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
-            vIdx=vIdx%self.size[0]
+                dPsi1 = int(self.size[0] * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
+                dPsi2 = int(self.size[0] * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
+                vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
+                
+                vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
+                vIdx=vIdx%self.size[0]
+            except:
+                if self.insideInvisible:
+                    vIdx = []
+                else:
+                    vIdx = int(np.arange(0,self.size[0],1))
+
         return vIdx
 
 
@@ -387,7 +394,7 @@ class Projector:
     def cleanScene(self):
         pass
 
-    def __init__(self, size=512,dim = 3,texture = False,colors = False):
+    def __init__(self, size=512,dim = 3,texture = False,colors = False,tanApprox = False,insideInvisible = False):
         self.dim = dim
         if size%2 == 1:
             size += 1
@@ -402,13 +409,14 @@ class Projector:
         self.colors = colors
    
         self.sine = ProjectedSine(self.size,self.dim)
-        self.tanApprox = False
+        self.tanApprox = tanApprox
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
         self.scale = np.zeros((0,3))
 
         self.phiIdxList = np.tile(np.arange(0,self.size[0], dtype='int'),3)
         self.listObjects = []
+        self.insideInvisible = insideInvisible
 
 
 
