@@ -146,7 +146,7 @@ class Projector:
         dTheta = np.pi/(size[1]-1)
         theta0 = Xs[2]
         phi0 = -((np.pi+Xs[1])%(2*np.pi)-np.pi)
-        vIdx = []
+        vIdx = np.array([])
         if self.tanApprox:
             thetaApp = np.arctan2(R,Xs[0])
         else:
