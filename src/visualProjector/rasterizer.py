@@ -305,10 +305,11 @@ class Projector:
             vIdx2.append(vIdxTmp)
         vIdx = np.vstack(vIdx2)
         V = np.zeros([self.size[1],self.size[0]])
-        try:
-            V[vIdx[:,1],vIdx[:,0]] = 1
-        except:
-            V[vIdx[1],vIdx[0]] = 1
+        if not vIdx: 
+            try:
+                V[vIdx[:,1],vIdx[:,0]] = 1
+            except:
+                V[vIdx[1],vIdx[0]] = 1
         return V
 
 
