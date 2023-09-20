@@ -301,7 +301,7 @@ class Projector:
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
             vIdxTmp = self.drawSphere(Xs[j,:],self.scale[j],self.size)
-            if vIdx.size:
+            if vIdxTmp.size:
                 vIdx2.append(vIdxTmp)
         vIdx = np.vstack(vIdx2)
         V = np.zeros([self.size[1],self.size[0]])
