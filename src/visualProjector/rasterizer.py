@@ -214,7 +214,7 @@ class Projector:
             try:    
                 vIdx = np.concatenate(idx)
             except:
-                VIdx = []
+                VIdx = np.array([])
         return vIdx
 
     def drawDisk(self,Xs,dPhi,scale = [1,1,1],rotation = [0,0,0]):
