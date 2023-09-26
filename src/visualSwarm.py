@@ -109,7 +109,8 @@ class Simulator:
             positions = [k,location[0],location[1],location[2],
                             rotation[0],rotation[1],rotation[2]]
             self.positionWrite.append(positions)
-
+        while len(self.positionWrite)>2*self.bufferSize:
+            del self.positionWrite[0]
 
     def writePositions(self):
         fd = open(self.filePath,'ab')
@@ -127,7 +128,7 @@ class Simulator:
             self.integrator()
             self.computeVelocity()
             self.updatePositions()
-            if len(self.positionWrite)>100:
+            if len(self.positionWrite)>2*self.bufferSize:
                 self.writePositions()
 
 
@@ -155,7 +156,7 @@ class Simulator:
 
 
 
-    def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = .1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]])):
+    def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = .1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]]),self.bufferSize = 100):
         
         self.engine = engine
         if engine == "panda":
@@ -164,6 +165,11 @@ class Simulator:
             from visualProjector import blender as vp
         else:
             from visualProjector import rasterizer as vp
+        if bufferSize>N:
+            self.bufferSize = bufferSize
+        else:
+            self.bufferSize = N-1
+
         self.N = N
         self.dim = dim
         self.dt = dt
