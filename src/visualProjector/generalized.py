@@ -148,8 +148,8 @@ class Projector:
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
         V = []
-        V.append(interactionFunction(Xs[0],True))
-        V.append(interactionFunction(Xs[0],False))
+        V.append(self.interactionFunction(Xs[0],True))
+        V.append(self.interactionFunction(Xs[0],False))
         V.append(np.cos[Xs[2]] * np.cos[Xs[1]])
         V.append(np.cos[Xs[2]] * np.sin[Xs[1]])
         V.append(np.sin[Xs[2]]) 
