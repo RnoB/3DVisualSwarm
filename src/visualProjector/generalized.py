@@ -158,7 +158,7 @@ class Projector:
         Xs = cartesianToSpherical(X)
         N = len(Xs[:,0])
         V = np.zeros((N,5))
-        print(N)
+
         for j in range(0,N):
             V[j,0] = self.interactionFunction(Xs[j,0],True)
             V[j,1] = self.interactionFunction(Xs[j,0],False)
@@ -174,14 +174,14 @@ class Projector:
         
         for k in range(0,len(self.listObjects)):
             V = self.computeVisualField(self.listObjects[k])
-            self.allVisualField[1,:,k] = np.copy(V[:,0])
-            self.allVisualFieldContour[1,:,k] = np.copy(V[:,1])
-            self.cosThetaCosPhiIm[1,:,k] = np.copy(V[:,2])
-            self.cosThetaSinPhiIm[1,:,k] = np.copy(V[:,3])
-            self.sinThetaIm[1,:,k] = np.copy(V[:,4])
-            self.cosThetaCosPhiImD[1,:,k] = np.copy(V[:,2])
-            self.cosThetaSinPhiImD[1,:,k] = np.copy(V[:,3])
-            self.sinThetaImD[1,:,k] = np.copy(V[:,4])
+            self.allVisualField[0,:,k] = np.copy(V[:,0])
+            self.allVisualFieldContour[0,:,k] = np.copy(V[:,1])
+            self.cosThetaCosPhiIm[0,:,k] = np.copy(V[:,2])
+            self.cosThetaSinPhiIm[0,:,k] = np.copy(V[:,3])
+            self.sinThetaIm[0,:,k] = np.copy(V[:,4])
+            self.cosThetaCosPhiImD[0,:,k] = np.copy(V[:,2])
+            self.cosThetaSinPhiImD[0,:,k] = np.copy(V[:,3])
+            self.sinThetaImD[0,:,k] = np.copy(V[:,4])
 
     def derivateAllVisualField(self):
         pass
