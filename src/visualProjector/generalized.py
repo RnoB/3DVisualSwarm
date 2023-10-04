@@ -139,6 +139,7 @@ class Projector:
         self.sine.stack(N)
         self.allVisualField = np.zeros((1,dim,N))
         self.allVisualFieldOld = np.zeros((1,dim,N))
+        self.allVisualFieldContour = np.zeros((1,dim,N))
         self.listObjects.append(N)
         
 
