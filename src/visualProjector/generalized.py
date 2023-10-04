@@ -133,8 +133,11 @@ class Projector:
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
         self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
         N = len(self.listObjects)
-        self.allVisualField = np.zeros((1,N-1,N))
-        self.allVisualFieldOld = np.zeros((1,N-1,N))
+        dim = N-1
+        if N-1<1:
+            dim = 1
+        self.allVisualField = np.zeros((1,dim,N))
+        self.allVisualFieldOld = np.zeros((1,dim,N))
         self.listObjects.append(len(self.listObjects))
         
 
