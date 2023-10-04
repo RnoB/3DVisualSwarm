@@ -78,16 +78,19 @@ def angleDiff(A1, A2):
 class ProjectedSine:
     
     def stack(self,N):
-        self.dPhiAll = np.zeros((1,N-1,N))
-        self.dThetaAll = np.zeros((1,N-1,N))
+        dim = N-1
+        if N-1<1:
+            dim = 1
+        self.dPhiAll = np.zeros((1,dim,N))
+        self.dThetaAll = np.zeros((1,dim,N))
 
-        self.sinThetaAll = np.zeros((1,N-1,N))
-        self.cosThetaCosPhiAll = np.zeros((1,N-1,N))
-        self.cosThetaSinPhiAll = np.zeros((1,N-1,N))
+        self.sinThetaAll = np.zeros((1,dim,N))
+        self.cosThetaCosPhiAll = np.zeros((1,dim,N))
+        self.cosThetaSinPhiAll = np.zeros((1,dim,N))
 
-        self.sinThetaAllD = np.zeros((1,N-1,N))
-        self.cosThetaCosPhiAllD = np.zeros((1,N-1,N))
-        self.cosThetaSinPhiAllD = np.zeros((1,N-1,N))
+        self.sinThetaAllD = np.zeros((1,dim,N))
+        self.cosThetaCosPhiAllD = np.zeros((1,dim,N))
+        self.cosThetaSinPhiAllD = np.zeros((1,dim,N))
 
 
     def __init__(self):
