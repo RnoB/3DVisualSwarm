@@ -136,9 +136,10 @@ class Projector:
         dim = N-1
         if N-1<1:
             dim = 1
+        self.sine.stack(N)
         self.allVisualField = np.zeros((1,dim,N))
         self.allVisualFieldOld = np.zeros((1,dim,N))
-        self.listObjects.append(len(self.listObjects))
+        self.listObjects.append(N)
         
 
     def interactionFunction(self,r,attractive = True):
