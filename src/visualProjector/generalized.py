@@ -178,12 +178,12 @@ class Projector:
             V = self.computeVisualField(self.listObjects[k])
             self.allVisualField[0,:,k] = np.copy(V[:,0])
             self.allVisualFieldContour[0,:,k] = np.copy(V[:,1])
-            self.cosThetaCosPhiIm[0,:,k] = np.copy(V[:,2])
-            self.cosThetaSinPhiIm[0,:,k] = np.copy(V[:,3])
-            self.sinThetaIm[0,:,k] = np.copy(V[:,4])
-            self.cosThetaCosPhiImD[0,:,k] = np.copy(V[:,2])
-            self.cosThetaSinPhiImD[0,:,k] = np.copy(V[:,3])
-            self.sinThetaImD[0,:,k] = np.copy(V[:,4])
+            self.sine.cosThetaCosPhiIm[0,:,k] = np.copy(V[:,2])
+            self.sine.cosThetaSinPhiIm[0,:,k] = np.copy(V[:,3])
+            self.sine.sinThetaIm[0,:,k] = np.copy(V[:,4])
+            self.sine.cosThetaCosPhiImD[0,:,k] = np.copy(V[:,2])
+            self.sine.cosThetaSinPhiImD[0,:,k] = np.copy(V[:,3])
+            self.sine.sinThetaImD[0,:,k] = np.copy(V[:,4])
 
     def derivateAllVisualField(self):
         pass
