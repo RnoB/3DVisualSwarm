@@ -161,9 +161,9 @@ class Projector:
         for j in range(0,N):
             V[j,0] = self.interactionFunction(Xs[j,0],True)
             V[j,1] = self.interactionFunction(Xs[j,0],False)
-            V[j,2] = np.cos[Xs[j,2]] * np.cos[Xs[j,1]]
-            V[j,3] = np.cos[Xs[j,2]] * np.sin[Xs[j,1]]
-            V[j,4] = np.sin[Xs[j,2]] 
+            V[j,2] = np.cos(Xs[j,2]) * np.cos(Xs[j,1])
+            V[j,3] = np.cos(Xs[j,2]) * np.sin(Xs[j,1])
+            V[j,4] = np.sin(Xs[j,2]) 
         return np.arrayV
         
 
