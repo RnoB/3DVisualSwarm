@@ -78,16 +78,16 @@ def angleDiff(A1, A2):
 class ProjectedSine:
     
     def stack(self,N):
-        self.dPhiAll = np.array([self.dPhiIm]*N)
-        self.dThetaAll = np.array([self.dThetaIm]*N)
+        self.dPhiAll = np.zeros((1,N-1,N))
+        self.dThetaAll = np.zeros((1,N-1,N))
 
-        self.sinThetaAll = np.array([self.sinThetaIm]*N)
-        self.cosThetaCosPhiAll = np.array([self.cosThetaCosPhiIm]*N)
-        self.cosThetaSinPhiAll = np.array([self.cosThetaSinPhiIm]*N)
+        self.sinThetaAll = np.zeros((1,N-1,N))
+        self.cosThetaCosPhiAll = np.zeros((1,N-1,N))
+        self.cosThetaSinPhiAll = np.zeros((1,N-1,N))
 
-        self.sinThetaAllD = np.array([self.sinThetaImD]*N)
-        self.cosThetaCosPhiAllD = np.array([self.cosThetaCosPhiImD]*N)
-        self.cosThetaSinPhiAllD = np.array([self.cosThetaSinPhiImD]*N)
+        self.sinThetaAllD = np.zeros((1,N-1,N))
+        self.cosThetaCosPhiAllD = np.zeros((1,N-1,N))
+        self.cosThetaSinPhiAllD = np.zeros((1,N-1,N))
 
 
     def __init__(self):
@@ -129,6 +129,9 @@ class Projector:
         self.positionOld = np.vstack((self.positionOld,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
         self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
+        N = len(self.listObjects)
+        self.allVisualField = np.zeros((1,N-1,N))
+        self.allVisualFieldOld = np.zeros((1,N-1,N))
         self.listObjects.append(len(self.listObjects))
         
 
@@ -147,13 +150,15 @@ class Projector:
         #X = self.position - self.position[k,:]
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
-        V = []
-        V.append(self.interactionFunction(Xs[0],True))
-        V.append(self.interactionFunction(Xs[0],False))
-        V.append(np.cos[Xs[2]] * np.cos[Xs[1]])
-        V.append(np.cos[Xs[2]] * np.sin[Xs[1]])
-        V.append(np.sin[Xs[2]]) 
-        return V
+        N = len(Xs[:,0])
+        V = np.zeros((N,5))
+        for j in range(0,N):
+            V[j,0] = self.interactionFunction(Xs[j,0],True)
+            V[j,1] = self.interactionFunction(Xs[j,0],False)
+            V[j,2] = np.cos[Xs[j,2]] * np.cos[Xs[j,1]]
+            V[j,3] = np.cos[Xs[j,2]] * np.sin[Xs[j,1]]
+            V[j,4] = np.sin[Xs[j,2]] 
+        return np.arrayV
         
 
 
@@ -162,14 +167,14 @@ class Projector:
         
         for k in range(0,len(self.listObjects)):
             V = self.computeVisualField(self.listObjects[k])
-            self.allVisualField[k] = np.copy(V[0])
-            self.allVisualFieldContour[k] = np.copy(V[1])
-            self.cosThetaCosPhiIm[k] = np.copy(V[2])
-            self.cosThetaSinPhiIm[k] = np.copy(V[3])
-            self.sinThetaIm[k] = np.copy(V[4])
-            self.cosThetaCosPhiImD[k] = np.copy(V[2])
-            self.cosThetaSinPhiImD[k] = np.copy(V[3])
-            self.sinThetaImD[k] = np.copy(V[4])
+            self.allVisualField[1,:,k] = np.copy(V[:,0])
+            self.allVisualFieldContour[1,:,k] = np.copy(V[:,1])
+            self.cosThetaCosPhiIm[1,:,k] = np.copy(V[:,2])
+            self.cosThetaSinPhiIm[1,:,k] = np.copy(V[:,3])
+            self.sinThetaIm[1,:,k] = np.copy(V[:,4])
+            self.cosThetaCosPhiImD[1,:,k] = np.copy(V[:,2])
+            self.cosThetaSinPhiImD[1,:,k] = np.copy(V[:,3])
+            self.sinThetaImD[1,:,k] = np.copy(V[:,4])
 
     def derivateAllVisualField(self):
         pass
