@@ -164,7 +164,7 @@ class Projector:
             V[j,2] = np.cos(Xs[j,2]) * np.cos(Xs[j,1])
             V[j,3] = np.cos(Xs[j,2]) * np.sin(Xs[j,1])
             V[j,4] = np.sin(Xs[j,2]) 
-        return np.arrayV
+        return V
         
 
 
