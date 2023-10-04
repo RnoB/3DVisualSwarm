@@ -141,7 +141,7 @@ class Projector:
         self.allVisualField = np.zeros((1,dim,N))
         self.allVisualFieldOld = np.zeros((1,dim,N))
         self.allVisualFieldContour = np.zeros((1,dim,N))
-        self.listObjects.append(N)
+        
         
 
     def interactionFunction(self,r,attractive = True):
