@@ -163,6 +163,8 @@ class Simulator:
             from visualProjector import panda as vp
         elif engine == "blender":
             from visualProjector import blender as vp
+        elif engine == "generalized":
+            from visualProjector import generalized as vp
         else:
             from visualProjector import rasterizer as vp
         if bufferSize>N:

@@ -117,6 +117,7 @@ class Projector:
         self.world.attachRigidBody(node)
         self.listObjects.append(sphere)
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         self.sine.stack(len(self.listObjects))
         self.updatePhysics()
 
@@ -130,6 +131,7 @@ class Projector:
 
     def computeAllVisualField(self):
         self.updatePhysics()
+        self.allVisualFieldOld = np.copy(self.allVisualField)
         for k in range(0,len(self.listObjects)):
             V = self.computeVisualField(self.listObjects[k])
             self.allVisualField[:,:,k] = np.copy(V)
@@ -140,6 +142,7 @@ class Projector:
         self.allVisualFieldDTheta =\
          np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)
         self.allVisualFieldContour = (self.allVisualFieldDTheta!=0) + (self.allVisualFieldDPhi!=0)
+        self.allVisualFieldDt = (self.allVisualField - self.allVisualFieldOld) 
 
 
     def moveObject(self,basic_sphere,x=0,y=0,z=0):

@@ -377,6 +377,7 @@ class Projector:
         basic_sphere.select_set(False)
         self.listObjects.append(basic_sphere)
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         self.sine.stack(len(self.listObjects))
 
     def computeVisualField(self,agent):
@@ -388,7 +389,7 @@ class Projector:
         
 
     def computeAllVisualField(self):
-        
+        self.allVisualFieldOld = np.copy(self.allVisualField)
         for k in range(0,len(self.listObjects)):
             self.computeVisualField(self.listObjects[k])
             self.allVisualField[:,:,k] = self.image()
@@ -399,6 +400,7 @@ class Projector:
         self.allVisualFieldDTheta =\
          np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)
         self.allVisualFieldContour = (self.allVisualFieldDTheta!=0) + (self.allVisualFieldDPhi!=0)
+        self.allVisualFieldDt = (self.allVisualField - self.allVisualFieldOld) 
 
     def moveCamera(self,*args):
         camera.translate(args)
