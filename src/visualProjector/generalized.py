@@ -158,6 +158,7 @@ class Projector:
         Xs = cartesianToSpherical(X)
         N = len(Xs[:,0])
         V = np.zeros((N,5))
+        print(N)
         for j in range(0,N):
             V[j,0] = self.interactionFunction(Xs[j,0],True)
             V[j,1] = self.interactionFunction(Xs[j,0],False)
