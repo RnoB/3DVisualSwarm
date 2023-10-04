@@ -132,7 +132,7 @@ class Projector:
         self.listObjects.append(len(self.listObjects))
         
 
-    def interactionFunction(selfmr,attractive = True):
+    def interactionFunction(self,r,attractive = True):
         if attractive:
             f = (2/np.pi) * np.arctan(r)
         else:
