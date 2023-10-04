@@ -132,6 +132,7 @@ class Projector:
         self.positionOld = np.vstack((self.positionOld,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
         self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
+        self.listObjects.append(len(self.listObjects))
         N = len(self.listObjects)
         dim = N-1
         if N-1<1:
