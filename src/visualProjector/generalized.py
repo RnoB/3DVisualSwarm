@@ -132,11 +132,11 @@ class Projector:
         self.listObjects.append(len(self.listObjects))
         
 
-    def interactionFunction(r,attractive = True):
+    def interactionFunction(selfmr,attractive = True):
         if attractive:
-            f = (2/np.pi) * np.arctan2(r)
+            f = (2/np.pi) * np.arctan(r)
         else:
-            f = 1 - (2/np.pi) * np.arctan2(r) 
+            f = 1 - (2/np.pi) * np.arctan(r) 
         return f
 
     def computeVisualField(self,agent):
