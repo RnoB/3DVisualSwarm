@@ -162,12 +162,11 @@ class Projector:
         N = len(Xs[:,0])
         V = np.zeros((N,5))
 
-        for j in range(0,N):
-            V[j,0] = self.interactionFunction(Xs[j,0],True)
-            V[j,1] = self.interactionFunction(Xs[j,0],False)
-            V[j,2] = np.cos(Xs[j,2]) * np.cos(Xs[j,1])
-            V[j,3] = np.cos(Xs[j,2]) * np.sin(Xs[j,1])
-            V[j,4] = np.sin(Xs[j,2]) 
+        V[:,0] = self.interactionFunction(Xs[:,0],True)
+        V[:,1] = self.interactionFunction(Xs[:,0],False)
+        V[:,2] = np.cos(Xs[:,2]) * np.cos(Xs[:,1])
+        V[:,3] = np.cos(Xs[:,2]) * np.sin(Xs[:,1])
+        V[:,4] = np.sin(Xs[:,2]) 
         return V
         
 
