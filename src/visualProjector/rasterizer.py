@@ -112,7 +112,7 @@ class ProjectedSine:
             self.dThetaIm =  np.array([[1,]*size[0],]*size[1])
         else:
             self.dThetaIm =  np.array([[np.pi/size[1],]*size[0],]*size[1])
-        self.dPhiIm = np.cos(self.theta2d)*np.array([[2*np.pi/size[0],]*size[0],]*size[1])
+        self.dPhiIm = np.cos(self.theta2d)*np.array([[np.pi/size[0],]*size[0],]*size[1])
 
 
 
