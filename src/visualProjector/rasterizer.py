@@ -366,7 +366,7 @@ class Projector:
              np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)
             self.allVisualFieldContour = ((self.allVisualFieldDTheta!=0) + (self.allVisualFieldDPhi!=0))/2.0
         else:
-            self.allVisualFieldContour = self.allVisualFieldDPhi
+            self.allVisualFieldContour = self.allVisualFieldDPhi/2.0
         self.allVisualFieldDt = (self.allVisualField - self.allVisualFieldOld) 
 
 
