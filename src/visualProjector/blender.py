@@ -397,9 +397,12 @@ class Projector:
     def derivateAllVisualField(self):
         self.allVisualFieldDPhi =\
          (np.roll(self.allVisualField[:,:,:],1,1)-np.roll(self.allVisualField[:,:,:],-1,1))
-        self.allVisualFieldDTheta =\
-         np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)
-        self.allVisualFieldContour = ((self.allVisualFieldDTheta!=0) + (self.allVisualFieldDPhi!=0))/2.0
+        if dim == 3:
+            self.allVisualFieldDTheta =\
+             np.pad((self.allVisualField[:-2,:,:]-self.allVisualField[2:,:,:]),((1,1),(0,0),(0,0)),'constant', constant_values=0)
+            self.allVisualFieldContour = ((self.allVisualFieldDTheta!=0) + (self.allVisualFieldDPhi!=0))/2.0
+        else:
+            self.allVisualFieldContour = self.allVisualFieldDPhi
         self.allVisualFieldDt = (self.allVisualField - self.allVisualFieldOld) 
 
     def moveCamera(self,*args):
