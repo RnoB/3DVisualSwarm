@@ -26,51 +26,15 @@ import numpy
 import os
 import numpy as np
 import random
+try:
+    from writerserver import writer
+else:
+    writer = False
 
 
 path = '~/tmp/'
 
-def pather(path,expId):
-    if not os.path.exists(path):
-        os.makedirs(path)
-    path = path  + expId+ '/'
-    if not os.path.exists(path):
-        os.makedirs(path)
-    print(path)
-    return path
-
-def pathFile(path,name="positions.csv"):
-    filepath = os.path.join(path, name)
-    fd = open(filepath,'wb')
-    fd.close()
-    return filepath
-
-
 class Simulator:
-
-
-    # def writeCsv(X,N,U,name,path,writeMode = 0):
-    #     filepath = os.path.join(path, name)
-    #     if writeMode == 0:
-    #         fd = open(filepath,'wb')
-    #     elif writeMode == 1:
-    #         checkFile = True
-    #         while checkFile:
-    #             try:
-    #                 fd = open(filepath,'ab')
-    #                 checkFile = False
-    #             except Exception as e:
-    #                 traceback.print_exc()
-    #                 print()
-    #     nId=np.zeros((10,1))
-    #     nId = np.arange(0,N)
-    #     wri = np.c_[nId,X]
-    #     wri = np.c_[wri,U]
-        
-    #     np.savetxt(fd,np.c_[nId,X,U],delimiter=',',fmt= '%5.5f')
-
-    #     fd.close()
-
 
     def integrator(self):
         self.vIntegral[:,0] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
@@ -106,29 +70,30 @@ class Simulator:
             location = self.proj.getPosition(obj)
             rotation = self.proj.getRotation(obj)
             
-            positions = [k,location[0],location[1],location[2],
-                            rotation[0],rotation[1],rotation[2]]
-            self.positionWrite.append(positions)
-        while len(self.positionWrite)>2*self.bufferSize:
-            del self.positionWrite[0]
+            positions = [k,self.t,location[0],location[1],location[2],
+                           rotation[0],rotation[1],rotation[2],
+                           self.u[k,0],self.u[k,0],self.u[k,0],
+                           self.du[k,0],self.du[k,0],self.du[k,0]]
+            if writer:
+                self.positionWrite.append(positions)
+
 
     def writePositions(self):
-        fd = open(self.filePath,'ab')
-        np.savetxt(fd,np.array(self.positionWrite),delimiter=',',fmt= '%5.5f')
-
-        fd.close()
+        toWrite = np.concatenate(self.positionWrite)
+        client.write(toWrite)
         self.positionWrite = []
 
     def startSimulation(self,tMax = 0):
         if tMax > 0:
             self.tMax = tMax
-        for t in range(0,int(self.tMax/self.dt)):
+        for k in range(0,int(self.tMax/self.dt)):
+            self.t += dt
             self.proj.computeAllVisualField()
             self.proj.derivateAllVisualField()
             self.integrator()
             self.computeVelocity()
             self.updatePositions()
-            if len(self.positionWrite)>2*self.bufferSize:
+            if len(self.positionWrite)>self.bufferSize:
                 self.writePositions()
 
 
@@ -150,13 +115,27 @@ class Simulator:
             location = self.proj.getPosition(obj)
             rotation = self.proj.getRotation(obj)
 
-            positions = [k,location[0],location[1],location[2],
-                            rotation[0],rotation[1],rotation[2]]
+            positions = [k,0,location[0],location[1],location[2],
+                           rotation[0],rotation[1],rotation[2],
+                           self.u[k,0],self.u[k,0],self.u[k,0],
+                           self.du[k,0],self.du[k,0],self.du[k,0]]
             self.positionWrite.append(positions)
 
+    def getName():
+        return self.name
+
+    def setScale(sx,sy,sz,k = -1):
+        if k == -1:
+            for j in range(0,N):
+                self.proj.setScale(j,sx,sy,sz)
+        else:
+            self.proj.setScale(k,sx,sy,sz)
 
 
-    def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,dt = 0.1,tMax = 100,u0 = 1,drag = .1,path ="./",expId = "test",parametersV =np.array([[0,0,0],[0,0,0],[0,0,0]]),bufferSize = 100):
+    def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
+                      dt = 0.1,tMax = 100,u0 = 1,drag = .1,path ="./",
+                      expId = "test",parametersV = np.array([[0,0,0],[0,0,0],[0,0,0]]),
+                      bufferSize = 100,ip = "localhost" , port = 1234):
         
         self.engine = engine
         if engine == "panda":
@@ -175,6 +154,7 @@ class Simulator:
         self.N = N
         self.dim = dim
         self.dt = dt
+        self.t = 0 
         self.tMax = tMax
         self.drag = drag
         self.vIntegral = np.zeros((3,2))
@@ -188,7 +168,12 @@ class Simulator:
 
         self.positionWrite = []
 
-        self.path = pather(path,expId)
-        self.filePath = pathFile(self.path)
         self.proj = vp.Projector(size = size,dim = dim)
         self.initializeSwarm(dim = dim)
+
+        if writer:
+            self.client = writer.client(N = 14,ip = ip,port = port)
+            self.client.start()
+            self.name = self.client.getName()
+        else:
+            self.name = "test"
