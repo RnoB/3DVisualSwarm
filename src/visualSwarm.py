@@ -74,6 +74,7 @@ class Simulator:
     def writePositions(self):
         if len(self.positionWrite)>0:
             toWrite = np.concatenate(self.positionWrite)
+            print(toWrite)
             self.client.write(toWrite)
             self.positionWrite = []
 
