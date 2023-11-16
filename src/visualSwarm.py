@@ -80,7 +80,7 @@ class Simulator:
         if tMax > 0:
             self.tMax = tMax
         for k in range(0,int(self.tMax/self.dt)):
-            self.t += dt
+            self.t += self.dt
             self.proj.computeAllVisualField()
             self.proj.derivateAllVisualField()
             self.integrator()
