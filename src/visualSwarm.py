@@ -55,7 +55,6 @@ class Simulator:
         self.dx[:,1] = self.du[:,1] * self.dt
 
     def updatePositions(self):
-        positions = np.zeros((self.N,3))
         for k in range(0,self.N):
             obj = self.proj.listObjects[k]
             self.proj.rotateObject(obj,dz=self.dx[k,1])
@@ -72,9 +71,10 @@ class Simulator:
                 self.positionWrite.append(positions)
 
     def writePositions(self):
-        toWrite = np.concatenate(self.positionWrite)
-        self.client.write(toWrite)
-        self.positionWrite = []
+        if len(self.positionWrite)>0:
+            toWrite = np.concatenate(self.positionWrite)
+            self.client.write(toWrite)
+            self.positionWrite = []
 
     def start(self,tMax = 0):
         if tMax > 0:
