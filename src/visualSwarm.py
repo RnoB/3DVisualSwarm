@@ -69,12 +69,12 @@ class Simulator:
                            self.du[k,0],self.du[k,0],self.du[k,0]]
             if writer:
                 self.positionWrite.append(positions)
-                print(len(self.positionWrite))
+                
 
     def writePositions(self):
         if len(self.positionWrite)>0:
             toWrite = np.concatenate(self.positionWrite)
-            print(toWrite)
+            print(len(toWrite))
             self.client.write(toWrite)
             self.positionWrite = []
 
