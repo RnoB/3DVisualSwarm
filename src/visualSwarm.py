@@ -28,7 +28,7 @@ import numpy as np
 import random
 try:
     from writerserver import writer
-else:
+except:
     writer = False
 
 
