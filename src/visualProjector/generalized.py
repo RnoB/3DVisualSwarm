@@ -111,14 +111,6 @@ class ProjectedSine:
 
 
 class Projector:
-
-
-
-
-
-
-
-
     def rotateReferential(self,k,X):
         rotZ = self.rotation[k][2]
         x = np.cos(rotZ)*X[:,0] + np.sin(rotZ)*X[:,1]

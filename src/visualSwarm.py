@@ -31,7 +31,6 @@ try:
 except:
     writer = False
 
-
 path = '~/tmp/'
 
 class Simulator:
@@ -45,11 +44,7 @@ class Simulator:
         self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
         self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
 
-
-
     def computeVelocity(self):
-
-
         self.du[:,0] = (self.drag * (self.u0 - self.u[:,0] ) + self.parametersV[0,0] * ( self.parametersV[0,1] * self.vIntegral[:,0] + self.parametersV[0,2] * self.vIntegral[:,3] ) )
         self.du[:,1] =  self.parametersV[1,0] * (( self.parametersV[1,1] * self.vIntegral[:,1] + self.parametersV[1,2] * self.vIntegral[:,4] ))
         self.du[:,2] =  ( -self.drag * self.u[:,2] + self.parametersV[2,0] * ( self.parametersV[2,1] * self.vIntegral[:,2] + self.parametersV[2,2] * self.vIntegral[:,5] ))
@@ -58,7 +53,6 @@ class Simulator:
 
         self.dx = self.u*self.dt
         self.dx[:,1] = self.du[:,1] * self.dt
-
 
     def updatePositions(self):
         positions = np.zeros((self.N,3))
@@ -77,13 +71,12 @@ class Simulator:
             if writer:
                 self.positionWrite.append(positions)
 
-
     def writePositions(self):
         toWrite = np.concatenate(self.positionWrite)
         client.write(toWrite)
         self.positionWrite = []
 
-    def startSimulation(self,tMax = 0):
+    def start(self,tMax = 0):
         if tMax > 0:
             self.tMax = tMax
         for k in range(0,int(self.tMax/self.dt)):
@@ -96,9 +89,7 @@ class Simulator:
             if len(self.positionWrite)>self.bufferSize:
                 self.writePositions()
 
-
     def initializeSwarm(self,R = 20,dim = 3):
-
         for k in range(0,self.N):
             x = R*random.random()-R/2
             y = R*random.random()-R/2
@@ -130,7 +121,6 @@ class Simulator:
                 self.proj.setScale(j,sx,sy,sz)
         else:
             self.proj.setScale(k,sx,sy,sz)
-
 
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
                       dt = 0.1,tMax = 100,u0 = 1,drag = .1,path ="./",
