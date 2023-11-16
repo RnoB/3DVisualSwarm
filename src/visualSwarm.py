@@ -113,7 +113,7 @@ class Simulator:
                            self.du[k,0],self.du[k,0],self.du[k,0]]
             self.positionWrite.append(positions)
 
-    def getName():
+    def getName(self):
         return self.name
 
     def setScale(sx,sy,sz,k = -1):
