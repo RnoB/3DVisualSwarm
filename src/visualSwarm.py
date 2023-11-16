@@ -73,7 +73,7 @@ class Simulator:
 
     def writePositions(self):
         toWrite = np.concatenate(self.positionWrite)
-        client.write(toWrite)
+        self.client.write(toWrite)
         self.positionWrite = []
 
     def start(self,tMax = 0):
