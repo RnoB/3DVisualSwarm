@@ -87,3 +87,4 @@ class Filler:
         f = open(jsonFile)
         self.dbConfig = json.load(f)
         f.close()
+
