@@ -88,6 +88,7 @@ class Simulator:
             self.updatePositions()
             if len(self.positionWrite)>self.bufferSize:
                 self.writePositions()
+        self.writePositions()
 
     def initializeSwarm(self,R = 20,dim = 3):
         for k in range(0,self.N):
@@ -162,7 +163,7 @@ class Simulator:
         self.initializeSwarm(dim = dim)
 
         if writer:
-            self.client = writer.client(N = 14,ip = ip,port = port)
+            self.client = writer.Client(N = 14,ip = ip,port = port)
             self.client.start()
             self.name = self.client.getName()
         else:
