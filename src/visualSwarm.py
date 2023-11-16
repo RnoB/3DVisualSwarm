@@ -74,7 +74,6 @@ class Simulator:
     def writePositions(self):
         if len(self.positionWrite)>0:
             toWrite = np.concatenate(self.positionWrite)
-            print(len(toWrite))
             self.client.write(toWrite)
             self.positionWrite = []
 
@@ -91,6 +90,9 @@ class Simulator:
             if len(self.positionWrite)>self.bufferSize:
                 self.writePositions()
         self.writePositions()
+
+    def stop(self):
+        self.client.stop()
 
     def initializeSwarm(self,R = 20,dim = 3):
         for k in range(0,self.N):
