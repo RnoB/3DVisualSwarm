@@ -17,12 +17,7 @@ Panda3D raycaster has been implemented with the bullet engine and it is very slo
 
 There is also a rasterizer engine in 2D but it only works with ellipses. If you can implement that in 3D I am interested.
 
- 8""""8 8     8"""88 8   8  8    8""""8 8     8"""88 8   8  8    8""""8 8     8"""88 8   8  8 
-8      8     8    8 8   8  8    8      8     8    8 8   8  8    8      8     8    8 8   8  8 
-8eeeee 8e    8    8 8e  8  8    8eeeee 8e    8    8 8e  8  8    8eeeee 8e    8    8 8e  8  8 
-    88 88    8    8 88  8  8        88 88    8    8 88  8  8        88 88    8    8 88  8  8 
-e   88 88    8    8 88  8  8    e   88 88    8    8 88  8  8    e   88 88    8    8 88  8  8 
-8eee88 88eee 8eeee8 88ee8ee8    8eee88 88eee 8eeee8 88ee8ee8    8eee88 88eee 8eeee8 88ee8ee8
+
 
 # Writer Server
 
