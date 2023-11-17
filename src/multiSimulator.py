@@ -27,44 +27,48 @@ import sys
 import multiprocessing 
 import os
 import json
+import datetime
+import sqlite3
 
-class MultiSimulator:
+lockDB = False
+config = {}
 
-    def startSimulation(self,repId):
-        parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"]],
-                                [repId["b0"],repId["b00"],repId["b1"]],
-                                [repId["c0"],repId["c00"],repId["c1"]]])
-        N = repId["N"]
-        sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
-                      dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
-                      parametersV = parametersV,
-                      bufferSize = 1000,ip = self.ip , port = self.port,project = repId["project"])
-        if repId["mode"] == 0:
-            sim.setScale(repId["sx"],repId["sy"],repId["sz"])
-        elif repId["mode"] == 1:
-            sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
-        repId['repId'] = sim.getName()
-        print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
-        sim.start()
-        sim.stop()
-        self.db.addReplicate(repId)
-        print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
+def addReplicate(repId):
+    global lockDB
+    values = [repId["simId"],repId["repId"],datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
+    while lockDB:
+        time.sleep(random.random())
+    lockDB = True
+    conn = sqlite3.connect(config["dbReplicates"], check_same_thread=False)
+    c = conn.cursor()
+    c.execute("INSERT INTO simulations VALUES (?,?,?)",values)
+    conn.commit()
+    conn.close()
+    lockDB = False
 
-
-    def __init__(self,dbSimulations,dbReplicates,replicates = 1,nThreads = 1,ip = "localhost",port = 1234):
-        self.db = dbFiller.Filler(dbSimulations = dbSimulations,dbReplicates = dbReplicates)
-        self.ip = ip
-        self.port = port
-        repIds = self.db.checkReplicates(replicates)
-
-        pool = multiprocessing.Pool(processes=nThreads)
-        pool.map_async(self.startSimulation, repIds)
-        pool.close()
-        pool.join()
-
-
+def startSimulation(repId):
+    global lockDB
+    parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"]],
+                            [repId["b0"],repId["b00"],repId["b1"]],
+                            [repId["c0"],repId["c00"],repId["c1"]]])
+    N = repId["N"]
+    sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
+                  dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
+                  parametersV = parametersV,
+                  bufferSize = 1000,ip = config["ip"] , port = config["port"],project = repId["project"])
+    if repId["mode"] == 0:
+        sim.setScale(repId["sx"],repId["sy"],repId["sz"])
+    elif repId["mode"] == 1:
+        sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
+    repId['repId'] = sim.getName()
+    print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
+    sim.start()
+    sim.stop()
+    addReplicate(repId)
+    print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
 
 def main():
+    global config
     try:
         jsonFile = sys.argv[1]
     except:
@@ -81,8 +85,12 @@ def main():
         f = open(jsonFile)
         config = json.load(f)
         f.close()
-        ms = MultiSimulator(config["dbSimulations"],config["dbReplicates"],config["replicates"],
-                            config["nThreads"],config["writerIP"],config["writerPort"])
+        db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
+        repIds = db.checkReplicates(config["replicates"])
+        pool = multiprocessing.Pool(processes=config["nThreads"])
+        pool.map_async(startSimulation, repIds)
+        pool.close()
+        pool.join()
 
 if __name__ == "__main__":
     main()
