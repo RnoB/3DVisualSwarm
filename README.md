@@ -6,7 +6,7 @@
 
 There are still no good solutions to compute multiple spherical point of view with complex objects. So I am throwing a general simulator with different methods to compute the visual field. This repository is experimental and is not ready for production, so you should better contact me before attempting to use it. 
 
-But yeah finally it is going to be a general simulator for 2D, 3D collective behavior based on continuous functions. So do not expect your classical functions such as Viscek, Aoki... or anything like N closest neighbors, too explicit alignment... 
+Finally it is going to be a general simulator for 2D, 3D collective behavior based on continuous functions. So do not expect your classical functions such as Viscek, Aoki... or anything like N closest neighbors, too explicit alignment... 
 
 # 3DVisualSwarm
 An accurate 3D visual field projection extraction using Blender Cycles to make collective behavior simulation. The cycles renderer offers panoramic equirectangular projection. This provides a direct way to compute the projection of the visual field in every direction.
