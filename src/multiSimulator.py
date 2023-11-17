@@ -30,7 +30,7 @@ import json
 import datetime
 import sqlite3
 import traceback
-
+import numpy as np
 
 lockDB = False
 config = {}
