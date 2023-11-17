@@ -71,6 +71,7 @@ def main():
     if not os.path.isfile(jsonFile):
         print('----  you need a file called ms.json  ----')
         print('---- or to give the path to this file ----')
+        print('---- i am nice so i just made you one ----')
         jsonFaker = '{\n\t"dbSimulations":"./db/simulations.db",\n\t"dbReplicates":"./db/replicates.db",\n\t"nThreads":30,\n\t"writerIP":"XXX.XXX.XXX.XXX",\n\t"writerPort":YYYY\n}'
         with open('ms.json', 'w') as f:
             f.write(jsonFaker)
