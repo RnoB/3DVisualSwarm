@@ -43,8 +43,10 @@ class MultiSimulator:
         elif repId["mode"] == 1:
             sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
         repId['repId'] = sim.getName()
+        print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
         sim.start()
         self.db.addReplicate(repId)
+        print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
 
 
     def __init__(self,dbSimulations,dbReplicates,replicates = 1,nThreads = 1,ip = "localhost",port = 1234):
