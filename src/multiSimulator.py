@@ -60,7 +60,7 @@ def startSimulation(repId):
         sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
                       dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
                       parametersV = parametersV,
-                      bufferSize = 1000,ip = config["ip"] , port = config["port"],project = repId["project"])
+                      bufferSize = 1000,ip = config["writerIP"] , port = config["writerPort"],project = repId["project"])
         if repId["mode"] == 0:
             sim.setScale(repId["sx"],repId["sy"],repId["sz"])
         elif repId["mode"] == 1:
