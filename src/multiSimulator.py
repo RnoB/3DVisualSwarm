@@ -26,6 +26,7 @@ from dbFiller import dbFiller
 import sys
 import multiprocessing 
 import os
+import json
 
 class MultiSimulator:
 
