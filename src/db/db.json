@@ -86,6 +86,11 @@
 		"type":"real",
 		"default":0
 	},
+	"c1":
+	{
+		"type":"real",
+		"default":0
+	},
 	"sx":
 	{
 		"type":"real",
