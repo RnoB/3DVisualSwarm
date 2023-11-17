@@ -25,7 +25,7 @@ import visualSwarm as vs
 from dbFiller import dbFiller
 import sys
 import multiprocessing 
-
+import os
 
 class MultiSimulator:
 
@@ -63,13 +63,23 @@ class MultiSimulator:
 
 
 def main():
-    dbSimulations = sys.argv[1]
-    dbReplicates = int(sys.argv[2])
-    nThread = int(sys.argv[3])
-    writerIP = sys.argv[4]
-    writerPort = int(sys.argv[5])
-
-    ms = MultiSimulator(dbSimulations,dbReplicates,nThreads,writerIP,writerPort)
+    try:
+        jsonPath = sys.argv[1]
+    except:
+        jsonFile = "ms.json"
+    if not os.path.isfile(jsonPath):
+        print('----  you need a file called ms.json  ----')
+        print('---- or to give the path to this file ----')
+        jsonFaker = '{\n    "dbSimulations" : "./db/simulations.db",\n    "dbReplicates" : "./db/replicates.db",\n        "nThreads" : 30,\n        "writerIP" : "XXX.XXX.XXX.XXX",\n        "writerPort" : YYYY,\n}'
+        with open('ms.json', 'w') as f:
+            f.write(jsonFaker)
+        print(jsonFaker)
+    else:
+        f = open(jsonFile)
+        config = json.load(f)
+        f.close()
+        ms = MultiSimulator(config["dbSimulations"],config["dbReplicates"],
+                            config["nThreads"],config["writerIP"],config["writerPort"])
 
 if __name__ == "__main__":
     main()
