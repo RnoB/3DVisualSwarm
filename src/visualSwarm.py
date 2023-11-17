@@ -31,7 +31,7 @@ try:
 except:
     writer = False
 
-path = '~/tmp/'
+
 
 class Simulator:
 
@@ -128,9 +128,9 @@ class Simulator:
             self.proj.setScale(k,sx,sy,sz)
 
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
-                      dt = 0.1,tMax = 100,u0 = 1,drag = .1,path ="./",
-                      expId = "test",parametersV = np.array([[0,0,0],[0,0,0],[0,0,0]]),
-                      bufferSize = 100,ip = "localhost" , port = 1234):
+                      dt = 0.1,tMax = 100,u0 = 1,drag = .1,
+                      parametersV = np.array([[0,0,0],[0,0,0],[0,0,0]]),
+                      bufferSize = 100,ip = "localhost" , port = 1234,project = "project"):
         
         self.engine = engine
         if engine == "panda":
@@ -167,7 +167,7 @@ class Simulator:
         self.initializeSwarm(dim = dim)
 
         if writer:
-            self.client = writer.Client(N = 14,ip = ip,port = port)
+            self.client = writer.Client(N = 14,ip = ip,port = port,project = "project")
             self.client.start()
             self.name = self.client.getName()
         else:
