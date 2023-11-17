@@ -29,6 +29,8 @@ import os
 import json
 import datetime
 import sqlite3
+import traceback
+
 
 lockDB = False
 config = {}
@@ -48,24 +50,30 @@ def addReplicate(repId):
 
 def startSimulation(repId):
     global lockDB
-    parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"]],
-                            [repId["b0"],repId["b00"],repId["b1"]],
-                            [repId["c0"],repId["c00"],repId["c1"]]])
-    N = repId["N"]
-    sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
-                  dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
-                  parametersV = parametersV,
-                  bufferSize = 1000,ip = config["ip"] , port = config["port"],project = repId["project"])
-    if repId["mode"] == 0:
-        sim.setScale(repId["sx"],repId["sy"],repId["sz"])
-    elif repId["mode"] == 1:
-        sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
-    repId['repId'] = sim.getName()
-    print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
-    sim.start()
-    sim.stop()
-    addReplicate(repId)
-    print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
+
+    try:
+        parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"]],
+                                [repId["b0"],repId["b00"],repId["b1"]],
+                                [repId["c0"],repId["c00"],repId["c1"]]])
+        N = repId["N"]
+        sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
+                      dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
+                      parametersV = parametersV,
+                      bufferSize = 1000,ip = config["ip"] , port = config["port"],project = repId["project"])
+        if repId["mode"] == 0:
+            sim.setScale(repId["sx"],repId["sy"],repId["sz"])
+        elif repId["mode"] == 1:
+            sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
+        repId['repId'] = sim.getName()
+        print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
+        sim.start()
+        sim.stop()
+        addReplicate(repId)
+        print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
+    except Exception as e:
+
+        traceback.print_exc()
+        print()
 
 def main():
     global config
@@ -87,7 +95,7 @@ def main():
         f.close()
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
-        print(config)
+
         pool = multiprocessing.Pool(processes=config["nThreads"])
         pool.map_async(startSimulation, repIds)
         pool.close()
