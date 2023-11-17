@@ -120,7 +120,7 @@ class Simulator:
     def getName(self):
         return self.name
 
-    def setScale(sx,sy,sz,k = -1):
+    def setScale(self,sx,sy,sz,k = -1):
         if k == -1:
             for j in range(0,N):
                 self.proj.setScale(j,sx,sy,sz)
@@ -130,7 +130,7 @@ class Simulator:
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
                       dt = 0.1,tMax = 100,u0 = 1,drag = .1,
                       parametersV = np.array([[0,0,0],[0,0,0],[0,0,0]]),
-                      bufferSize = 100,ip = "localhost" , port = 1234,project = "project"):
+                      bufferSize = 100,ip = "localhost" , port = 1234,project = project):
         
         self.engine = engine
         if engine == "panda":
@@ -167,7 +167,7 @@ class Simulator:
         self.initializeSwarm(dim = dim)
 
         if writer:
-            self.client = writer.Client(N = 14,ip = ip,port = port,project = "project")
+            self.client = writer.Client(N = 14,ip = ip,port = port,project = project)
             self.client.start()
             self.name = self.client.getName()
         else:
