@@ -130,7 +130,7 @@ class Simulator:
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
                       dt = 0.1,tMax = 100,u0 = 1,drag = .1,
                       parametersV = np.array([[0,0,0],[0,0,0],[0,0,0]]),
-                      bufferSize = 100,ip = "localhost" , port = 1234,project = project):
+                      bufferSize = 100,ip = "localhost" , port = 1234,project = "project"):
         
         self.engine = engine
         if engine == "panda":
