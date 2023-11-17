@@ -52,7 +52,7 @@ def startSimulation(repId):
     global lockDB
 
     try:
-        print(repId)
+
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"]],
                                 [repId["b0"],repId["b00"],repId["b1"]],
                                 [repId["c0"],repId["c00"],repId["c1"]]])
