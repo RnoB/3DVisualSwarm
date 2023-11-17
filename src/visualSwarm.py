@@ -122,7 +122,7 @@ class Simulator:
 
     def setScale(self,sx,sy,sz,k = -1):
         if k == -1:
-            for j in range(0,N):
+            for j in range(0,self.N):
                 self.proj.setScale(j,sx,sy,sz)
         else:
             self.proj.setScale(k,sx,sy,sz)
