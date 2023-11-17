@@ -87,7 +87,9 @@ def main():
         f.close()
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
+
         pool = multiprocessing.Pool(processes=config["nThreads"])
+        print(repIds)
         pool.map_async(startSimulation, repIds)
         pool.close()
         pool.join()
