@@ -130,3 +130,5 @@ dmypy.json
 
 #jupyter notebook
 *.ipynb
+
+ms.json
