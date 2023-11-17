@@ -46,6 +46,7 @@ class MultiSimulator:
         repId['repId'] = sim.getName()
         print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
         sim.start()
+        sim.stop()
         self.db.addReplicate(repId)
         print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
 
