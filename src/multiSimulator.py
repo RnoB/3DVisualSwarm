@@ -54,7 +54,7 @@ class MultiSimulator:
         self.db = dbFiller.Filler(dbSimulations = dbSimulations,dbReplicates = dbReplicates)
         self.ip = ip
         self.port = port
-        repIds = db.checkReplicates(replicates)
+        repIds = self.db.checkReplicates(replicates)
 
         pool = multiprocessing.Pool(processes=nThreads)
         pool.map_async(self.startSimulation, repIds)
