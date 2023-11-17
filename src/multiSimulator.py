@@ -64,10 +64,10 @@ class MultiSimulator:
 
 def main():
     try:
-        jsonPath = sys.argv[1]
+        jsonFile = sys.argv[1]
     except:
         jsonFile = "ms.json"
-    if not os.path.isfile(jsonPath):
+    if not os.path.isfile(jsonFile):
         print('----  you need a file called ms.json  ----')
         print('---- or to give the path to this file ----')
         jsonFaker = '{\n    "dbSimulations" : "./db/simulations.db",\n    "dbReplicates" : "./db/replicates.db",\n        "nThreads" : 30,\n        "writerIP" : "XXX.XXX.XXX.XXX",\n        "writerPort" : YYYY,\n}'
