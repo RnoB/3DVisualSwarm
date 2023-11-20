@@ -28,7 +28,7 @@ import uuid
 import os.path
 import datetime
 import random
-
+import itertools
 
 
 
@@ -59,7 +59,10 @@ def separateData(data):
         X[:,:,k] = data[mask,:] 
     return X
     
-
+def dictListsToListDict(DL):
+    keys, values = zip(*my_dict.items())
+    permutations_dicts = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    return permutations_dicts
 
 class Filler:
 
@@ -206,7 +209,7 @@ class Analyzer:
         res = conn.execute("Select * from parameters where project = ? and experiment = ?",(project,experiment))
         experiments = res.fetchall()
         conn.close() 
-        keys = {}
+        sortedKeys = {"project":project,"experiment":experiment}
         for key in experiments[0].keys():
             if key != "simId":
                 x = []
@@ -215,8 +218,9 @@ class Analyzer:
                 x = np.array(x)
 
                 if len(set(x))>1:
-                    keys[key] = np.sort(np.unique(x))
-        return keys
+                    sortedKeys[key] = np.sort(np.unique(x))
+        experimentsKey = dictListsToListDict(sortedKeys)
+        return sortedKey,experimentsKey
 
     def getSimIds(self,parameters):
         line = "select simId from parameters where"
