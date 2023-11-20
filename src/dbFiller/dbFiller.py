@@ -60,7 +60,7 @@ def separateData(data):
     return X
     
 def dictListsToListDict(DL):
-    keys, values = zip(*my_dict.items())
+    keys, values = zip(*DL.items())
     permutations_dicts = [dict(zip(keys, v)) for v in itertools.product(*values)]
     return permutations_dicts
 
