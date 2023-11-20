@@ -288,4 +288,4 @@ class Analyzer:
         self.dbAnalyzed = dbAnalyzed
         self.path = path
         self.getTypes()
-        self.projects = anal.getProjects()
+        self.projects = self.getProjects()
