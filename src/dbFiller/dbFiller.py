@@ -220,7 +220,7 @@ class Analyzer:
                 if len(set(x))>1:
                     sortingKeys[key] = np.sort(np.unique(x))
         sortedKeys = dictListsToListDict(sortingKeys)
-        del sortedKeys["projects"]
+        del sortedKeys["project"]
         del sortedKeys["experiment"]
         return sortingKeys,sortedKeys
 
