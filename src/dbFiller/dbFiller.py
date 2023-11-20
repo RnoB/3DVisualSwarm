@@ -187,6 +187,16 @@ class Filler:
 
 
 class Analyzer:
+
+    def getTypes(self):
+        conn = sqlite3.connect(self.dbSimulations)
+        c = conn.cursor()
+        c.execute("""PRAGMA table_info(parameters) """)
+        columns = c.fetchall()
+        tmp,keys,types,tmp,tmp,tmp =  zip(*columns)
+        self.types = dict(zip(keys, types))
+        conn.close()
+
     def getProjects(self):
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
@@ -219,6 +229,9 @@ class Analyzer:
 
                 if len(set(x))>1:
                     sortingKeys[key] = np.sort(np.unique(x))
+                    if self.types[key] == 'INTEGER':
+                        sortingKeys[key] = sortingKeys[key].astype(int)
+                        print("int")
         sortedKeys = dictListsToListDict(sortingKeys)
         del sortingKeys["project"]
         del sortingKeys["experiment"]
@@ -272,3 +285,4 @@ class Analyzer:
         self.dbReplicates = dbReplicates
         self.dbAnalyzed = dbAnalyzed
         self.path = path
+        self.getTypes()
