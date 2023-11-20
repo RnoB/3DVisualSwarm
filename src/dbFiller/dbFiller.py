@@ -183,7 +183,7 @@ class Filler:
 
 
 
-def Analyzer:
+class Analyzer:
     def getProjects(self):
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
