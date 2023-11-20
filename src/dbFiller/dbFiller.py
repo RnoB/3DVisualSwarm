@@ -48,6 +48,18 @@ def dict_factory(cursor, row):
     fields = [column[0] for column in cursor.description]
     return {key: value for key, value in zip(fields, row)}
 
+def separateData(data):
+    ids = np.unique(data[:,0])
+    N = len(ids)
+    nx = int(np.shape(data)[0]/N)
+    ny = np.shape(data)[1]
+    X = np.zeros((nx,ny,N))
+    for k in range(0,N):
+        mask = data[:,0] == k
+        X[:,:,k] = data[mask,:] 
+    return X
+    
+
 
 class Filler:
 
@@ -162,7 +174,95 @@ class Filler:
         except:
             print(" - - -   there is not database configuration file  - - - ")
             print(" - - - databases can be accessed but not generated - - - ")
+            #print('---- i am nice so i just made you one ----')
+            #jsonFaker = '{\n\t"project":"test",\n\t"experiment":"ex",\n\t"replicates":1,\n\t"nThreads":30,\n\t"writerIP":"XXX.XXX.XXX.XXX",\n\t"writerPort":YYYY\n}'
+        
         if not os.path.isfile(dbReplicates):
             self.generatorReplicates()
 
 
+
+
+def Analyzer:
+    def getProjects(self):
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("Select project from parameters")
+        projects = np.unique(c.fetchall())
+        conn.close()    
+        return projects
+
+    def getExperiments(self,project = "project"):
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("Select experiment from parameters where project = ?",(project,))
+        experiments = np.unique(c.fetchall())
+        conn.close()    
+        return experiments
+
+    def getExperimentSortingKeys(self,project = "project",experiment = "experiment"):
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        conn.row_factory = dict_factory
+        res = conn.execute("Select * from parameters where project = ? and experiment = ?",(project,experiment))
+        experiments = res.fetchall()
+        conn.close() 
+        keys = {}
+        for key in experiments[0].keys():
+            if key != "simId":
+                x = []
+                for exp in experiments:
+                    x.append(exp[key])
+                x = np.array(x)
+
+                if len(set(x))>1:
+                    keys[key] = np.sort(np.unique(x))
+        return keys
+
+    def getSimIds(self,parameters):
+        line = "select simId from parameters where"
+        values = ()
+        for key in parameters.keys():
+            line+=' '+key+" = ? and"
+            values = values+(A[key],)
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        c = conn.cursor()
+        c.execute(line[:,-4])
+        simId = c.fecthall()[0][0]
+        conn.close()
+        return simId
+
+
+    def getRepIds(self,simId):
+        conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("Select repId from simulations where simId = ?",(simId,))
+        repIds = c.fetchall()
+        conn.close()
+        return repIds
+
+
+    def getDataSet(self,repId):
+        conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("Select simId from simulations where repId = ?",(repId,))
+        simId = c.fetchall()[0][0]
+        conn.close()
+        
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("Select project from parameters where simId = ?",(simId,))
+        project = c.fetchall()[0][0]
+        conn.close()
+        path = writer.pather(path,[project])
+        
+        pathData = writer.pather(path,writer.getUUIDPath(repId)) + "/position.csv"
+        rawData = np.genfromtxt(pathData, delimiter=",")
+        data = separateData(rawData)
+        return data
+
+    def __init__(self,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db",path = "/data"):
+        self.lockDB = False
+        self.dbSimulations = dbSimulations
+        self.dbReplicates = dbReplicates
+        self.dbAnalyzed = dbAnalyzed
+        self.path = path
