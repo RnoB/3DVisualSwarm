@@ -220,8 +220,8 @@ class Analyzer:
                 if len(set(x))>1:
                     sortingKeys[key] = np.sort(np.unique(x))
         sortedKeys = dictListsToListDict(sortingKeys)
-        del sortedKeys["project"]
-        del sortedKeys["experiment"]
+        del sortingKeys["project"]
+        del sortingKeys["experiment"]
         return sortingKeys,sortedKeys
 
     def getSimIds(self,parameters):
