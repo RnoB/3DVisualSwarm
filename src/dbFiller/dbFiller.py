@@ -70,6 +70,15 @@ class Filler:
         conn.commit()
         conn.close()
 
+    def generatorAnalyzed(self):
+        conn = sqlite3.connect(self.dbAnalyzed)
+        c = conn.cursor()
+        parameters = """(repId text,date text)"""
+        c.execute("""CREATE TABLE simulations """+parameters)
+        conn.commit()
+        conn.close()
+
+
     def printValues(self):
         conn = sqlite3.connect(self.dbSimulations)
         c = conn.cursor()
@@ -139,10 +148,11 @@ class Filler:
         conn.close()
         self.lockDB = False
 
-    def __init__(self,dbSimulations = 'db/simulations.db',jsonFile = "db/db.json",dbReplicates = "db/replicates.db"):
+    def __init__(self,dbSimulations = 'db/simulations.db',jsonFile = "db/db.json",dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db"):
         self.lockDB = False
         self.dbSimulations = dbSimulations
         self.dbReplicates = dbReplicates
+        self.dbAnalyzed = dbAnalyzed
         try:
             f = open(jsonFile)
             self.dbConfig = json.load(f)
@@ -154,3 +164,5 @@ class Filler:
             print(" - - - databases can be accessed but not generated - - - ")
         if not os.path.isfile(dbReplicates):
             self.generatorReplicates()
+
+

@@ -4,6 +4,11 @@
 		"type":"text",
 		"default":"shape"
 	},
+	"experiment":
+	{
+		"type":"text",
+		"default":"experiment"
+	},
 	"engine":
 	{
 		"type":"text",
