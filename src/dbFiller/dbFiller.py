@@ -209,7 +209,7 @@ class Analyzer:
         res = conn.execute("Select * from parameters where project = ? and experiment = ?",(project,experiment))
         experiments = res.fetchall()
         conn.close() 
-        sortedKeys = {"project":[project],"experiment":[experiment]}
+        sortingKeys = {"project":[project],"experiment":[experiment]}
         for key in experiments[0].keys():
             if key != "simId":
                 x = []
@@ -218,16 +218,18 @@ class Analyzer:
                 x = np.array(x)
 
                 if len(set(x))>1:
-                    sortedKeys[key] = np.sort(np.unique(x))
-        experimentsKey = dictListsToListDict(sortedKeys)
-        return sortedKeys,experimentsKey
+                    sortingKeys[key] = np.sort(np.unique(x))
+        sortedKeys = dictListsToListDict(sortingKeys)
+        del sortedKeys["projects"]
+        del sortedKeys["experiment"]
+        return sortingKeys,sortedKeys
 
     def getSimIds(self,parameters):
         line = "select simId from parameters where"
         values = ()
         for key in parameters.keys():
             line+=' '+key+" = ? and"
-            values = values+(A[key],)
+            values = values+(parameters[key],)
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
         c.execute(line[:,-4])
