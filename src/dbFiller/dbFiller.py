@@ -209,7 +209,7 @@ class Analyzer:
         res = conn.execute("Select * from parameters where project = ? and experiment = ?",(project,experiment))
         experiments = res.fetchall()
         conn.close() 
-        sortedKeys = {"project":project,"experiment":experiment}
+        sortedKeys = {"project":[project],"experiment":[experiment]}
         for key in experiments[0].keys():
             if key != "simId":
                 x = []
