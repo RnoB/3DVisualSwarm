@@ -274,9 +274,9 @@ class Analyzer:
         c.execute("Select project from parameters where simId = ?",(simId,))
         project = c.fetchall()[0][0]
         conn.close()
-        path = writer.pather(path,[project])
+        pathProject = writer.pather(self.path,[project])
         
-        pathData = writer.pather(path,writer.getUUIDPath(repId)) + "/position.csv"
+        pathData = writer.pather(pathProject,writer.getUUIDPath(repId)) + "/position.csv"
         rawData = np.genfromtxt(pathData, delimiter=",")
         data = separateData(rawData)
         return data
