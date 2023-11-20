@@ -228,11 +228,11 @@ class Analyzer:
         line = "select simId from parameters where"
         values = ()
         for key in parameters.keys():
-            line+=' '+key+" = ? and"
+            line+=" "+key+" = ? and"
             values = values+(parameters[key],)
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
-        print(line[:,-4])
+        print(line)
         c.execute(line[:,-4],values)
         simId = c.fecthall()[0][0]
         conn.close()
