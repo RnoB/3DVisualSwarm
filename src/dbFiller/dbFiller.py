@@ -220,7 +220,7 @@ class Analyzer:
                 if len(set(x))>1:
                     sortedKeys[key] = np.sort(np.unique(x))
         experimentsKey = dictListsToListDict(sortedKeys)
-        return sortedKey,experimentsKey
+        return sortedKeys,experimentsKey
 
     def getSimIds(self,parameters):
         line = "select simId from parameters where"
