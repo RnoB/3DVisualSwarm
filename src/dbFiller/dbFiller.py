@@ -231,7 +231,6 @@ class Analyzer:
                     sortingKeys[key] = np.sort(np.unique(x))
                     if self.types[key] == 'INTEGER':
                         sortingKeys[key] = sortingKeys[key].astype(int)
-                        print("int")
         sortedKeys = dictListsToListDict(sortingKeys)
         del sortingKeys["project"]
         del sortingKeys["experiment"]
@@ -242,7 +241,10 @@ class Analyzer:
         values = ()
         for key in parameters.keys():
             line+=" "+key+" = ? and"
-            values = values+(parameters[key],)
+            if self.types[key] == 'INTEGER':
+                values = values+(int(parameters[key]),)
+            else:
+                values = values+(parameters[key],)
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
         c.execute(line[:-4],values)
