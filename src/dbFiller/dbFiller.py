@@ -245,13 +245,13 @@ class Filler:
             f.close()
             if not os.path.isfile(dbSimulations):
                 self.generator()
+            self.getTypes()
         except:
             print(" - - -   there is not database configuration file  - - - ")
             print(" - - - databases can be accessed but not generated - - - ")
             #print('---- i am nice so i just made you one ----')
             #jsonFaker = '{\n\t"project":"test",\n\t"experiment":"ex",\n\t"replicates":1,\n\t"nThreads":30,\n\t"writerIP":"XXX.XXX.XXX.XXX",\n\t"writerPort":YYYY\n}'
         
-        self.types = self.getTypes()
         if not os.path.isfile(dbReplicates):
             self.generatorReplicates()
 
