@@ -65,7 +65,18 @@ def dictListsToListDict(DL):
     permutations_dicts = [dict(zip(keys, v)) for v in itertools.product(*values)]
     return permutations_dicts
 
+
+
 class Filler:
+
+    def getTypes(self):
+        conn = sqlite3.connect(self.dbSimulations)
+        c = conn.cursor()
+        c.execute("""PRAGMA table_info(parameters) """)
+        columns = c.fetchall()
+        tmp,keys,types,tmp,tmp,tmp =  zip(*columns)
+        self.types = dict(zip(keys, types))
+        conn.close()
 
     def generator(self):
         conn = sqlite3.connect(self.dbSimulations)
@@ -108,6 +119,64 @@ class Filler:
         self.dbConfig = json.load(f)
         f.close()
 
+
+
+    def getSimIds(self,parameters):
+        line = "select simId from parameters where"
+        values = ()
+        for key in parameters.keys():
+            line+=" "+key+" = ? and"
+            if self.types[key] == 'INTEGER':
+                values = values+(int(parameters[key]),)
+            else:
+                values = values+(parameters[key],)
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        c = conn.cursor()
+        c.execute(line[:-4],values)
+        simIds = c.fetchall()[0]
+        conn.close()
+        return simId
+
+    def checkExists(self,valuesToCheck):
+        line = "select simId from parameters where"
+        lineProject = ""
+        values = ()
+        valuesProject = ()
+
+        keys = self.dbConfig.keys()
+        for k in range(0,len(keys)):
+            key = keys[k]
+            value = valuesToCheck[k]
+            if key != "project" or key != "experiment":
+                line+=" "+key+" = ? and"
+                if self.types[key] == 'INTEGER':
+                    values = values+(int(parameters[key]),)
+                else:
+                    values = values+(parameters[key],)
+            else:
+                lineProject+=" "+key+" = ? and"
+                if self.types[key] == 'INTEGER':
+                    valuesProject = valuesProject+(int(parameters[key]),)
+                else:
+                    valuesProject = valuesProject+(parameters[key],)
+
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        c = conn.cursor()
+        c.execute(line+lineProject[:-4],values+valuesProject)
+        simIds = c.fetchall()
+        if len(simIds)>0:
+            simId = -1
+        else:
+            c.execute(line[:-4],values)
+            simIds = c.fetchall()
+            if len(simIds)>0:
+                simId = simIds[0]
+            else:
+                simId = getUUID() 
+        conn.close()
+        return simId
+        
+
     def fillParameters(self):
         conn = sqlite3.connect(self.dbSimulations)
         c = conn.cursor()
@@ -123,7 +192,8 @@ class Filler:
         recursive(valuesRange,0,values,allValues)
 
         for value in allValues:
-            value = np.insert(value,0,[getUUID()])   
+            simId = checkExists(value)
+            value = np.insert(value,0,[simId])   
             c.execute("INSERT INTO parameters VALUES ("+nValues[:-1]+")",value)
         conn.commit()
         conn.close()
@@ -132,7 +202,7 @@ class Filler:
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         conn.row_factory = dict_factory
         res = conn.execute("Select * from parameters")
-        simIds = res.fetchall()
+        simIds = np.unique(res.fetchall())
         conn.close()
 
         conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
@@ -175,6 +245,7 @@ class Filler:
             f.close()
             if not os.path.isfile(dbSimulations):
                 self.generator()
+            self.types = self.getTypes()
         except:
             print(" - - -   there is not database configuration file  - - - ")
             print(" - - - databases can be accessed but not generated - - - ")
