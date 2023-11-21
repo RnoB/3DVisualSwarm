@@ -114,7 +114,7 @@ class Filler:
         print(columns)
         conn.close()
 
-    def reloadJSON(self,jsonFile = "db.json"):
+    def reloadJSON(self,jsonFile = "db/db.json"):
         f = open(jsonFile)
         self.dbConfig = json.load(f)
         f.close()
@@ -147,7 +147,6 @@ class Filler:
         for k in range(0,len(keys)):
             key = keys[k]
             if key != "project" and key != "experiment":
-                print(key)
                 line+=" "+key+" = ? and"
                 if self.types[key] == 'INTEGER':
                     values = values+(int(parameters[k]),)
@@ -162,8 +161,6 @@ class Filler:
 
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
-        print(line+lineProject[:-4])
-        print(values+valuesProject)
         c.execute(line+lineProject[:-4],values+valuesProject)
         simIds = c.fetchall()
         if len(simIds)>0:
@@ -194,9 +191,10 @@ class Filler:
         recursive(valuesRange,0,values,allValues)
 
         for value in allValues:
-            simId = checkExists(value)
-            value = np.insert(value,0,[simId])   
-            c.execute("INSERT INTO parameters VALUES ("+nValues[:-1]+")",value)
+            simId = self.checkExists(value)
+            if simId !=-1:
+                value = np.insert(value,0,[simId])   
+                c.execute("INSERT INTO parameters VALUES ("+nValues[:-1]+")",value)
         conn.commit()
         conn.close()
 
