@@ -143,7 +143,7 @@ class Filler:
         values = ()
         valuesProject = ()
 
-        keys = self.dbConfig.keys()
+        keys = list(self.dbConfig.keys())
         for k in range(0,len(keys)):
             key = keys[k]
             value = valuesToCheck[k]
