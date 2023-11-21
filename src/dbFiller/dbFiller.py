@@ -146,7 +146,7 @@ class Filler:
         keys = list(self.dbConfig.keys())
         for k in range(0,len(keys)):
             key = keys[k]
-            if key != "project" or key != "experiment":
+            if key != "project" and key != "experiment":
                 print(key)
                 line+=" "+key+" = ? and"
                 if self.types[key] == 'INTEGER':
