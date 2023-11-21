@@ -147,6 +147,7 @@ class Filler:
         for k in range(0,len(keys)):
             key = keys[k]
             if key != "project" or key != "experiment":
+                print(key)
                 line+=" "+key+" = ? and"
                 if self.types[key] == 'INTEGER':
                     values = values+(int(parameters[k]),)
