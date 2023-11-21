@@ -161,6 +161,8 @@ class Filler:
 
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
+        print(line+lineProject[:-4])
+        print(values+valuesProject)
         c.execute(line+lineProject[:-4],values+valuesProject)
         simIds = c.fetchall()
         if len(simIds)>0:
