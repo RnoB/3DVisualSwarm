@@ -29,6 +29,7 @@ import os.path
 import datetime
 import random
 import itertools
+import pandas as pd
 from writerserver import writer
 
 
@@ -277,7 +278,8 @@ class Analyzer:
         pathProject = writer.pather(self.path,[project])
         
         pathData = writer.pather(pathProject,writer.getUUIDPath(repId)) + "/position.csv"
-        rawData = np.genfromtxt(pathData, delimiter=",")
+        #rawData = np.genfromtxt(pathData, delimiter=",")
+        rawData = pd.read_csv(pathData, header=None, delimiter=",").values
         data = separateData(rawData)
         return data
 
