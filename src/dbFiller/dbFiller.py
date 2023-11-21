@@ -149,15 +149,15 @@ class Filler:
             if key != "project" or key != "experiment":
                 line+=" "+key+" = ? and"
                 if self.types[key] == 'INTEGER':
-                    values = values+(int(parameters[key]),)
+                    values = values+(int(parameters[k]),)
                 else:
-                    values = values+(parameters[key],)
+                    values = values+(parameters[k],)
             else:
                 lineProject+=" "+key+" = ? and"
                 if self.types[key] == 'INTEGER':
-                    valuesProject = valuesProject+(int(parameters[key]),)
+                    valuesProject = valuesProject+(int(parameters[k]),)
                 else:
-                    valuesProject = valuesProject+(parameters[key],)
+                    valuesProject = valuesProject+(parameters[k],)
 
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
