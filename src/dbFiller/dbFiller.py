@@ -137,7 +137,7 @@ class Filler:
         conn.close()
         return simId
 
-    def checkExists(self,valuesToCheck):
+    def checkExists(self,parameters):
         line = "select simId from parameters where"
         lineProject = ""
         values = ()
@@ -146,7 +146,6 @@ class Filler:
         keys = list(self.dbConfig.keys())
         for k in range(0,len(keys)):
             key = keys[k]
-            value = valuesToCheck[k]
             if key != "project" or key != "experiment":
                 line+=" "+key+" = ? and"
                 if self.types[key] == 'INTEGER':
