@@ -285,6 +285,15 @@ class Analyzer:
         conn.close()    
         return experiments
 
+    def getParameters(self,re)
+        conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
+        c = conn.cursor()
+        res = conn.execute("Select * from simulations where simId = ?",(simId,))
+        parameters = c.fetchall()
+        conn.close()
+        return parameters
+
+
     def getExperimentSortingKeys(self,project = "project",experiment = "experiment"):
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         conn.row_factory = dict_factory
@@ -332,6 +341,10 @@ class Analyzer:
         repIds = c.fetchall()
         conn.close()
         return repIds
+
+
+    def getDataPath(self,repId):
+        return writer.pather(pathProject,writer.getUUIDPath(repId))
 
 
     def getDataSet(self,repId):
