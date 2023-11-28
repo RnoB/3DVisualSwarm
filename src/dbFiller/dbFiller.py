@@ -291,7 +291,7 @@ class Analyzer:
         res = conn.execute("Select * from parameters where simId = ?",(simId,))
         parameters = res.fetchall()
         conn.close()
-        return parameters
+        return parameters[0]
 
 
     def getExperimentSortingKeys(self,project = "project",experiment = "experiment"):
