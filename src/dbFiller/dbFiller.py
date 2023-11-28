@@ -287,9 +287,9 @@ class Analyzer:
 
     def getParameters(self,simId):
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
-        c = conn.cursor()
+        conn.row_factory = dict_factory
         res = conn.execute("Select * from parameters where simId = ?",(simId,))
-        parameters = c.fetchall()
+        parameters = res.fetchall()
         conn.close()
         return parameters
 
