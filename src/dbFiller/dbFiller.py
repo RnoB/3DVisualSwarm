@@ -344,10 +344,6 @@ class Analyzer:
 
 
     def getDataPath(self,repId):
-        return writer.pather(pathProject,writer.getUUIDPath(repId))
-
-
-    def getDataSet(self,repId):
         conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
         c = conn.cursor()
         c.execute("Select simId from simulations where repId = ?",(repId,))
@@ -360,8 +356,11 @@ class Analyzer:
         project = c.fetchall()[0][0]
         conn.close()
         pathProject = writer.pather(self.path,[project])
-        
-        pathData = writer.pather(pathProject,writer.getUUIDPath(repId)) + "/position.csv"
+        return writer.pather(pathProject,writer.getUUIDPath(repId))
+
+
+    def getDataSet(self,repId):
+        pathData = self.getDataPath(repId) + "/position.csv"
         #rawData = np.genfromtxt(pathData, delimiter=",")
         rawData = pd.read_csv(pathData, header=None, delimiter=",").values
         data = separateData(rawData)
