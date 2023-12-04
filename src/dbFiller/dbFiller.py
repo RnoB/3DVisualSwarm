@@ -202,7 +202,9 @@ class Filler:
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         conn.row_factory = dict_factory
         res = conn.execute("Select * from parameters")
-        simIds = np.unique(res.fetchall())
+        res0  =res.fetchall()
+        print(res0)
+        simIds = np.unique(res0)
         conn.close()
 
         conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
