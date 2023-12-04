@@ -31,6 +31,7 @@ import datetime
 import sqlite3
 import traceback
 import numpy as np
+import random
 
 lockDB = False
 config = {}
@@ -61,16 +62,29 @@ def startSimulation(repId):
                       dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
                       parametersV = parametersV,
                       bufferSize = 1000,ip = config["writerIP"] , port = config["writerPort"],project = repId["project"])
+        
+        repId['repId'] = sim.getName()
+        
         if repId["mode"] == 0:
             sim.setScale(repId["sx"],repId["sy"],repId["sz"])
         elif repId["mode"] == 1:
             sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
-        repId['repId'] = sim.getName()
+        elif repId["mode"] == 2:
+            random.seed(int(uu,16))
+            for k in range(0,N):
+                sx = 10**(repId["sx"]*2*(random.random()-.5))
+                sim.setScale(sx,sx,sx,k)
+        
+
         print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
+        
         sim.start()
         sim.stop()
+        
         addReplicate(repId)
+        
         print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
+    
     except Exception as e:
 
         traceback.print_exc()
