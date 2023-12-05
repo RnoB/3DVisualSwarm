@@ -7,7 +7,7 @@
 	"experiment":
 	{
 		"type":"text",
-		"default":"distribution"
+		"default":"20percent"
 	},
 	"engine":
 	{
@@ -23,7 +23,7 @@
 	{
 		"type":"integer",
 		"default":10,
-		"range":[2,5,10,20,50,100]
+		"range":[10,20,50,100]
 	},
 	"nPhi":
 	{
@@ -99,7 +99,7 @@
 	{
 		"type":"real",
 		"default":0.1,
-		"range":[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+		"range":[0.1,0.2,0.5,1.0,2.0,5.0,10.0]
 	},
 	"sy":
 	{
@@ -114,7 +114,7 @@
 	"mode":
 	{
 		"type":"integer",
-		"default":2
+		"default":3
 	},
 	"parameters":
 	{

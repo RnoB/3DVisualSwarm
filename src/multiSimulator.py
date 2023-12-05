@@ -74,6 +74,10 @@ def startSimulation(repId):
             for k in range(0,N):
                 sx = 10**(repId["sx"]*2*(random.random()-.5))
                 sim.setScale(sx,sx,sx,k)
+        elif repId["mode"] == 3:
+            nScale = int(.2*N)
+            for k in range(0,nScale):
+                sim.setScale(repId["sx"],repId["sx"],repId["sx"],k)
         
 
         print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
