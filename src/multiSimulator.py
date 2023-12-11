@@ -21,8 +21,8 @@
 #SOFTWARE.
 ###########
 
-import visualSwarm as vs
-from dbFiller import dbFiller
+from visualswarm import visualSwarm as vs
+from analyzer.dbFiller import dbFiller
 import sys
 import multiprocessing 
 import os
@@ -99,12 +99,12 @@ def main():
     try:
         jsonFile = sys.argv[1]
     except:
-        jsonFile = "ms.json"
+        jsonFile = "./Analyzer/ms.json"
     if not os.path.isfile(jsonFile):
         print('----  you need a file called ms.json  ----')
         print('---- or to give the path to this file ----')
         print('---- i am nice so i just made you one ----')
-        jsonFaker = '{\n\t"dbSimulations":"./db/simulations.db",\n\t"dbReplicates":"./db/replicates.db",\n\t"replicates":1,\n\t"nThreads":30,\n\t"writerIP":"XXX.XXX.XXX.XXX",\n\t"writerPort":YYYY\n}'
+        jsonFaker = '{\n\t"dbSimulations":"./Analyzer/db/simulations.db",\n\t"dbReplicates":"./Analyzer/db/replicates.db",\n\t"replicates":1,\n\t"nThreads":30,\n\t"writerIP":"XXX.XXX.XXX.XXX",\n\t"writerPort":YYYY\n}'
         with open('ms.json', 'w') as f:
             f.write(jsonFaker)
         print(jsonFaker)

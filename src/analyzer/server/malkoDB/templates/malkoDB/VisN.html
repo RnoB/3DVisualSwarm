@@ -1,0 +1,71 @@
+{% load static %}
+{% load set_var %}
+{% load malkoDB_extras %}
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://unred.org/visualmodel/malkoDB.css" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../">MalkoFish</a>
+    </header>
+
+<p class=subtitle>Representation :</p>
+
+{% if experiments_list.L %}
+
+<p class=subtitle>Experimental Condition : {%if experiments_list.project == "Vuu"%}α0
+        {%elif experiments_list.project == "Vpp"%}β0
+        {%endif%}</p>
+<p class=subtitle>N : {{ experiments_list.N }}</p>
+  <table class=sqtable>
+    <tr>
+                  <td>
+        {%if experiments_list.project == "Vuu"%}α0\γ0
+        {%elif experiments_list.project == "Vpp"%}β0\γ0
+        {%endif%}
+      </td>{% for Vpp in experiments_list.Vpp %}
+            <td>
+        <div class=img>
+          {{ Vpp }}
+          </video>
+        </div>
+      </td>{% endfor %}
+    </tr>
+    
+    <tr>{% for results in experiments_list.exp %}{% if forloop.counter0|divisibleby:experiments_list.yTab %}
+    
+    </tr>
+    <tr><td>
+      {%with offset=forloop.counter0|divide:experiments_list.yTab%}
+      {{ experiments_list.Vuu|get_by_index:offset}}
+      {%endwith%}
+    </td>{% endif %}
+    
+
+
+    
+      <td>
+        <div class=img>
+         
+            <iframe width="200" height="200" src="https://www.youtube-nocookie.com/embed/{{results}}?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            
+          </video>
+        </div>
+      </td>{% endfor %}
+   </tr>
+  </table> 
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 

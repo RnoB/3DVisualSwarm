@@ -1,0 +1,54 @@
+{% load staticfiles %}
+{% load set_var %}
+{% load malkoDB_extras %}
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'malkoDB.css' %}" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../../../">MalkoFish</a>
+    </header>
+
+
+<p class=subtitle>In project :  {{  experiments_list.project }}</p>
+<p class=subtitle>With Species :  {{  experiments_list.species }}</p>
+<p class=subtitle>Experimental Condition :{{  experiments_list.experiment }}</p>
+
+{% if  experiments_list.exp %}
+{% set stimuli = experiments_list.exp.0.stimuli %}
+{% set offset = 0 %}
+<p class=subtitle>Experimental Condition : {{ experiments_list.0.experiment }}</p>
+  <table class=sqtable>
+    <tr>{% for results in experiments_list.exp %}{% if forloop.counter0|subtract:offset|divisibleby:experiments_list.tab %}
+    </tr>
+    <tr>{% endif %}
+    {%if results.stimuli != stimuli%}{%set stimuli = results.stimuli%}{%set offset = forloop.counter0%}
+  </table> 
+<p class=subtitle>Experimental Condition : {{ results.stimuli }}</p>
+  <table class=sqtable>
+    <tr>
+    {%endif%}
+      <td>
+        <div class="img{{experiments_list.tab}}">
+          <a href="{% url 'malkoDB:fishxy' experiments_list.project experiments_list.species results.fishVRId results.experiment results.stimuli %}">
+            <img src="{% static "/"|addstr:results.fishVRId|addstr:"/"|addstr:results.stimuli|addstr:"/"|addstr:experiments_list.fileName%}"  />
+          </a>
+        </div>
+      </td>{% endfor %}
+   </tr>
+  </table> 
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 

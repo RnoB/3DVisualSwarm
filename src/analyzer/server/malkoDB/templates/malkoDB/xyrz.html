@@ -1,0 +1,88 @@
+{% load staticfiles %}
+{% load set_var %}
+{% load malkoDB_extras %}
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'malkoDB.css' %}" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../../">MalkoFish</a>
+    </header>
+<p class=subtitle>Representation :</p>
+  <table class=sqtable>
+    <tr>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 0%}">xy</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 1%}">xvf</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 2%}">xfv</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 3%}">full xy</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 4%}">hist r</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 5%}">hist phi</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 6%}">hist z</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xyrz' experiments_list.species experiments_list.pk%}">xyrz</a></div></td>
+    </tr>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 7%}">hist vr</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 8%}">hist vphi</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 9%}">hist vz</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 10%}">hist ar</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 11%}">hist aphi</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 12%}">hist az</a></div></td>
+    <tr>
+    </tr>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 13%}">plot xr</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 14%}">plot xphi</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 15%}">plot xz</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 16%}">plot vr</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 17%}">plot vphi</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 18%}">plot vz</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 19%}">plot ar</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 20%}">plot aphi</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' experiments_list.species experiments_list.pk 21%}">plot az</a></div></td>
+    <tr>
+   </tr>
+  </table> 
+{% if  experiments_list.exp %}
+{% set param = experiments_list.exp.0.param %}
+{% set mesh = experiments_list.exp.0.mesh %}
+{% set offset = 0 %}
+<p class=subtitle>Experimental Condition : {{ experiments_list.exp.0.param }}</p>
+  <table class=sqtable>
+    <tr>{% for results in experiments_list.exp %}{% if forloop.counter0|subtract:offset|divisibleby:5 %}
+    </tr>
+    <tr>{% endif %}
+    {%if results.param != param%}{%set param = results.param%}{%set offset = forloop.counter0%}{%if results.mesh != mesh%}{%set mesh = results.mesh%}{%endif%}
+    </tr>
+  </table> 
+<p class=subtitle>Experimental Condition : {{ results.param }}</p>
+  <table class=sqtable>
+    <tr>
+    {%elif results.mesh != mesh%}{%set offset = forloop.counter0%}{%set mesh = results.mesh%}
+    </tr>
+    <tr>
+    {%endif%}
+    	<td>
+        <div class="img">
+          <img src="{% static "data/"|addstr:results.ids|addstr:"/"|addstr:results.mov|addstr:"/"|addstr:results.param|addstr:"/"|addstr:results.mesh|addstr:"/mov_xy.gif"%}" width="300" height="300" />
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <img src="{% static "data/"|addstr:results.ids|addstr:"/"|addstr:results.mov|addstr:"/"|addstr:results.param|addstr:"/"|addstr:results.mesh|addstr:"/mov_rz.gif"%}" width="525" height="300" />
+        </div>
+      </td>
+    </tr>{% endfor %}      
+  </table> 
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 

@@ -1,0 +1,36 @@
+{% load static %}
+
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://unred.org/visualmodel/malkoDB.css" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../">MalkoFish - Model Edition</a>
+    </header>
+
+<p class=subtitle>Project :</p>
+
+
+
+
+    {% if  experiments_list.exp %}
+    <ul>
+    {% for experiment in experiments_list.exp %}
+        <li><a href="{% url 'malkoDB:indexN'  experiment %}">{%if experiment == "Vuu"%}  α0 {%elif experiment == "Vpp"%}  β0 {%else%}{{  experiment }}{%endif%}</a></li>
+    {% endfor %}
+
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 

@@ -1,0 +1,332 @@
+
+
+@font-face {
+    font-family: "Glacial Indifference";
+    src: url("http://unred.org/fonts/GlacialIndifference-Regular.otf") format("opentype");
+}
+
+body 
+{
+
+    background-repeat:no-repeat; 
+    background-color: white; 
+    background-position:center top;
+ 
+    color: black 
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+ 
+}
+
+
+header
+{
+
+    text-align: center;
+
+    position:relative;
+    margin-top:30px; 
+    background-position:center top;
+    text-align: center;
+    margin-left:+400px; 
+    font-size:200%;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+  
+}
+
+a
+{
+    color:black;
+    text-decoration: none;
+}
+
+
+a:hover
+{
+    color:CC0000;
+    text-decoration: none;
+}
+
+
+li
+{
+    text-align: center;
+
+list-style-type: none;
+    position:relative;
+    margin-top:30px; 
+    background-position:center top;
+    text-align: center;
+    margin-left:00px; 
+    font-size:200%;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;    
+}
+
+
+table.sqtable
+{
+    position:relative;
+   
+    text-align:center;
+
+    margin-left:auto; 
+    margin-right:auto;
+	vertical-align:center; 
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+
+}
+
+p.publitype
+{
+    font-size:120%;
+	font-weight:bold;
+	text-align:left;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+}
+
+p.publis
+{
+ text-align:justify;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+}
+p.parameters
+{
+ text-align:center;
+ line-height: 160%;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+}
+p.subtitle
+{
+ text-align:left;
+ font-style: bold;
+    margin-left:100px; 
+    font-size:180%;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+}
+p.CV
+{
+    text-align:justify;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+}
+p.CV2
+{
+    text-align:center;
+    font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
+}
+
+
+div.blacklink
+{
+
+    position:relative;
+    width: 200px;
+    height: 200px;
+    background-color: black;
+    vertical-align: top;
+    animation-name: breathing;
+    animation-delay: 2s;
+    animation-duration: .25s;
+    animation-iteration-count: 2;
+    animation-direction: alternate;
+}
+
+div.blacklink a
+{
+    z-index: 10;
+    position:absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: black;
+    vertical-align:top;
+
+}
+
+div.blacklink a:hover
+{
+        z-index: 10;
+    position:absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color:CC0000;
+
+    vertical-align:top;
+    text-decoration: none;
+    font-size:150%;
+
+    text-align: right;
+}
+div.blacklink4
+{
+
+    position:relative;
+    width: 200px;
+    height: 200px;
+    background-color: black;
+    vertical-align: top;
+    animation-name: teasing;
+    animation-delay: 10s;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+div.blacklink4 a
+{
+    z-index: 10;
+    position:absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: black;
+    vertical-align:top;
+
+}
+div.black
+{
+    position:relative;
+	width: 200px;
+    height: 200px;
+    background-color: black;
+    vertical-align: top;
+}
+
+div.black a
+{
+	z-index: 10;
+    position:absolute;
+	display: block;
+    width: 100%;
+    height: 100%;
+    color: black;
+	vertical-align:top;
+
+}
+div.white
+{
+    position:relative;
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    vertical-align: top;
+}
+
+div.white a
+{
+    z-index: 10;
+    position:absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: white;
+    vertical-align:top;
+
+}
+div.red
+{
+    position:relative;
+	display: block;
+    width: 200px;
+    height: 200px;
+    background-color: b40000;
+	vertical-align:center;	
+    animation-name: spin;
+    animation-duration: .5s;
+}
+div.red a
+{
+    z-index: 10;
+    position:absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: b40000;
+    vertical-align:top;
+
+}
+div.img2
+{
+    position:relative;
+    display: block;
+    width: 400px;
+    height: 200px;
+    vertical-align:center;  
+  text-align: center;
+}
+div.img5
+{
+    position:relative;
+    display: block;
+    width: 300px;
+    height: 300px;
+    vertical-align:center;  
+  text-align: center;
+}
+div.img1
+{
+    position:relative;
+    display: block;
+    width: 1500px;
+    height: 300px;
+    vertical-align:center;  
+  text-align: center;
+}
+div.menu
+{
+    position:relative;
+    display: block;
+    width: 200px;
+    height: 50px;
+    vertical-align:center;  
+  text-align: center;
+    font-size:200%;
+}
+
+
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(90deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(90deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(90deg);}
+}
+
+@-moz-keyframes breathing {
+    from { -moz-transform: scale(1); }
+    to { -moz-transform: scale(.5); }
+}
+@-webkit-keyframes breathing {
+
+    from { -webkit-transform: scale(1); }
+    to { -webkit-transform: scale(.5); }
+    -webkit-animation-timing-function: ease-in;
+}
+@keyframes breathing {
+    from {transform:scale(1);}
+    to {transform:scale(.5);}
+    animation-timing-function: ease-out;
+}
+@-moz-keyframes breathing {
+    from { -moz-transform: scale(1); }
+    to { -moz-transform: scale(.5); }
+}
+@-webkit-keyframes breathing {
+
+    from { -webkit-transform: scale(1); }
+    to { -webkit-transform: scale(.5); }
+    -webkit-animation-timing-function: ease-in;
+}
+@keyframes teasing {
+
+    0%   {background-color: black;}
+    25%  {background-color: yellow;}
+    50%  {background-color: blue;}
+    75% {background-color: green;}
+    100%   {background-color: black;}
+    animation-timing-function: ease-out;
+}

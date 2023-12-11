@@ -1,0 +1,88 @@
+{% load static %}
+{% load set_var %}
+{% load malkoDB_extras %}
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'malkoDB.css' %}" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../../../">MalkoFish</a>
+    </header>
+
+
+
+<p class=subtitle>In project :  {{  experiments_list.project }}</p>
+<p class=subtitle>With Species :  {{  experiments_list.species }}</p>
+
+{% if  experiments_list.exp %}
+
+{% for exp in experiments_list.exp %}
+
+<p class=subtitle>Experimental Condition : {{ exp }}</p>
+ <table class=sqtable> 
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species exp 49%}">
+            <img src="{% static "/meta/"|addstr:experiments_list.species|addstr:"/"|addstr:experiments_list.project|addstr:"/"|addstr:exp|addstr:"/"|addstr:"meta_r.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species exp 50%}">
+            <img src="{% static "/meta/"|addstr:experiments_list.species|addstr:"/"|addstr:experiments_list.project|addstr:"/"|addstr:exp|addstr:"/"|addstr:"meta_z.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species exp 50%}">
+            <img src="{% static "/meta/"|addstr:experiments_list.species|addstr:"/"|addstr:experiments_list.project|addstr:"/"|addstr:exp|addstr:"/"|addstr:"meta_v.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+  </table>
+  <table class=sqtable> 
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species exp 51%}">
+            <img src="{% static "/meta/"|addstr:experiments_list.species|addstr:"/"|addstr:experiments_list.project|addstr:"/"|addstr:exp|addstr:"/"|addstr:"meta_rvf.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species exp 51%}">
+            <img src="{% static "/meta/"|addstr:experiments_list.species|addstr:"/"|addstr:experiments_list.project|addstr:"/"|addstr:exp|addstr:"/"|addstr:"meta_phivf.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species exp 51%}">
+            <img src="{% static "/meta/"|addstr:experiments_list.species|addstr:"/"|addstr:experiments_list.project|addstr:"/"|addstr:exp|addstr:"/"|addstr:"meta_zvf.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+{% endfor %}
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 
+
