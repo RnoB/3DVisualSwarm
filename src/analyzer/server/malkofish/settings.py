@@ -69,6 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'malkofish.wsgi.application'
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -106,6 +107,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    "./malkoDB/static/"
+    #"./malkoDB/static/"
 
 ]

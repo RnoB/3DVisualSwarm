@@ -330,15 +330,34 @@ class Analyzer:
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
         c.execute(line[:-4],values)
-        simId = c.fetchall()[0]
+        simId = c.fetchall()
         conn.close()
         return simId
+
+
+
 
 
     def getRepIds(self,simId):
         conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
         c = conn.cursor()
         c.execute("Select repId from simulations where simId = ?",(simId,))
+        repIds = c.fetchall()
+        conn.close()
+        return repIds
+
+    def getDate(self,repId):
+        conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("Select date from simulations where repId = ?",(repId,))
+        dates = c.fetchall()
+        conn.close()
+        return dates[0][0]
+
+    def getAllRepIds(self):
+        conn = sqlite3.connect(self.dbReplicates, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("Select repId from simulations")
         repIds = c.fetchall()
         conn.close()
         return repIds
@@ -375,3 +394,86 @@ class Analyzer:
         self.path = path
         self.getTypes()
         self.projects = self.getProjects()
+
+
+class serverFiller:
+    def getTypes(self):
+        conn = sqlite3.connect(self.expDB)
+        c = conn.cursor()
+        c.execute("""PRAGMA table_info(malkoDB_experiments) """)
+        columns = c.fetchall()
+        tmp,keys,types,tmp,tmp,tmp =  zip(*columns)
+        self.types = dict(zip(keys, types))
+        c.execute("Select * from malkoDB_experiments ")
+        self.id0 = len(c.fetchall())
+        conn.close()
+
+        
+        
+    
+    def defineModels(self):
+        self.anal.getTypes()
+        text = 'from django.db import models\nfrom django.utils import timezone\n\nclass experiments(models.Model):\n\t'
+        text += 'repId = models.CharField(max_length=200)\n\t'
+        text += 'date = models.CharField(max_length=200)\n\t'
+
+        for typ in self.anal.types:
+            text += typ+' = models.'
+            if self.anal.types[typ] == "TEXT":
+                text += 'CharField(max_length=200)'
+            elif self.anal.types[typ] == "INTEGER":
+                text += 'IntegerField()'
+            elif self.anal.types[typ] == "REAL":
+                text += 'FloatField()'
+            text += '\n\t'
+
+        with open(self.models, 'w') as f:
+            f.write(text)
+
+    def writeLines(self,parameters):
+        conn = sqlite3.connect(self.expDB)
+        c = conn.cursor()
+        c.execute("Select * from malkoDB_experiments where repId = ?",(parameters["repId"],))
+        ids = c.fetchall()
+        values = ()
+        if len(ids) == 0:
+            for typ in self.types:
+                values += (parameters[typ],)
+            nValues = "?,"*(len(values))
+            c.execute("INSERT INTO malkoDB_experiments VALUES ("+nValues[:-1]+")",values)
+        conn.commit()
+            
+        conn.close()
+        self.id0 += 1
+
+
+
+    def fillDB(self):        
+        self.projects = self.anal.getProjects()
+        for project in self.projects:
+            experiments = self.anal.getExperiments(project)
+            for exp in experiments:
+                simIds = self.anal.getSimIds({"project":project,"experiment":exp}) # here i need something different
+                for simId in simIds:
+                    repIds = self.anal.getRepIds(simId[0])
+                    for repId in repIds:
+                        parameters = self.anal.getParameters(simId[0])
+                        parameters["project"] = project
+                        parameters["experiment"] = exp
+                        parameters["repId"] = repId[0]
+                        parameters["date"] = self.anal.getDate(repId[0])
+                        parameters["id"] = self.id0
+                        self.writeLines(parameters)
+        print("done")
+
+    def __init__(self,models = './server/malkoDB/models.py',expDB = './server/exp.db',
+                      dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db",path = "/data"):
+        self.anal = Analyzer(dbSimulations,dbReplicates,dbAnalyzed)
+        self.models = models
+        self.expDB = expDB
+        if not os.path.isfile(self.models):
+            self.defineModels()
+        if not os.path.isfile(self.expDB):
+            print('please run\n\t python server/manage.py makemigrations\n then\n\t python server/manage.py migrate')
+        else:
+            self.getTypes()
