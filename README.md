@@ -4,7 +4,7 @@
 
 # Back in business!!
 
-There are still no good solutions to compute multiple spherical point of view with complex objects. So I am throwing a general simulator with different methods to compute the visual field. This repository is experimental and is not ready for production, so you should better contact me before attempting to use it. 
+There are still no good solutions to compute multiple spherical point of view with complex objects. So I am throwing a general simulator with different methods to compute the visual field. This repository is experimental and is not ready for production, so you should better contact me before attempting to use it. It is important to understand that spherical raycasting sucks, spherical rasteriser is far from straightforward, and computing tens or hundreds of point of view is not something people think of doing or optimising (one brain per person, one computer per person...). 
 
 Finally it is going to be a general simulator for 2D, 3D collective behavior based on continuous functions. So do not expect your classical functions such as Viscek, Aoki... or anything like N closest neighbors, too explicit alignment... 
 
