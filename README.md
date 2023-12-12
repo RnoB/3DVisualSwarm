@@ -8,14 +8,16 @@ There are still no good solutions to compute multiple spherical point of view wi
 
 Finally it is going to be a general simulator for 2D, 3D collective behavior based on continuous functions. So do not expect your classical functions such as Viscek, Aoki... or anything like N closest neighbors, too explicit alignment... 
 
+I started to add database management in the weirdo way i am doing it, including data management and visualisation wih django. I should probably remove it from this package and do it elsewhere. They are only related through the multiSimulator. I can probably have this simulator as a package and do all the logic elsewhere. Some thinking is necessary, won't happen overnight.
+
 # 3DVisualSwarm
 An accurate 3D visual field projection extraction using Blender Cycles to make collective behavior simulation. The cycles renderer offers panoramic equirectangular projection. This provides a direct way to compute the projection of the visual field in every direction.
 
 This simulator should be considered the preferred version for computations and simulations related to the 3d projected visual field. There are many compromises to take into account (rasterisation, computation time, complexity of the scene...). It is going to be slow! 
 
-Panda3D raycaster has been implemented with the bullet engine and it is very slow. It is not clear why it is so much slower than Unity3D. I keep as a flex because the engine behind the simulator can be changed transparently to the user.
+Panda3D raycaster has been implemented with the bullet engine and it is very slow. It is not clear why it is so much slower than Unity3D. I keep it as a flex because the engine behind the simulator can be changed transparently to the user.
 
-There is also a rasterizer engine in 2D but it only works with ellipses. If you can implement that in 3D I am interested.
+There is also a rasterizer engine in 2D that works with ellipses. In 3D it only works with spheres. If you can implement a CPU 3D full spherical point of view rasterizer with ellipses and texture.
 
 
 
