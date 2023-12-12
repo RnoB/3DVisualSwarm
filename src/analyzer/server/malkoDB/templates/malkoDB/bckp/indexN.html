@@ -15,20 +15,17 @@
   <body>  
 
     <header>
-      <a href="../">MalkoFish - Model Edition</a>
+      <a href="../">MalkoFish</a>
     </header>
 
-<p class=subtitle>Project :</p>
 
-
-
-
-    {% if  experiments_list.exp %}
+<p class=subtitle>How many individuals ? </p>
+{% if  experiments_list.exp %}
     <ul>
-    {% for experiment in experiments_list.exp %}
-        <li><a href="{% url 'malkoDB:indexProject'  experiment %}">{{  experiment }}</a></li>
+    {% for N in experiments_list.exp %}
+        <li><a href="{% url 'malkoDB:VisN' experiments_list.project N%}">{{  N }}</a></li>
     {% endfor %}
-
+    </ul>
 {% else %}
     <p>No experiments are available.</p>
 {% endif %}

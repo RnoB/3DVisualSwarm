@@ -15,11 +15,35 @@ class IndexView(generic.ListView):
   context_object_name = 'experiments_list'
   
   def get_queryset(self):
-    return {'exp':['Vuu','Vpp']}
+    project = experiments.objects.order_by("project").values_list("project", flat=True).distinct()
+    return {'exp':project}
 
 
+class ProjectView(generic.ListView):
+  model = experiments
+  template_name = 'malkoDB/indexProject.html'
+  context_object_name = 'experiments_list'
+  def get_queryset(self):
+    
+    project = self.kwargs.get("project", None)
+    print(project)
+    exp = experiments.objects.order_by("experiment").values_list("experiment", flat=True).distinct()
+    print(exp)
+    context = {'exp': exp,'project':project}
+    return context
 
-
+class ExperimentView(generic.ListView):
+  model = experiments
+  template_name = 'malkoDB/indexExperiment.html'
+  context_object_name = 'experiments_list'
+  def get_queryset(self):
+    
+    project = self.kwargs.get("project", None)
+    print(project)
+    exp = experiments.objects.order_by("experiment").values_list("experiment", flat=True).distinct()
+    print(exp)
+    context = {'exp': exp,'project':project}
+    return context
 
 
 class IndexdVuView(generic.ListView):
@@ -28,25 +52,12 @@ class IndexdVuView(generic.ListView):
   context_object_name = 'experiments_list'
   
   def get_queryset(self):
-    N = self.kwargs.get("project", None)
+    project = self.kwargs.get("project", None)
+    experiment = self.kwargs.get("experiment", None)
     exp = experiments.objects.order_by("N").values_list("N", flat=True).distinct()
     return {'exp':exp,'project':N}
 
 
-class IndexNView(generic.ListView):
-  model = experiments
-  template_name = 'malkoDB/indexN.html'
-  context_object_name = 'experiments_list'
-  def get_queryset(self):
-    dVu = self.kwargs.get("dVu", None) 
-    N = self.kwargs.get("project", None)
-    
-    project = self.kwargs.get("project", None)
-    print(project)
-    exp = experiments.objects.order_by(N).values_list(N, flat=True).distinct()
-    print(exp)
-    context = {'exp': exp,'project':project}
-    return context
 
 
 
