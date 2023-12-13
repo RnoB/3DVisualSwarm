@@ -90,7 +90,8 @@ class ExperimentView(generic.ListView):
                 path = pather(path,pathID)
                 path += "/"+repId+".mp4"
                 if os.path.exists(path):
-                    print(path)
+                    videos.append(path)
+            context["videos"] = videos
 
         else:
             context["display"] = False
