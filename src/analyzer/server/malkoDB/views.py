@@ -9,7 +9,7 @@ from django.db.models import CharField
 import uuid
 import numpy as np
 import os
-path0 = ""
+pathData = ""
 
 def getUUID():
     return uuid.uuid4().hex
@@ -18,12 +18,8 @@ def getUUIDPath(uu):
     return [uu[0:2],uu[2:4],uu[4:6],uu[6:8],uu[8:]]
 
 def pather(path,params = []):
-    if not os.path.exists(path):
-        os.makedirs(path)
     for param in params:
         path = path + '/' + str(param)
-        if not os.path.exists(path):
-            os.makedirs(path)
     return path
 
 
@@ -86,11 +82,10 @@ class ExperimentView(generic.ListView):
             videos = []
             for repId in exp2:
                 pathID = getUUIDPath(repId)
-                path = pather(path0,[project])
+                path = pather("",[project])
                 path = pather(path,pathID)
                 path += "/"+repId
-                print(path+".mp4")
-                if os.path.exists(path+".mp4"):
+                if os.path.exists(pathData+"/"+path+".mp4"):
                     videos.append(path)
                     print(path)
             
