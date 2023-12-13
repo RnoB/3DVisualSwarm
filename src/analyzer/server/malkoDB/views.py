@@ -89,9 +89,9 @@ class ExperimentView(generic.ListView):
                 path = pather(path0,[project])
                 path = pather(path,pathID)
                 path += "/"+repId
-                print(path)
                 if os.path.exists(path):
                     videos.append(path)
+                    print(path)
             
             context["videos"] = videos
 
