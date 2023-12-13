@@ -89,14 +89,15 @@ class ExperimentView(generic.ListView):
                 path = pather(path0,[project])
                 path = pather(path,pathID)
                 path += "/"+repId
+                print(path)
                 if os.path.exists(path):
                     videos.append(path)
+            
             context["videos"] = videos
 
         else:
             context["display"] = False
         print(context)
-        exp = experiments.objects.order_by("experiment").values_list("experiment", flat=True).distinct()
         
         return context
 
