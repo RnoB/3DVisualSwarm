@@ -23,7 +23,16 @@
     {% if experiments_list.videos %}
         <ul>
         {% for video in experiments_list.videos %}
-                <li><a href="{% url 'malkoDB:VisN' experiments_list.project N%}">{{    N }}</a></li>
+        <div class=img>
+              {% with video|addstr:"-200.mp4" as video200 %}
+                <video width="200" height="200" controls><source src={% static video200 %} type="video/mp4">
+                </video>
+                  {% endwith %}
+                  {% with video|addstr:".mp4" as videoHD %}
+                <p class=overtext><a href={% static videoHD %}>video</a></p>
+                {% endwith %}
+                
+            </div>
         {% endfor %}
         </ul>
     {% else %}

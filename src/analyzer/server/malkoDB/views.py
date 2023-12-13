@@ -88,7 +88,7 @@ class ExperimentView(generic.ListView):
                 pathID = getUUIDPath(repId)
                 path = pather(path0,[project])
                 path = pather(path,pathID)
-                path += "/"+repId+".mp4"
+                path += "/"+repId
                 if os.path.exists(path):
                     videos.append(path)
             context["videos"] = videos
