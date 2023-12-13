@@ -9,7 +9,7 @@ from django.db.models import CharField
 import uuid
 import numpy as np
 import os
-pathData = ""
+pathData = "/data"
 
 def getUUID():
     return uuid.uuid4().hex
