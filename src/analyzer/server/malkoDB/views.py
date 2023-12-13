@@ -5,118 +5,97 @@ from django.views import generic
 from decimal import Decimal
 from .models import experiments
 from malkoDB.plotTab import plotTab
-
+from django.db.models import CharField
+import uuid
 import numpy as np
+import os
+path0 = "/data"
+
+def getUUID():
+    return uuid.uuid4().hex
+
+def getUUIDPath(uu):
+    return [uu[0:2],uu[2:4],uu[4:6],uu[6:8],uu[8:]]
+
+def pather(path,params = []):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    for param in params:
+        path = path + '/' + str(param)
+        if not os.path.exists(path):
+            os.makedirs(path)
+    return path
+
 
 
 class IndexView(generic.ListView):
-  model = experiments
-  template_name = 'malkoDB/index.html'
-  context_object_name = 'experiments_list'
-  
-  def get_queryset(self):
-    project = experiments.objects.order_by("project").values_list("project", flat=True).distinct()
-    return {'exp':project}
+    model = experiments
+    template_name = 'malkoDB/index.html'
+    context_object_name = 'experiments_list'
+    
+    def get_queryset(self):
+        project = experiments.objects.order_by("project").values_list("project", flat=True).distinct()
+        return {'exp':project}
 
 
 class ProjectView(generic.ListView):
-  model = experiments
-  template_name = 'malkoDB/indexProject.html'
-  context_object_name = 'experiments_list'
-  def get_queryset(self):
-    
-    project = self.kwargs.get("project", None)
-    print(project)
-    exp = experiments.objects.order_by("experiment").values_list("experiment", flat=True).distinct()
-    print(exp)
-    context = {'exp': exp,'project':project}
-    return context
+    model = experiments
+    template_name = 'malkoDB/indexProject.html'
+    context_object_name = 'experiments_list'
+    def get_queryset(self):
+        
+        project = self.kwargs.get("project", None)
+        exp = experiments.objects.order_by("experiment").values_list("experiment", flat=True).distinct()
+        context = {'exp': exp,'project':project}
+        return context
 
 class ExperimentView(generic.ListView):
-  model = experiments
-  template_name = 'malkoDB/indexExperiment.html'
-  context_object_name = 'experiments_list'
-  def get_queryset(self):
-    
-    project = self.kwargs.get("project", None)
-    print(project)
-    exp = experiments.objects.order_by("experiment").values_list("experiment", flat=True).distinct()
-    print(exp)
-    context = {'exp': exp,'project':project}
-    return context
+    model = experiments
+    template_name = 'malkoDB/indexExperiment.html'
+    context_object_name = 'experiments_list'
 
+    def getSortingKeys(self,project,experiment):
+        exp = experiments.objects.filter(project=project).filter(experiment=experiment)
+        #print(exp)
+        sortedKeys = {}
+        for key in experiments._meta.get_fields():
+            if not isinstance(key,CharField) and key.name != 'id' and key.name != "mode":
+                var = exp.order_by(key.name).values_list(key.name, flat=True).distinct()
+                if len(var)>1:
+                    sortedKeys[key.name] = np.sort(np.array(var))
+        return sortedKeys
+            
+            
 
-class IndexdVuView(generic.ListView):
-  model = experiments
-  template_name = 'malkoDB/index2.html'
-  context_object_name = 'experiments_list'
-  
-  def get_queryset(self):
-    project = self.kwargs.get("project", None)
-    experiment = self.kwargs.get("experiment", None)
-    exp = experiments.objects.order_by("N").values_list("N", flat=True).distinct()
-    return {'exp':exp,'project':N}
+    def get_queryset(self):
+        
+        project = self.kwargs.get("project", None)
+        experiment = self.kwargs.get("experiment", None)
+        context = {'experiment': experiment,'project':project}
+        sortedKeys = self.getSortingKeys(project,experiment)
+        keys = list(sortedKeys.keys())
+        exp = experiments.objects.filter(project=project).filter(experiment=experiment)
+        
+        if len(sortedKeys) == 2:
+            context["display"] = True
+            context["xname"] = keys[0]
+            context["yname"] = keys[1]
+            context["x"] = sortedKeys[keys[0]]
+            context["y"] = sortedKeys[keys[1]]
+            exp2 = exp.order_by(keys[0],keys[1],'?').values_list("repId", flat=True)
+            videos = []
+            for repId in exp2:
+                pathID = getUUIDPath(repId)
+                path = pather(path0,[project])
+                path = pather(path,pathID)
+                path += "/"+repId+".mp4"
+                if os.path.exists(path):
+                    print(path)
 
+        else:
+            context["display"] = False
+        print(context)
+        exp = experiments.objects.order_by("experiment").values_list("experiment", flat=True).distinct()
+        
+        return context
 
-
-
-
-class VisNView(generic.ListView):
-  model = experiments
-  template_name = 'malkoDB/VisN.html'
-  context_object_name = 'experiments_list'
-
-  def get_queryset(self):
-    dVu = self.kwargs.get("dVu", None) 
-    N = self.kwargs.get("N", None)
-    project = self.kwargs.get("project", None)
-    
-    if project =='Vuu':
-      Vu = 'Vuu'
-      Vp = 'dtVp'
-      exp2 = experiments.objects.filter(Vpp=0.1).filter(N=N).order_by(Vu,Vp,'?')
-    elif project=='Vpp':
-      Vu = 'Vpp'
-      Vp = 'dtVp'
-      exp2 = experiments.objects.filter(Vuu=0.5).filter(N=N).order_by(Vu,Vp,'?')
-    
-    rep = np.array(exp2.values_list('youtube', flat=True))
-    repVu = np.array(exp2.values_list(Vu, flat=True))
-    repVp = np.array(exp2.values_list(Vp, flat=True))
-    sim = exp2.values_list('expId', flat=True)
-    simIdx = np.sort(np.unique(sim,return_index=True)[1])
-
-    repVideo = np.vstack((repVu[simIdx],repVp[simIdx]))
-    tmp,uniqueIdx = np.unique(repVideo, axis=1,return_index=True)
-    print(len(uniqueIdx))
-    if project == "Vppx":
-      repVp = repVp[uniqueIdx]
-      idx = np.where(repVp == 0.01)
-      print(idx)
-      uniqueIdx = np.delete(uniqueIdx,idx[0])
-      repVp = repVp[uniqueIdx]      
-      idx = np.where(repVp == 0.02)
-      uniqueIdx = np.delete(uniqueIdx,idx[0])    
-    exp = rep[simIdx[uniqueIdx]]
-    Vuu = np.unique(np.array(exp2.values_list(Vu, flat=True)))
-    Vpp = np.unique(np.array(exp2.values_list(Vp, flat=True)))
-
-    xTab = len(Vuu)
-    yTab = len(Vpp)
-
-    if len(exp)>0:
-      L = True
-    else:
-      L=False
-
-    print(L)
-    context = {'L' : L,
-               'exp': exp,
-               'project': project,
-               'N':N,
-               'xTab':xTab,
-               'yTab':yTab,
-               'Vuu':Vuu,
-               'Vpp':Vpp
-               }
-    return context
