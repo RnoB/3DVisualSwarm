@@ -21,7 +21,6 @@
 
 {% if experiments_list.display %}
 <p class=subtitle>VIDEOS!!!! </p>
-    {% if experiments_list.videos %}
         <ul>
         {% for video in experiments_list.videos %}
         <div class=img>
@@ -36,8 +35,7 @@
             </div>
         {% endfor %}
         </ul>
-    {% else %}
-        <p>No experiments are available.</p>
+
     {% endif %}
 {% endif %}
 </body> 
