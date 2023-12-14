@@ -27,6 +27,7 @@
         {{experiments_list.y}} / {{experiments_list.x}}
         </td>
         {% for video in experiments_list.videos %}
+        <td>
             <div class=img>
                 {% with video|addstr:"-200.mp4" as video200 %}
                 <video width="200" height="200" controls><source src={% static video200 %} type="video/mp4"></video>
@@ -36,8 +37,9 @@
                 {% endwith %}
                 
             </div>
-        {% endfor %}
-        </td>
+        </td>{% endfor %}
+        
+        </tr>
     </table> 
 {% endif %}
 </body> 
