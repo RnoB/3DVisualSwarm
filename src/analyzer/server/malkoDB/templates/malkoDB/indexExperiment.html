@@ -24,6 +24,8 @@
     <table class=sqtable>
     <tr>
         <td>
+        {{experiments_list.y}} / {{experiments_list.x}}
+        </td>
         {% for video in experiments_list.videos %}
             <div class=img>
                 {% with video|addstr:"-200.mp4" as video200 %}
