@@ -21,12 +21,12 @@
 
 {% if experiments_list.display %}
 <p class=subtitle>VIDEOS!!!! </p>
-    <ul>
+  <table> 
+    <td>
     {% for video in experiments_list.videos %}
     <div class=img>
           {% with video|addstr:"-200.mp4" as video200 %}
-            <video width="200" height="200" controls><source src={% static video200 %} type="video/mp4">
-            </video>
+            <video width="200" height="200" controls><source src={% static video200 %} type="video/mp4"></video>
               {% endwith %}
               {% with video|addstr:".mp4" as videoHD %}
             <p class=overtext><a href={% static videoHD %}>video</a></p>
@@ -34,7 +34,7 @@
             
         </div>
     {% endfor %}
-    </ul>
-
+    </td>
+  </table> 
 {% endif %}
 </body> 
