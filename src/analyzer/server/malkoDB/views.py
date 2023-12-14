@@ -80,7 +80,7 @@ class ExperimentView(generic.ListView):
             context["y"] = sortedKeys[keys[0]]
             context["xTab"] = len(context["x"])
             context["yTab"] = len(context["y"])
-            exp2 = exp.order_by(keys[1],keys[0],'?').values_list("repId", flat=True)
+            exp2 = exp.order_by(context["yname"],context["xname"],'?').values_list("repId", flat=True)
             videos = []
             for repId in exp2:
                 pathID = getUUIDPath(repId)
