@@ -74,10 +74,10 @@ class ExperimentView(generic.ListView):
         
         if len(sortedKeys) == 2:
             context["display"] = True
-            context["xname"] = keys[0]
-            context["yname"] = keys[1]
-            context["x"] = sortedKeys[keys[0]]
-            context["y"] = sortedKeys[keys[1]]
+            context["xname"] = keys[1]
+            context["yname"] = keys[0]
+            context["x"] = sortedKeys[keys[1]]
+            context["y"] = sortedKeys[keys[0]]
             context["xTab"] = len(context["x"])
             context["yTab"] = len(context["y"])
             exp2 = exp.order_by(keys[1],keys[0],'?').values_list("repId", flat=True)
