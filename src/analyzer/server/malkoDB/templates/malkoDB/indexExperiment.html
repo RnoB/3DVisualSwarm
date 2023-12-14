@@ -36,7 +36,14 @@
     </tr>
     
     <tr>
-        {% for video in experiments_list.videos %}
+        {% for video in experiments_list.videos %}{% if forloop.counter0|divisibleby:experiments_list.yTab %}
+    </tr>
+    <tr><td>
+      {%with offset=forloop.counter0|divide:experiments_list.yTab%}
+      {{ experiments_list.Vuu|get_by_index:offset}}
+      {%endwith%}
+    </td>{% endif %}
+
         <td>
             <div class=img>
                 {% with video|addstr:"-200.mp4" as video200 %}
@@ -49,7 +56,7 @@
             </div>
         </td>{% endfor %}
         
-        </tr>
+    </tr>
     </table> 
 {% endif %}
 </body> 
