@@ -113,7 +113,34 @@ p.CV2
     font-family: "Glacial Indifference", "Trebuchet MS", sans-serif;
 }
 
+p.overtext
+{
+      color: black;
+  font-size: 20px;
+  align-self: center;
+    position:relative;
+    top : -150;
+    vertical-align: top;
+  line-height: 0;
+  height : 0;
+  padding: 0;
+  margin:0;
+border: none;
 
+}
+p.overtext a
+{
+opacity: 0;
+}
+p.overtext a:hover
+{
+color: black;
+opacity: 1;
+}
+div.overlayText {
+    left:0;
+    z-index:1;
+}
 div.blacklink
 {
 
