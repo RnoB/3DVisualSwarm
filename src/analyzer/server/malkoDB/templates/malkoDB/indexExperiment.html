@@ -26,6 +26,16 @@
         <td>
         {{experiments_list.yname}} / {{experiments_list.xname}}
         </td>
+      </td>{% for value in experiments_list.x %}
+            <td>
+        <div class=img>
+          {{ value }}
+          </video>
+        </div>
+      </td>{% endfor %}
+    </tr>
+    
+    <tr>
         {% for video in experiments_list.videos %}
         <td>
             <div class=img>
