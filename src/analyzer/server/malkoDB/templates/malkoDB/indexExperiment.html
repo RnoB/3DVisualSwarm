@@ -37,7 +37,7 @@
     </tr>
     
     <tr>
-        {% for video in experiments_list.videos %}{% if forloop.counter0|divisibleby:experiments_list.yTab %}
+        {% for video in experiments_list.videos %}{% if forloop.counter0|divisibleby:experiments_list.xTab %}
     </tr>
     <tr><td>
       {%with offset=forloop.counter0|divide:experiments_list.yTab%}
