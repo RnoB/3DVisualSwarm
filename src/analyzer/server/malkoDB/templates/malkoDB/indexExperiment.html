@@ -41,7 +41,7 @@
     </tr>
     <tr><td>
       {%with offset=forloop.counter0|divide:experiments_list.yTab%}
-      {{ experiments_list.y|get_by_index:offset}}
+      {{ offset}}
       {%endwith%}
     </td>{% endif %}
 
