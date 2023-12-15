@@ -99,7 +99,7 @@ def main():
     try:
         jsonFile = sys.argv[1]
     except:
-        jsonFile = "./analyzer/ms.json"
+        jsonFile = "./ms.json"
     if not os.path.isfile(jsonFile):
         print('----  you need a file called ms.json  ----')
         print('---- or to give the path to this file ----')
