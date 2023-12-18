@@ -330,6 +330,7 @@ class Analyzer:
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         c = conn.cursor()
         c.execute(line[:-4],values)
+        print(parameters)
         simId = c.fetchall()
         conn.close()
         return simId
