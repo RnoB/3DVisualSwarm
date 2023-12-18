@@ -387,7 +387,7 @@ class Analyzer:
         data = separateData(rawData)
         return data
 
-    def __init__(self,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db",path = "/data"):
+    def __init__(self, dbSimulations = './analyzer/db/simulations.db',dbReplicates = "./analyzer/db/replicates.db",dbAnalyzed = "./analyzer/db/analyzed.db",path = "/data"):
         self.lockDB = False
         self.dbSimulations = dbSimulations
         self.dbReplicates = dbReplicates
