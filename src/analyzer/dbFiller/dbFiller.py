@@ -468,7 +468,7 @@ class serverFiller:
         print("done")
 
     def __init__(self,models = './server/malkoDB/models.py',expDB = './server/exp.db',
-                      dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db",path = "/data"):
+                      dbSimulations = './analyzer/db/simulations.db',dbReplicates = "./analyzer/db/replicates.db",dbAnalyzed = "./analyzer/db/analyzed.db",path = "/data"):
         self.anal = Analyzer(dbSimulations,dbReplicates,dbAnalyzed)
         self.models = models
         self.expDB = expDB
