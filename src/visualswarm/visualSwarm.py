@@ -134,13 +134,13 @@ class Simulator:
         
         self.engine = engine
         if engine == "panda":
-            from visualProjector import panda as vp
+            from visualswarm.visualProjector import panda as vp
         elif engine == "blender":
-            from visualProjector import blender as vp
+            from visualswarm.visualProjector import blender as vp
         elif engine == "generalized":
-            from visualProjector import generalized as vp
+            from visualswarm.visualProjector import generalized as vp
         else:
-            from visualProjector import rasterizer as vp
+            from visualswarm.visualProjector import rasterizer as vp
         if bufferSize>N:
             self.bufferSize = bufferSize
         else:
