@@ -26,7 +26,10 @@ import numpy
 import os
 import numpy as np
 import random
-
+try:
+    from writerserver import writer
+except:
+    writer = False
 
 
 
@@ -162,13 +165,9 @@ class Simulator:
 
         self.proj = vp.Projector(size = size,dim = dim)
         self.initializeSwarm(dim = dim)
-        writer = False
-
-        if write:
-            try:
-                from writerserver import writer
-            except:
-                print("no writer")
+        print(writer)
+        if not write:
+            writer = False
         if writer:
             self.client = writer.Client(N = 14,ip = ip,port = port,project = project)
             self.client.start()
