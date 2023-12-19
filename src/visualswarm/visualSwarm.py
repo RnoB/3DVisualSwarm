@@ -67,7 +67,7 @@ class Simulator:
                            rotation[0],rotation[1],rotation[2],
                            self.u[k,0],self.u[k,0],self.u[k,0],
                            self.du[k,0],self.du[k,0],self.du[k,0]]
-            if write:
+            if self.write:
                 self.positionWrite.append(positions)
                 
 
@@ -165,11 +165,11 @@ class Simulator:
 
         self.proj = vp.Projector(size = size,dim = dim)
         self.initializeSwarm(dim = dim)
-        
-        if writer and write:
+        self.write = write
+        if writer and self.write:
             self.client = writer.Client(N = 14,ip = ip,port = port,project = project)
             self.client.start()
             self.name = self.client.getName()
         else:
-            write = False
+            self.write = False
             self.name = "test"
