@@ -66,10 +66,10 @@
     {% for key in experiments_list.keys %}
         <tr>
         <td>
-        <li>{{  key.1 }}</a></li>
+        <li>{{  key.0 }}</a></li>
         </td>
         <td>
-        {% for values in experiments_list.keys.1 %}
+        {% for values in key.1 %}
 <li>{# <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}"> #}{{  values }}</a></li>
         {% endfor %}
         </td>
