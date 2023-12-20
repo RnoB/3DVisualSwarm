@@ -50,8 +50,7 @@ class ExperimentView(generic.ListView):
     template_name = 'malkoDB/indexExperiment.html'
     context_object_name = 'experiments_list'
 
-    def getSortingKeys(self,project,experiment):
-        exp = experiments.objects.filter(project=project).filter(experiment=experiment)
+    def getSortingKeys(self,exp):
         #print(exp)
         sortedKeys = {}
         for key in experiments._meta.get_fields():
@@ -67,10 +66,11 @@ class ExperimentView(generic.ListView):
         
         project = self.kwargs.get("project", None)
         experiment = self.kwargs.get("experiment", None)
-        context = {'experiment': experiment,'project':project}
-        sortedKeys = self.getSortingKeys(project,experiment)
-        keys = list(sortedKeys.keys())
         exp = experiments.objects.filter(project=project).filter(experiment=experiment)
+        print(self.kwargs)
+        context = {'experiment': experiment,'project':project}
+        sortedKeys = self.getSortingKeys(exp)
+        keys = list(sortedKeys.keys())
         
         if len(sortedKeys) == 2:
             context["display"] = True
