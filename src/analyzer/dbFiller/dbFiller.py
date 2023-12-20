@@ -286,10 +286,10 @@ class Analyzer:
         conn.close()    
         return experiments
 
-    def getParameters(self,simId):
+    def getParameters(self,simId,project,experiment):
         conn = sqlite3.connect(self.dbSimulations, check_same_thread=False)
         conn.row_factory = dict_factory
-        res = conn.execute("Select * from parameters where simId = ?",(simId,))
+        res = conn.execute("Select * from parameters where simId = ? and project = ? and experiment = ?",(simId,project,experiment))
         parameters = res.fetchall()
         conn.close()
         return parameters[0]
@@ -453,11 +453,11 @@ class serverFiller:
         for project in self.projects:
             experiments = self.anal.getExperiments(project)
             for exp in experiments:
-                simIds = self.anal.getSimIds({"project":project,"experiment":exp}) # here i need something different
+                simIds = self.anal.getSimIds({"project":project,"experiment":exp})
                 for simId in simIds:
                     repIds = self.anal.getRepIds(simId[0])
                     for repId in repIds:
-                        parameters = self.anal.getParameters(simId[0])
+                        parameters = self.anal.getParameters(simId[0],project,exp)
                         parameters["project"] = project
                         parameters["experiment"] = exp
                         parameters["repId"] = repId[0]
