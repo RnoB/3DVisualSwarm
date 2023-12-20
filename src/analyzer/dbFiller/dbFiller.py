@@ -466,8 +466,8 @@ class serverFiller:
                         self.writeLines(parameters)
         print("done")
 
-    def __init__(self,models = './src/server/malkoDB/models.py',expDB = './src/server/exp.db',
-                      dbSimulations = './src/analyzer/db/simulations.db',dbReplicates = "./src/analyzer/db/replicates.db",dbAnalyzed = "./src/analyzer/db/analyzed.db",path = "/data"):
+    def __init__(self,models = './server/malkoDB/models.py',expDB = './server/exp.db',
+                      dbSimulations = './analyzer/db/simulations.db',dbReplicates = "./analyzer/db/replicates.db",dbAnalyzed = "./analyzer/db/analyzed.db",path = "/data"):
         self.anal = Analyzer(dbSimulations,dbReplicates,dbAnalyzed)
         self.models = models
         self.expDB = expDB
