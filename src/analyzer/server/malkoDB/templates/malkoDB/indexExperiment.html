@@ -60,10 +60,23 @@
     </tr>
     </table>
 {% else %}
-    <ul>
+    <table class=sqtable>
+
+   
     {% for key in experiments_list.keys %}
-        <li>{# <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}"> #}{{  key.0 }}</a></li>
+        <tr>
+        <td>
+        <li>{{  key.0 }}</a></li>
+        </td>
+        <td>
+        {% for values in experiments_list.keys.1 %}
+<li>{# <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}"> #}{{  values }}</a></li>
+        {% endfor %}
+        </td>
+    </tr>
     {% endfor %}
-    </ul>
+    
+
+    </table>
 {% endif %}
 </body> 
