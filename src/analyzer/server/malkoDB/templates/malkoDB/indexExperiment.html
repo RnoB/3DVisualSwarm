@@ -60,22 +60,26 @@
     </tr>
     </table>
 {% else %}
+<p class=subtitle>More parameters!!!! </p>
     <table class=sqtable>
 
    
-    {% for key in experiments_list.keys %}
+        {% for key in experiments_list.keys %}
         <tr>
-        <td>
-        <div class=menu>{{  key.0 }}</div>
-        </td>
+            <td>
+                <div class=menu>{{  key.0 }}</div>
+            </td>
         
-        {% for values in key.1 %}
-<td><div class=choice>{# <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}"> #}{{  values }}</a></div>
-    </td>
+            {% for values in key.1 %}
+            <td>
+                <div class=choice>
+                    {# <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}"> #}{{  values }}</a>
+                </div>
+            </td>
+            {% endfor %}
+            
+        </tr>
         {% endfor %}
-        
-    </tr>
-    {% endfor %}
     
 
     </table>
