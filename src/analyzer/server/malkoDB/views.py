@@ -78,7 +78,7 @@ class ExperimentView(generic.ListView):
         context = {'experiment': experiment,'project':project}
         sortedKeys = self.getSortingKeys(exp)
         keys = list(sortedKeys.keys())
-        print(keys)
+        print(sotedKeys)
         if len(sortedKeys) == 2:
             context["display"] = True
             context["xname"] = keys[1]
