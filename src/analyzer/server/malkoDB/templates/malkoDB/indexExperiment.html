@@ -62,7 +62,7 @@
 {% else %}
     <ul>
     {% for key in experiments_list.keys %}
-        <li><a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}">{{  key }}</a></li>
+        <li><!--<a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}">-->{{  key }}</a></li>
     {% endfor %}
     </ul>
 {% endif %}
