@@ -93,7 +93,9 @@ class ExperimentView(generic.ListView):
                     #print(path)
             
             context["videos"] = videos
-
+        elif len(sortedKeys)>2:
+            context["display"] = False
+            conext["keys"] = keys
         else:
             context["display"] = False
         #print(context)
