@@ -66,7 +66,10 @@ class ExperimentView(generic.ListView):
         
         project = self.kwargs.get("project", None)
         experiment = self.kwargs.get("experiment", None)
+        #exp = experiments.objects.filter(project=project).filter(experiment=experiment)
         exp = experiments.objects.filter(project=project).filter(experiment=experiment)
+        if "p0" in self.kwargs:
+            exp = exp.objects.filter(**{self.kwargs.get("p0", None): self.kwargs.get("value0", None)}) 
         print(self.kwargs)
         context = {'experiment': experiment,'project':project}
         sortedKeys = self.getSortingKeys(exp)
