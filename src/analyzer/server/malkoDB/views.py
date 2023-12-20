@@ -66,7 +66,7 @@ class ExperimentView(generic.ListView):
         
         project = self.kwargs.get("project", None)
         experiment = self.kwargs.get("experiment", None)
-        context = {'experiment': experiment,'project':project}
+        context = {'experiment': experiment,'project':project,"backward":"../"}
         #exp = experiments.objects.filter(project=project).filter(experiment=experiment)
         exp = experiments.objects.filter(project=project).filter(experiment=experiment)
         print(exp)
@@ -77,6 +77,7 @@ class ExperimentView(generic.ListView):
             print("fieldName : "+str(fieldName) + " fieldValue : "+str(fieldValue))
             context["p0"] = fieldName
             context["value0"] = fieldValue
+            context["backward"] += "../"
 
         print(self.kwargs)
         sortedKeys = self.getSortingKeys(exp)
