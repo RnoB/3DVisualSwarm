@@ -68,11 +68,12 @@
         <td>
         <div class=menu>{{  key.0 }}</div>
         </td>
-        <td>
+        
         {% for values in key.1 %}
-<li class = choice>{# <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}"> #}{{  values }}</a></li>
+<td>{# <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key%}"> #}{{  values }}</a></li>
+    </td>
         {% endfor %}
-        </td>
+        
     </tr>
     {% endfor %}
     
