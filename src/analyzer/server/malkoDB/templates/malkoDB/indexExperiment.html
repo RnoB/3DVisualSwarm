@@ -73,7 +73,7 @@
             {% for values in key.1 %}
             <td>
                 <div class=choice>
-                    <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key value%}">{{  values }}</a>
+                    <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key.0 value%}">{{  values }}</a>
                 </div>
             </td>
             {% endfor %}
