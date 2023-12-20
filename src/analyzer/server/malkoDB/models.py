@@ -27,6 +27,7 @@ class experiments(models.Model):
 	sx = models.FloatField()
 	sy = models.FloatField()
 	sz = models.FloatField()
+	p0 = models.FloatField()
 	mode = models.IntegerField()
 	parameters = models.CharField(max_length=200)
 	
