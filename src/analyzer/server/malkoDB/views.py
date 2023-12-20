@@ -95,7 +95,7 @@ class ExperimentView(generic.ListView):
             context["videos"] = videos
         elif len(sortedKeys)>2:
             context["display"] = False
-            context["keys"] = sortedKeys.item()
+            context["keys"] = sortedKeys.items()
             print(sortedKeys)
         else:
             context["display"] = False
