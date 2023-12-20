@@ -433,7 +433,7 @@ class serverFiller:
     def writeLines(self,parameters):
         conn = sqlite3.connect(self.expDB)
         c = conn.cursor()
-        c.execute("Select * from malkoDB_experiments where repId = ?",(parameters["repId"],))
+        c.execute("Select * from malkoDB_experiments where repId = ? and project = ? and experiment = ?",(parameters["repId"],parameters["project"],parameters["experiment"],))
         ids = c.fetchall()
         values = ()
         if len(ids) == 0:
