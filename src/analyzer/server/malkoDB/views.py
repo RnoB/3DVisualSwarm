@@ -96,6 +96,7 @@ class ExperimentView(generic.ListView):
         elif len(sortedKeys)>2:
             context["display"] = False
             context["keys"] = keys
+            print(sortedKeys)
         else:
             context["display"] = False
         #print(context)
