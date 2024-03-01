@@ -91,7 +91,7 @@ class Analyzer:
         for project in self.projects:
             self.experiments = self.anal.getExperiments(project)
             for exp in self.experiments:
-                sortingKeys,sortedKeys = self.sanal.getExperimentSortingKeys(project,exp)
+                sortingKeys,sortedKeys = self.anal.getExperimentSortingKeys(project,exp)
                 for key in sortedKeys:
                     
                     simId = self.anal.getSimIds(key)
