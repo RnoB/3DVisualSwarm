@@ -97,11 +97,14 @@ class ExperimentView(generic.ListView):
                 pathID = getUUIDPath(repId)
                 path = pather("",[project])
                 path = pather(path,pathID)
-                path += "/"+repId
+                path += "/"
                 #print(pathData+"/"+path+".mp4")
-                if os.path.exists(pathData+"/"+path+".mp4"):
+                if os.path.exists(pathData+"/"+path+repId+".mp4"):
                     videos.append(path)
                     #print(path)
+                    if os.path.exists(pathData+"/"+path+"globalData.json"):
+                        with open(pathData+"/"+path+"globalData.json") as f:
+                            globalData = json.load(f)
             
             context["videos"] = videos
         elif len(sortedKeys)>2:

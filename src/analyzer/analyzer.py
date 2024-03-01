@@ -107,7 +107,7 @@ class Analyzer:
                         mode = parameters["mode"]
                         center = centerOfMassSpeed(X,step = self.step)
                         distance = getAllDistance(X)
-                        pol = np.mean(polarization(X)[-1000:])
+                        pol = polarization(X)
                         dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
                                         "min" : np.mean(distance["min"][-1000:]),
                                         "max" : np.mean(distance["max"][-1000:]),
@@ -115,7 +115,8 @@ class Analyzer:
                                         "maxMean" : np.mean(distance["maxMean"][-1000:])}
                         dataCenter = {"v" : np.mean(center["v"][-1000:]),
                                       "dphi" : np.mean(center["dphi"][-1000:])}
-                        data = {"distance" : dataDistance,"center" : dataCenter,"polarization" : pol}
+                        group = {"polarization" : np.mean(pol[-1000:])}
+                        data = {"distance" : dataDistance,"center" : dataCenter,"group" : group}
                         with open(path+"/globalData.json","w") as f:
                             json.dump(data,f)
 
