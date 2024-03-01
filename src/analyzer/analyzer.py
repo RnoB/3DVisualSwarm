@@ -29,7 +29,7 @@ import sys
 import os
 from analyzer.dbFiller import dbFiller
 import scipy.spatial as sc
-
+import json
 
 def angleDifference(A1, A2):
     A = A1 - A2
