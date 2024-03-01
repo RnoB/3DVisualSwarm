@@ -107,7 +107,7 @@ class Analyzer:
                         mode = parameters["mode"]
                         center = centerOfMassSpeed(X,step = self.step)
                         distance = getAllDistance(X)
-                        pol = polarization(X)
+                        pol = np.mean(polarization(X))
                         dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
                                         "min" : np.mean(distance["min"][-1000:]),
                                         "max" : np.mean(distance["max"][-1000:]),
