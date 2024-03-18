@@ -128,7 +128,7 @@
               .attr("y", function(d) { return y(d[1]) })
               .attr("width", x.bandwidth() )
               .attr("height", y.bandwidth() )
-              {% if values2.cmap == "div" %}
+              {% if values2.cmap == 1 %}
               .style("fill", function(d) { return d3.interpolatePiYG(d[2])} )
               {% else %}
               .style("fill", function(d) { return d3.interpolatePlasma(d[2])} )
