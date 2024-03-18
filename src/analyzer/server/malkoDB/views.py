@@ -112,7 +112,7 @@ class ExperimentView(generic.ListView):
             globalData = []
             for k in range(0,len(exp2)):
                 repId = exp2[k]
-                pathID = getUUIDPath()
+                pathID = getUUIDPath(repId)
                 path = pather("",[project])
                 path = pather(path,pathID)
                 path += "/"
