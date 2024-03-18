@@ -142,7 +142,7 @@ class ExperimentView(generic.ListView):
             gData = lDToDL(globalData)
             context["videos"] = videos
             context["map"] = gData
-            context["maps"] = {"x" : arrayToString(context["x"]),"y" : arrayToString(np.fliplr(context["y"]))}
+            context["maps"] = {"x" : arrayToString(context["x"]),"y" : arrayToString(np.flip(context["y"]))}
         elif len(sortedKeys)>2:
             context["display"] = False
             context["keys"] = sortedKeys.items()
