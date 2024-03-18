@@ -32,9 +32,13 @@ def lDToDL(LD):
     for key0 in common_keys0:
         DL[key0] = {}
         for key1 in LD[0][key0].keys():
-            DL[key0][key1] = []
+            values = []
+            
             for d in LD:
-                DL[key0][key1].append(d[key0][key1])
+                values.append(d[key0][key1])
+            values = np.array(values)
+
+            DL[key0][key1] = {"values" : values,"range" : [np.min(values),np.max(values)],"cmap" : "seq"}
 
     return DL
 
