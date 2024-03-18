@@ -62,7 +62,10 @@
 <p class=subtitle>MAPS!!!! </p>
 <ul>
 {% for key, value in experiments_list.map.items %} 
-  <li>{{key}} - {{value}}</li>
+<p class=subtitle>{{key}}</p>
+{% for key2, value2 in value2.items %} 
+<p class=subtitle>{{key2}}</p>
+  <li> - {{value2}}</li>
 {% endfor %}
 </ul>
 {% else %}
