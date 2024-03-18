@@ -43,11 +43,7 @@ def lDToDL(LD):
     return DL
 
 def arrayToString(x):
-    #https://stackoverflow.com/questions/2721521/fastest-way-to-generate-delimited-string-from-1d-numpy-array
-    #generate an array with strings
-    x_arrstr = np.char.mod('%f', x)
-    #combine to a string
-    x_str = ",".join(x_arrstr)
+    return np.array2string(x, separator=', ')
 
 class IndexView(generic.ListView):
     model = experiments
