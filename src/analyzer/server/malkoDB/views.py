@@ -43,6 +43,7 @@ def lDToDL(LD):
     return DL
 
 def arrayToString(x):
+    x = np.array(x)
     return np.array2string(x, separator=', ')
 
 class IndexView(generic.ListView):
@@ -141,6 +142,7 @@ class ExperimentView(generic.ListView):
             gData = lDToDL(globalData)
             context["videos"] = videos
             context["map"] = gData
+            context["maps"] = {"x" : arrayToString(context[x]),"x" : arrayToString(context[y])}
         elif len(sortedKeys)>2:
             context["display"] = False
             context["keys"] = sortedKeys.items()
