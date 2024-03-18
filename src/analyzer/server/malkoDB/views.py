@@ -39,10 +39,10 @@ def lDToDL(LD):
             values = np.array(values)
             if key1 == "polarization":
                 rang = '[0,1]'
-                cmap = div
+                cmap = "div"
             else:
                 rang = '['+str(np.min(values))+','+str(np.max(values))+']' 
-                cmap = seq
+                cmap = "seq"
             DL[key0][key1] = {"values" : arrayToString(values),"range" : rang,"cmap" : cmap}
 
     return DL
