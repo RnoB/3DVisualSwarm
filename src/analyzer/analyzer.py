@@ -96,7 +96,7 @@ class Analyzer:
                     
                     simId = self.anal.getSimIds(key)
                     
-                    if len(simId)>0 and key["N"] == 10:
+                    if len(simId)>0:
                         simId = simId[0][0]
                         repIds = self.anal.getRepIds(simId)[0][0]
                         
