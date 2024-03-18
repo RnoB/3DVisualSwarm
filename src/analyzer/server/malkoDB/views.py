@@ -127,7 +127,7 @@ class ExperimentView(generic.ListView):
                             d = json.load(f)
                             for k0 in d.keys():
                                 for k1 in d[k0].keys():
-                                    d[k0][k0] = [xn[k],yn[k],d[k0][k0]]
+                                    d[k0][k1] = [xn[k],yn[k],d[k0][k1]]
                             globalData.append(d)
 
                             
