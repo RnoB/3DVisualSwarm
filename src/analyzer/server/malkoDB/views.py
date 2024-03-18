@@ -9,6 +9,9 @@ from django.db.models import CharField
 import uuid
 import numpy as np
 import os
+import json
+
+
 pathData = "/data"
 
 def getUUID():
@@ -105,6 +108,7 @@ class ExperimentView(generic.ListView):
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
                             globalData = json.load(f)
+                            print(globalData)
             
             context["videos"] = videos
         elif len(sortedKeys)>2:
