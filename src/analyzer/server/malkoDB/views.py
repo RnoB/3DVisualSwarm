@@ -25,7 +25,11 @@ def pather(path,params = []):
         path = path + '/' + str(param)
     return path
 
-
+def lDToDL(LD):
+    #https://stackoverflow.com/questions/5558418/list-of-dicts-to-from-dict-of-lists
+    common_keys = set.intersection(*map(set, LD))
+    DL = {k: [dic[k] for dic in LD] for k in common_keys}
+    return DL
 
 class IndexView(generic.ListView):
     model = experiments
@@ -96,6 +100,7 @@ class ExperimentView(generic.ListView):
             context["yTab"] = len(context["y"])
             exp2 = exp.order_by(context["yname"],context["xname"],'?').values_list("repId", flat=True)
             videos = []
+            globalData = []
             for repId in exp2:
                 pathID = getUUIDPath(repId)
                 path = pather("",[project])
@@ -107,9 +112,9 @@ class ExperimentView(generic.ListView):
                     #print(path)
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
-                            globalData = json.load(f)
-                            print(globalData)
-            
+                            globalData.append(json.load(f))
+                            
+            print(lDToDL(globalData))
             context["videos"] = videos
         elif len(sortedKeys)>2:
             context["display"] = False
