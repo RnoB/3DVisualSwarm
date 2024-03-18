@@ -106,8 +106,8 @@ class ExperimentView(generic.ListView):
             context["xTab"] = len(context["x"])
             context["yTab"] = len(context["y"])
             exp2 = exp.order_by(context["yname"],context["xname"],'?').values_list("repId", flat=True)
-            yn = exp.order_by(context["yname"],context["xname"],'?').values_list(context["yName"], flat=True)
-            xn = exp.order_by(context["yname"],context["xname"],'?').values_list(context["xName"], flat=True)
+            yn = exp.order_by(context["yname"],context["xname"],'?').values_list(context["yname"], flat=True)
+            xn = exp.order_by(context["yname"],context["xname"],'?').values_list(context["xname"], flat=True)
             videos = []
             globalData = []
             for k in range(0,len(exp2)):
