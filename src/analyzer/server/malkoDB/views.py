@@ -120,6 +120,8 @@ class ExperimentView(generic.ListView):
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
                             globalData.append(json.load(f))
+                    else:
+                        print(path)
                             
             print(lDToDL(globalData))
             context["videos"] = videos
