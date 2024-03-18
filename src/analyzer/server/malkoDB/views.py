@@ -31,8 +31,7 @@ def lDToDL(LD):
     common_keys0 = set.intersection(*map(set, LD))
     for key0 in common_keys0:
         DL[key0] = {}
-        common_keys1 = set.intersection(*map(set, LD[0][key]))
-        for key1 in common_keys1:
+        for key1 in LD[0][key0].keys():
             DL[key0][key1] = []
             for d in LD:
                 DL[key0][key1].append(d[key0][key1])
