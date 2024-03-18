@@ -28,10 +28,15 @@ def pather(path,params = []):
 def lDToDL(LD):
     #https://stackoverflow.com/questions/5558418/list-of-dicts-to-from-dict-of-lists
     DL = {}
-    common_keys = set.intersection(*map(set, LD))
-    for key in common_keys:
-        common_keys2 = set.intersection(*map(set, LD[key]))
-        DL[key] = {k: [dic[k] for dic in LD[key]] for k in common_keys2}
+    common_keys0 = set.intersection(*map(set, LD))
+    for key0 in common_keys:
+        DL[key0] = {}
+        common_keys1 = set.intersection(*map(set, LD[0][key]))
+        for key1 in common_keys1:
+            DL[key0][key1] = []
+            for d in LD:
+                DL[key0][key1].append(d[key0][key1])
+
     return DL
 
 class IndexView(generic.ListView):
