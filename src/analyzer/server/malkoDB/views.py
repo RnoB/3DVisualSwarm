@@ -38,9 +38,16 @@ def lDToDL(LD):
                 values.append(d[key0][key1])
             values = np.array(values)
 
-            DL[key0][key1] = {"values" : str(values),"range" : str([np.min(values),np.max(values)]),"cmap" : "seq"}
+            DL[key0][key1] = {"values" : arrayToString(values),"range" : arrayToString([np.min(values),np.max(values)]),"cmap" : "seq"}
 
     return DL
+
+def arrayToString(x):
+    #https://stackoverflow.com/questions/2721521/fastest-way-to-generate-delimited-string-from-1d-numpy-array
+    #generate an array with strings
+    x_arrstr = np.char.mod('%f', x)
+    #combine to a string
+    x_str = ",".join(x_arrstr)
 
 class IndexView(generic.ListView):
     model = experiments
