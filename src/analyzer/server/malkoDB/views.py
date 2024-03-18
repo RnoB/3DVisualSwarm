@@ -103,7 +103,7 @@ class ExperimentView(generic.ListView):
                 path += "/"
                 #print(pathData+"/"+path+".mp4")
                 if os.path.exists(pathData+"/"+path+repId+".mp4"):
-                    videos.append(path)
+                    videos.append(pathData+"/"+path+repId)
                     print(path)
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
