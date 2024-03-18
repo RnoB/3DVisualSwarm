@@ -59,6 +59,12 @@
         
     </tr>
     </table>
+<p class=subtitle>MAPS!!!! </p>
+<ul>
+{% for key, value in experiments_list.map.items %} 
+  <li>{{key}} - {{value}}</li>
+{% endfor %}
+</ul>
 {% else %}
 <p class=subtitle>More parameters!!!! </p>
     <table class=sqtable>

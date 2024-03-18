@@ -120,11 +120,11 @@ class ExperimentView(generic.ListView):
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
                             globalData.append(json.load(f))
-                    else:
-                        print(path)
+
                             
-            print(lDToDL(globalData))
+            gData = lDToDL(globalData)
             context["videos"] = videos
+            context["map"] = gData
         elif len(sortedKeys)>2:
             context["display"] = False
             context["keys"] = sortedKeys.items()
