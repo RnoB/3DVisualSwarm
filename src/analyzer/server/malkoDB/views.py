@@ -38,7 +38,7 @@ def lDToDL(LD):
                 values.append(d[key0][key1])
             values = np.array(values)
 
-            DL[key0][key1] = {"values" : values,"range" : [np.min(values),np.max(values)],"cmap" : "seq"}
+            DL[key0][key1] = {"values" : str(values),"range" : str([np.min(values),np.max(values)]),"cmap" : "seq"}
 
     return DL
 
