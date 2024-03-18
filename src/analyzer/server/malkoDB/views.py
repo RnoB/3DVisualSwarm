@@ -37,8 +37,13 @@ def lDToDL(LD):
             for d in LD:
                 values.append(d[key0][key1])
             values = np.array(values)
-
-            DL[key0][key1] = {"values" : arrayToString(values),"range" : '['+str(np.min(values))+','+str(np.max(values))+']',"cmap" : "seq"}
+            if key1 == "polarization":
+                rang = '[0,1]'
+                cmap = "div"
+            else:
+                rang = '['+str(np.min(values))+','+str(np.max(values))+']' 
+                cmap = "seq"
+            DL[key0][key1] = {"values" : arrayToString(values),"range" : rang,"cmap" : cmap}
 
     return DL
 
