@@ -124,7 +124,11 @@ class ExperimentView(generic.ListView):
                         with open(pathData+"/"+path+"globalData.json") as f:
                             exp = exp.filter(**{"repId": repId})
                             print((xn[k],yn[k])) 
-                            globalData.append(json.load(f))
+                            d = json.load(f)
+                            for k0 in d.keys():
+                                for k1 in d[k0].keys():
+                                    d[k0][k0] = [xn[k],yn[k],d[k0][k0]]
+                            globalData.append(d)
 
                             
             gData = lDToDL(globalData)
