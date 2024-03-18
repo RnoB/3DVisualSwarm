@@ -40,7 +40,7 @@ def lDToDL(LD):
             if key1 == "polarization":
                 rang = '[0,1]'
                 cmap = "div"
-            if key1 == "v":
+            elif key1 == "v":
                 rang = '[.5,1.5]'
                 cmap = "div"
             else:
