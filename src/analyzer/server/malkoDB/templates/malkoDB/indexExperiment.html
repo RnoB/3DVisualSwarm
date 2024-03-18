@@ -93,8 +93,8 @@
                     .attr("transform", `translate(${margin.left},${margin.top})`);
 
             // Labels of row and columns
-            const myGroups = [1, 2,3,4]
-            const myVars = [1, 2,3,4]
+            const myGroups = {{experiments_list.x}}
+            const myVars = {{experiments_list.y}}
 
             // Build X scales and axis:
             const x = d3.scaleBand()
