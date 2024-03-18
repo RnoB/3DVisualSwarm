@@ -27,8 +27,11 @@ def pather(path,params = []):
 
 def lDToDL(LD):
     #https://stackoverflow.com/questions/5558418/list-of-dicts-to-from-dict-of-lists
+    DL = {}
     common_keys = set.intersection(*map(set, LD))
-    DL = {k: [dic[k] for dic in LD] for k in common_keys}
+    for key in common_keys:
+        common_keys2 = set.intersection(*map(set, LD[key]))
+        DL[key] = {k: [dic[k] for dic in LD[key]] for k in common_keys2}
     return DL
 
 class IndexView(generic.ListView):
