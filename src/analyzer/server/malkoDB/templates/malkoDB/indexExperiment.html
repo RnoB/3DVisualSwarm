@@ -73,7 +73,7 @@
     <tr>
 {% for key2, value2 in value.items %} 
         <td>
-            {% if values2.cmap == 1 %}1111{%endif%}
+       
 <div class = "menu" >{{key2}} - {{value2.cmap}}</div> 
 <div id="{{key2}}"></div>
 
@@ -129,7 +129,7 @@
               .attr("y", function(d) { return y(d[1]) })
               .attr("width", x.bandwidth() )
               .attr("height", y.bandwidth() )
-              {% if values2.cmap == 1 %}
+              {% if values2.cmap%}
               .style("fill", function(d) { return d3.interpolatePiYG(d[2])} )
               {% else %}
               .style("fill", function(d) { return d3.interpolatePlasma(d[2])} )
