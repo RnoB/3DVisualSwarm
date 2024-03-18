@@ -119,6 +119,8 @@ class ExperimentView(generic.ListView):
                     #print(path)
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
+                            exp = exp.filter(**{"repId": repId})
+                            print(exp) 
                             globalData.append(json.load(f))
 
                             
