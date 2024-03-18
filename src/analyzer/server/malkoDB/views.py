@@ -29,7 +29,7 @@ def lDToDL(LD):
     #https://stackoverflow.com/questions/5558418/list-of-dicts-to-from-dict-of-lists
     DL = {}
     common_keys0 = set.intersection(*map(set, LD))
-    for key0 in common_keys:
+    for key0 in common_keys0:
         DL[key0] = {}
         common_keys1 = set.intersection(*map(set, LD[0][key]))
         for key1 in common_keys1:
