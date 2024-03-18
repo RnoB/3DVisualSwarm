@@ -59,16 +59,22 @@
         
     </tr>
     </table>
-<p class=subtitle>MAPS!!!! </p>
-<ul>
+<table class=sqtable>
 {% for key, value in experiments_list.map.items %} 
-<p class=subtitle>{{key}}</p>
+    <tr>
+       <div class = "menu" >{{key}}</div> 
+    </tr>
+    <tr>
 {% for key2, value2 in value.items %} 
-<p class=subtitle>{{key2}}</p>
-  <li> - {{value2.values}}</li>
+        <td>
+<div class = "menu" >{{key2}}</div> 
+<div id="dataViz"{{key2}}></div>
+   {{value2.values}}
+   </td>
 {% endfor %}
+    </tr>
 {% endfor %}
-</ul>
+</table>
 {% else %}
 <p class=subtitle>More parameters!!!! </p>
     <table class=sqtable>
