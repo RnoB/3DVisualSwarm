@@ -106,10 +106,13 @@ class ExperimentView(generic.ListView):
             context["xTab"] = len(context["x"])
             context["yTab"] = len(context["y"])
             exp2 = exp.order_by(context["yname"],context["xname"],'?').values_list("repId", flat=True)
+            yn = exp.order_by(context["yname"],context["xname"],'?').values_list("yName", flat=True)
+            xn = exp.order_by(context["yname"],context["xname"],'?').values_list("xName", flat=True)
             videos = []
             globalData = []
-            for repId in exp2:
-                pathID = getUUIDPath(repId)
+            for k in range(0,len(exp2)):
+                repId = exp2[k]
+                pathID = getUUIDPath()
                 path = pather("",[project])
                 path = pather(path,pathID)
                 path += "/"
@@ -120,7 +123,7 @@ class ExperimentView(generic.ListView):
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
                             exp = exp.filter(**{"repId": repId})
-                            print(exp) 
+                            print((xn[k],yn[k])) 
                             globalData.append(json.load(f))
 
                             
