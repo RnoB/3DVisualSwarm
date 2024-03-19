@@ -121,6 +121,39 @@
 
 
 
+            var tooltip = d3.select("#my_dataviz")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "2px")
+                .style("border-radius", "5px")
+                .style("padding", "5px")
+
+            // Three function that change the tooltip when user hover / move / leave a cell
+            var mouseover = function(d) {
+                tooltip
+                  .style("opacity", 1)
+                d3.select(this)
+                  .style("stroke", "black")
+                  .style("opacity", 1)
+            }
+            var mousemove = function(d) {
+                tooltip
+                  .html("The exact value of<br>this cell is: " + d.value)
+                  .style("left", (d3.mouse(this)[0]+70) + "px")
+                  .style("top", (d3.mouse(this)[1]) + "px")
+            }
+            var mouseleave = function(d) {
+                tooltip
+                  .style("opacity", 0)
+                d3.select(this)
+                  .style("stroke", "none")
+                  .style("opacity", 0.8)
+            }
+
+
             svg.selectAll()
               .data(data, function(d) {return d[0]+':'+d[1];})
               .enter()
@@ -134,6 +167,9 @@
               {% else %}
               .style("fill", function(d) { return d3.interpolatePlasma(d[2])} )
               {% endif %}
+              .on("mouseover", mouseover)
+              .on("mousemove", mousemove)
+              .on("mouseleave", mouseleave
 
                       
 
