@@ -169,9 +169,9 @@
               .attr("width", x.bandwidth() )
               .attr("height", y.bandwidth() )
               {% if value2.cmap == "div"%}
-              .style("fill", function(d) { return d3.interpolatePiYG(d[2])} )
+              .style("fill", function(d) { return d3.interpolatePiYG(d[2]).domain({{value2.range}})} )
               {% else %}
-              .style("fill", function(d) { return d3.interpolatePlasma(d[2])} )
+              .style("fill", function(d) { return d3.interpolatePlasma(d[2]).domain({{value2.range}})} )
               {% endif %}
               .on("mouseover", mouseover)
               .on("mousemove", mousemove)
