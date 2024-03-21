@@ -158,8 +158,7 @@
             }
 
 
-            const myColor = d3.scaleLinear()
-                .interpolator(d3.interpolatePiYG)
+            const myColor =  d3.scaleSequential(d3.interpolatePiYG)
                 .domain({{value2.range}})
 
 
