@@ -158,8 +158,13 @@
             }
 
 
+            {% if value2.cmap == "div"%}
             const myColor =  d3.scaleSequential(d3.interpolatePiYG)
                 .domain({{value2.range}})
+            {% else %}
+            const myColor =  d3.scaleSequential(d3.interpolatePlasma)
+                .domain({{value2.range}})
+            {% endif %}
 
 
             svg.selectAll()
@@ -170,11 +175,7 @@
               .attr("y", function(d) { return y(d[1]) })
               .attr("width", x.bandwidth() )
               .attr("height", y.bandwidth() )
-              {% if value2.cmap == "div"%}
               .style("fill", function(d) { return myColor(d[2])} )
-              {% else %}
-              .style("fill", function(d) { return d3.interpolatePlasma(d[2])} )
-              {% endif %}
               .on("mouseover", mouseover)
               .on("mousemove", mousemove)
               .on("mouseleave", mouseleave)
