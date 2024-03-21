@@ -81,9 +81,17 @@
 
             import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
             // set the dimensions and margins of the graph
+            const myGroups = {{experiments_list.maps.x}};
+            const myVars = {{experiments_list.maps.y}};
+
+            const xL = myGroups.x
+            const yL = myGroups.y
+
+
+
             const margin = {top: 30, right: 30, bottom: 30, left: 30};
-            const width = 450 - margin.left - margin.right;
-            const height = 450 - margin.top - margin.bottom;
+            const width = 50 * xL - margin.left - margin.right;
+            const height = 50 * yL - margin.top - margin.bottom;
 
               // append the svg object to the body of the page
             const svg = d3.select("#{{key2}}")
@@ -94,8 +102,6 @@
                     .attr("transform", `translate(${margin.left},${margin.top})`);
 
             // Labels of row and columns
-            const myGroups = {{experiments_list.maps.x}};
-            const myVars = {{experiments_list.maps.y}};
 
             // Build X scales and axis:
             const x = d3.scaleBand()
