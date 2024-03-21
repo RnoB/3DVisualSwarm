@@ -50,7 +50,7 @@ def lDToDL(LD):
             else:
                 rang = '['+str(np.min(values))+','+str(np.max(values))+']' 
                 cmap = "seq"
-            print(key[0] +" - " + key[1] +" - " +str(values))
+            print(key0 +" - " + key1 +" - " +str(values))
             DL[key0][key1] = {"values" : arrayToString(values),"range" : rang,"cmap" : cmap}
 
     return DL
