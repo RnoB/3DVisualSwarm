@@ -39,7 +39,7 @@ def lDToDL(LD):
             values = np.array(values)
             if key0 == "distance":
                 rang = '['+str(np.min(values))+','+str(np.max(values))+']' #'[0,30]'
-                cmap = "div"
+                cmap = "seq"
             elif key1 == "polarization":
                 rang = '[0,1]'
                 cmap = "div"
