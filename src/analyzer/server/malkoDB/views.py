@@ -38,13 +38,13 @@ def lDToDL(LD):
                 values.append(d[key0][key1])
             values = np.array(values)
             if key0 == "distance":
-                rang = '[0,30]'
+                rang = '['+str(np.min(values))+','+str(np.max(values))+']' #'[0,30]'
                 cmap = "div"
             elif key1 == "polarization":
                 rang = '[0,1]'
                 cmap = "div"
             elif key1 == "dphi":
-                rang = '[-0.1,0.1]'
+                rang = '[-0.001,0.001]'
                 cmap = "div"
             elif key1 == "v":
                 rang = '[.5,1.5]'
