@@ -103,20 +103,20 @@ class ExperimentView(generic.ListView):
         context = {'experiment': experiment,'project':project,"backward":"../"}
         #exp = experiments.objects.filter(project=project).filter(experiment=experiment)
         exp = experiments.objects.filter(project=project).filter(experiment=experiment)
-        print(exp)
+
         if "p0" in self.kwargs:
             fieldName = self.kwargs.get("p0", None)
             fieldValue = self.kwargs.get("value0", None)
             exp = exp.filter(**{fieldName: fieldValue}) 
-            print("fieldName : "+str(fieldName) + " fieldValue : "+str(fieldValue))
+            #print("fieldName : "+str(fieldName) + " fieldValue : "+str(fieldValue))
             context["p0"] = fieldName
             context["value0"] = fieldValue
             context["backward"] += "../"
 
-        print(self.kwargs)
+
         sortedKeys = self.getSortingKeys(exp)
         keys = list(sortedKeys.keys())
-        print(sortedKeys)
+
         if len(sortedKeys) == 2:
             context["display"] = True
             context["xname"] = keys[1]
@@ -143,7 +143,7 @@ class ExperimentView(generic.ListView):
                     if os.path.exists(pathData+"/"+path+"globalData.json"):
                         with open(pathData+"/"+path+"globalData.json") as f:
                             exp = exp.filter(**{"repId": repId})
-                            print((xn[k],yn[k])) 
+                            
                             d = json.load(f)
                             for k0 in d.keys():
                                 for k1 in d[k0].keys():
@@ -158,7 +158,7 @@ class ExperimentView(generic.ListView):
         elif len(sortedKeys)>2:
             context["display"] = False
             context["keys"] = sortedKeys.items()
-            print(sortedKeys)
+            
         else:
             context["display"] = False
         #print(context)
