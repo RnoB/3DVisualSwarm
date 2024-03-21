@@ -127,9 +127,9 @@
                 .attr("class", "tooltip")
                 .style("background-color", "white")
                 .style("border", "solid")
-                .style("border-width", "5px")
-                .style("border-radius", "10px")
-                .style("padding", "10px")
+                .style("border-width", "2px")
+                .style("border-radius", "5px")
+                .style("padding", "5px")
 
             // Three function that change the tooltip when user hover / move / leave a cell
             var mouseover = function(d) {
@@ -141,7 +141,7 @@
             }
             var mousemove = function(d) {
                 tooltip
-                  .html("The exact value of<br>this cell is: " + d.value)
+                  .html("The exact value of<br>this cell is: " + d[2])
                   .style("left", (d3.pointer(this)[0]+70) + "px")
                   .style("top", (d3.pointer(this)[1]) + "px")
             }
