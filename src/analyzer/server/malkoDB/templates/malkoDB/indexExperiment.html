@@ -119,9 +119,7 @@
                 .padding(0);
             svg.append("g")
                 .call(d3.axisLeft(y));
-            const myColor = d3.scaleLinear()
-                .range(["white", "#69b3a2"])
-                .domain({{value2.range}})
+
 
             var data = {{value2.values}};
 
@@ -160,6 +158,11 @@
             }
 
 
+            const myColor = d3.scaleLinear()
+                .interpolator(d3.interpolatePyG)
+                .domain({{value2.range}})
+
+
             svg.selectAll()
               .data(data, function(d) {return d[0]+':'+d[1];})
               .enter()
@@ -169,9 +172,9 @@
               .attr("width", x.bandwidth() )
               .attr("height", y.bandwidth() )
               {% if value2.cmap == "div"%}
-              .style("fill", function(d) { return d3.interpolatePiYG(d[2]).domain({{value2.range}})} )
+              .style("fill", function(d) { return myColor(d[2])} )
               {% else %}
-              .style("fill", function(d) { return d3.interpolatePlasma(d[2]).domain({{value2.range}})} )
+              .style("fill", function(d) { return d3.interpolatePlasma(d[2])} )
               {% endif %}
               .on("mouseover", mouseover)
               .on("mousemove", mousemove)
