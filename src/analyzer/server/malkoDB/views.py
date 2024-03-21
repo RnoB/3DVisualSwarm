@@ -48,9 +48,9 @@ def lDToDL(LD):
                 rang = '[.5,1.5]'
                 cmap = "div"
             else:
-                rang = '['+str(np.min(values))+','+str(np.max(values))+']' 
+                rang = '['+str(np.min(values[:,2]))+','+str(np.max(values[:,2]))+']' 
                 cmap = "seq"
-            print(key0 +" - " + key1 +" - " +str(values[:,2]))
+            
             DL[key0][key1] = {"values" : arrayToString(values),"range" : rang,"cmap" : cmap}
 
     return DL
