@@ -131,6 +131,7 @@ class ExperimentView(generic.ListView):
             xn = exp.order_by(context["yname"],context["xname"],'?').values_list(context["xname"], flat=True)
             videos = []
             globalData = []
+            print(exp2)
             for k in range(0,len(exp2)):
                 repId = exp2[k]
                 pathID = getUUIDPath(repId)
