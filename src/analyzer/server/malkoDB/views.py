@@ -152,9 +152,9 @@ class ExperimentView(generic.ListView):
                                     d[k0][k1] = [xn[k],yn[k],d[k0][k1]]
                             globalData.append(d)
 
-            print(globalData)                
+            print(len(globalData))                
             gData = lDToDL(globalData)
-            print(gData)
+            
             context["videos"] = videos
             context["map"] = gData
             context["maps"] = {"x" : arrayToString(context["x"]),"y" : arrayToString(np.flip(context["y"]))}
