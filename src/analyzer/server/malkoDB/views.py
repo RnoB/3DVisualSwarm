@@ -134,8 +134,11 @@ class ExperimentView(generic.ListView):
             print(len(exp2))
             print(context)
 
-
-
+            for x0 in context["x"]:
+                for y0 in context["y"]:
+                    fil = {context["xname"] : x0,context["yname"] : y0}
+                    exp2 = exp.filter(**fil).values_list("repId", flat=True)
+                    print(len(exp2))
 
             for k in range(0,len(exp2)):
                 repId = exp2[k]
