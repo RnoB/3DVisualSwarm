@@ -136,11 +136,10 @@ class ExperimentView(generic.ListView):
 
             for y0 in context["y"]:
                 for x0 in context["x"]:
-                    repData = []
+                    
                     fil = {context["xname"] : x0,context["yname"] : y0}
                     repIds = exp.filter(**fil).values_list("repId", flat=True)
                     vid = ""
-                    print(repIds)
                     for repId in repIds:
                         pathID = getUUIDPath(repId)
                         path = pather("",[project])
@@ -148,16 +147,6 @@ class ExperimentView(generic.ListView):
                         path += "/"
                         if os.path.exists(pathData+"/"+path+repId+".mp4"):
                             vid = path+repId
-                        print("yes?")
-                        if os.path.exists(pathData+"/"+path+"globalData.json"):
-                            print("yes")
-                            with open(pathData+"/"+path+"globalData.json") as f:
-                                exp = exp.filter(**{"repId": repId})
-                                
-                                d = json.load(f)
-                                repData.append(d)
-
-                    #print(lDToDL(repData))
                     videos.append(vid)
 
             for k in range(0,len(exp2)):
