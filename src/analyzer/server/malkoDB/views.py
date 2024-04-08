@@ -140,6 +140,10 @@ class ExperimentView(generic.ListView):
                     repIds = exp.filter(**fil).values_list("repId", flat=True)
                     vid = ""
                     for repId in repIds:
+                        pathID = getUUIDPath(repId)
+                        path = pather("",[project])
+                        path = pather(path,pathID)
+                        path += "/"
                         if os.path.exists(pathData+"/"+path+repId+".mp4"):
                             vid = path+repId
                     videos.append(vid)
