@@ -149,6 +149,8 @@ class ExperimentView(generic.ListView):
                             vid = path+repId
                         if os.path.exists(pathData+"/"+path+"globalData.json"):
                             print("yes")
+                        else:
+                            print("no")
                     videos.append(vid)
 
             for k in range(0,len(exp2)):
