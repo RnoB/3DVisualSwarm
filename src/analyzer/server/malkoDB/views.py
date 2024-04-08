@@ -153,6 +153,7 @@ class ExperimentView(generic.ListView):
                                 
                                 d = json.load(f)
                                 repData.append(d)
+                    print(len(repIds))
                     print(repData)
                     print(lDToDL(repData))
                     videos.append(vid)
