@@ -152,8 +152,8 @@ class ExperimentView(generic.ListView):
                                 exp = exp.filter(**{"repId": repId})
                                 
                                 d = json.load(f)
-                                print(d)
                                 repData.append(d)
+                    print(repData)
                     print(lDToDL(repData))
                     videos.append(vid)
 
