@@ -148,6 +148,7 @@ class ExperimentView(generic.ListView):
                         if os.path.exists(pathData+"/"+path+repId+".mp4"):
                             vid = path+repId
                         if os.path.exists(pathData+"/"+path+"globalData.json"):
+                            print("yes")
                             with open(pathData+"/"+path+"globalData.json") as f:
                                 exp = exp.filter(**{"repId": repId})
                                 
