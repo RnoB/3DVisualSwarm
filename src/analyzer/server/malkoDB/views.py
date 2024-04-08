@@ -132,6 +132,11 @@ class ExperimentView(generic.ListView):
             videos = []
             globalData = []
             print(len(exp2))
+            pint(context)
+
+
+
+            
             for k in range(0,len(exp2)):
                 repId = exp2[k]
                 pathID = getUUIDPath(repId)
