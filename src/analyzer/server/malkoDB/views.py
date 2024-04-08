@@ -152,9 +152,7 @@ class ExperimentView(generic.ListView):
                                 exp = exp.filter(**{"repId": repId})
                                 
                                 d = json.load(f)
-                                for k0 in d.keys():
-                                    for k1 in d[k0].keys():
-                                        d[k0][k1] = [xn[k],yn[k],d[k0][k1]]
+
                                 repData.append(d)
                     print(lDToDL(repData))
                     videos.append(vid)
