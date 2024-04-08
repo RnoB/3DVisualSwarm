@@ -448,7 +448,7 @@ class serverFiller:
 
 
 
-    def fillDB(self):        
+    def start(self):        
         self.projects = self.anal.getProjects()
         for project in self.projects:
             experiments = self.anal.getExperiments(project)
