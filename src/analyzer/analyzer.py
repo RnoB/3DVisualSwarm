@@ -130,7 +130,7 @@ def start(step = 10,nThreads = 2):
                     simId = simId[0][0]
                     repIds.extend(anal.getRepIds(simId))
     
-    pool = multiprocessing.Pool(processes=self.nThreads)
+    pool = multiprocessing.Pool(processes=nThreads)
     pool.map_async(analSim, repIds)
     pool.close()
     pool.join()
