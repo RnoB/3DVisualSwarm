@@ -32,7 +32,7 @@ import scipy.spatial as sc
 import json
 import multiprocessing 
 
-anal = dbFiller.Analyzer()
+
 step0 = 10
 
 
@@ -89,6 +89,8 @@ def getAllDistance(X):
     return distance
 
 def analSim(simId):
+    step = 10
+    anal = dbFiller.Analyzer()
     repId = simId[0]
     print(repId)
     parameters = anal.getParameters(simId,project,exp)
@@ -96,7 +98,7 @@ def analSim(simId):
     path = anal.getDataPath(repId)
     N = parameters["N"]
     mode = parameters["mode"]
-    center = centerOfMassSpeed(X,step = step0)
+    center = centerOfMassSpeed(X,step = step)
     distance = getAllDistance(X)
     pol = polarization(X)
     dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
@@ -115,7 +117,7 @@ def analSim(simId):
 def start(step = 10,nThreads = 2):
     global step0
     step0 = step
-    
+    anal = dbFiller.Analyzer()
     projects = anal.projects
     
     repIds = []
