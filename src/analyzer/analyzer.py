@@ -102,7 +102,7 @@ def analSim(p):
     N = p["N"]
     mode = p["mode"]  
     path = p["path"]
-
+    print(p)
     X = getDataSet(path)
 
     center = centerOfMassSpeed(X,step = step)
