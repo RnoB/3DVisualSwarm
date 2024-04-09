@@ -170,9 +170,9 @@ class Analyzer:
     
 
     def __init__(self,step = 10,nThreads = 2):
-        #this step number does not get into the multiprocessing pool and this is going to be
-        #problematice. 
+        #this step number does not get into the multiprocessing pool. This is going to be
+        #problematic. 
         self.step = step
     
-        self.projects = self.anal.projects
+        self.projects = anal.projects
         self.nThreads = nThreads
