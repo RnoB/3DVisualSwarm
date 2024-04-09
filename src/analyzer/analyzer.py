@@ -33,7 +33,7 @@ import json
 import multiprocessing 
 
 anal = dbFiller.Analyzer()
-step = 10
+step0 = 10
 
 
 def angleDifference(A1, A2):
@@ -88,14 +88,14 @@ def getAllDistance(X):
     distance = {"mean" : np.array(dMean),"min" : np.array(dMin),"max" : np.array(dMax),"minMean" : np.array(dMinMean),"maxMean" : np.array(dMaxMean)}
     return distance
 
-def analSim(simId,step = 10):
+def analSim(simId):
     repId = simId[0]
     parameters = anal.getParameters(simId,project,exp)
     X = anal.getDataSet(repId)
     path = anal.getDataPath(repId)
     N = parameters["N"]
     mode = parameters["mode"]
-    center = centerOfMassSpeed(X,step = step)
+    center = centerOfMassSpeed(X,step = step0)
     distance = getAllDistance(X)
     pol = polarization(X)
     dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
@@ -111,9 +111,9 @@ def analSim(simId,step = 10):
         json.dump(data,f)  
 
 
-def start(step0 = 10,nThreads = 2):
-    global step
-    step = step0
+def start(step = 10,nThreads = 2):
+    global step0
+    step0 = step
     
     projects = anal.projects
     
