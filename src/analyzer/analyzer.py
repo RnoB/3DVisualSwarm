@@ -157,6 +157,7 @@ class Analyzer:
                     if len(simId)>0:
                         simId = simId[0][0]
                         repIds.extend(self.anal.getRepIds(simId))
+        print(repIds)
         pool = multiprocessing.Pool(processes=self.nThreads)
         pool.map_async(self.analSim, repIds)
         pool.close()
