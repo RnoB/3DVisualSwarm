@@ -144,11 +144,12 @@ def start(step = 10,nThreads = 2):
                         sims = {"repId" : repId[0],"simId" : simId,"step" : step,
                                 "N":parameters["N"],"mode":parameters["mode"],"path":path}
 
-    
-    pool = multiprocessing.Pool(processes=nThreads)
-    pool.map_async(analSim, parameters)
-    pool.close()
-    pool.join()
+    for p in parameters:
+        analSim(p)
+    #pool = multiprocessing.Pool(processes=nThreads)
+    #pool.map_async(analSim, parameters)
+    #pool.close()
+    #pool.join()
 
 class Analyzer:
 
