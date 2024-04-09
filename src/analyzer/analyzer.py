@@ -30,6 +30,7 @@ import os
 from analyzer.dbFiller import dbFiller
 import scipy.spatial as sc
 import json
+import multiprocessing 
 
 def angleDifference(A1, A2):
     A = A1 - A2
@@ -86,8 +87,7 @@ def getAllDistance(X):
 
 class Analyzer:
 
-
-    def start(self):
+    def analAll(self):
         for project in self.projects:
             self.experiments = self.anal.getExperiments(project)
             for exp in self.experiments:
@@ -121,7 +121,50 @@ class Analyzer:
                             with open(path+"/globalData.json","w") as f:
                                 json.dump(data,f)
 
-    def __init__(self,step = 10):
+    def analSim(simId):
+        repId = simId[0]
+        parameters = self.anal.getParameters(simId,project,exp)
+        X = self.anal.getDataSet(repId)
+        path = self.anal.getDataPath(repId)
+        N = parameters["N"]
+        mode = parameters["mode"]
+        center = centerOfMassSpeed(X,step = self.step)
+        distance = getAllDistance(X)
+        pol = polarization(X)
+        dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
+                        "min" : np.mean(distance["min"][-1000:]),
+                        "max" : np.mean(distance["max"][-1000:]),
+                        "minMean" : np.mean(distance["minMean"][-1000:]),
+                        "maxMean" : np.mean(distance["maxMean"][-1000:])}
+        dataCenter = {"v" : np.mean(center["v"][-1000:]),
+                      "dphi" : np.mean(center["dphi"][-1000:])}
+        group = {"polarization" : np.mean(pol[-1000:])}
+        data = {"distance" : dataDistance,"center" : dataCenter,"group" : group}
+        with open(path+"/globalData.json","w") as f:
+            json.dump(data,f)  
+
+
+    def start(self):
+        repIds = []
+        for project in self.projects:
+            self.experiments = self.anal.getExperiments(project)
+            for exp in self.experiments:
+                sortingKeys,sortedKeys = self.anal.getExperimentSortingKeys(project,exp)
+                for key in sortedKeys:
+                    
+                    simId = self.anal.getSimIds(key)
+                    
+                    if len(simId)>0:
+                        simId = simId[0][0]
+                        repIds.extend(self.anal.getRepIds(simId))
+        pool = multiprocessing.Pool(processes=self.nThreads)
+        pool.map_async(analSim, repIds)
+        pool.close()
+        pool.join()
+    
+
+    def __init__(self,step = 10,nThreads = 2):
         self.step = step
         self.anal = dbFiller.Analyzer()
         self.projects = self.anal.projects
+        self.nThreads = nThreads
