@@ -33,6 +33,8 @@ import json
 import multiprocessing 
 
 anal = dbFiller.Analyzer()
+step = 10
+
 
 def angleDifference(A1, A2):
     A = A1 - A2
@@ -109,10 +111,33 @@ def analSim(simId,step = 10):
         json.dump(data,f)  
 
 
+def start(step0 = 10,nThreads = 2):
+    global step
+    step = step0
+    
+    projects = anal.projects
+    
+    repIds = []
+    for project in projects:
+        experiments = anal.getExperiments(project)
+        for exp in experiments:
+            sortingKeys,sortedKeys = anal.getExperimentSortingKeys(project,exp)
+            for key in sortedKeys:
+                
+                simId = anal.getSimIds(key)
+                
+                if len(simId)>0:
+                    simId = simId[0][0]
+                    repIds.extend(anal.getRepIds(simId))
+    
+    pool = multiprocessing.Pool(processes=self.nThreads)
+    pool.map_async(analSim, repIds)
+    pool.close()
+    pool.join()
 
 class Analyzer:
 
-    def analAll(self):
+    def start(self):
         for project in self.projects:
             self.experiments = self.anal.getExperiments(project)
             for exp in self.experiments:
@@ -149,29 +174,10 @@ class Analyzer:
 
 
 
-    def start(self):
-        repIds = []
-        for project in self.projects:
-            self.experiments = anal.getExperiments(project)
-            for exp in self.experiments:
-                sortingKeys,sortedKeys = anal.getExperimentSortingKeys(project,exp)
-                for key in sortedKeys:
-                    
-                    simId = anal.getSimIds(key)
-                    
-                    if len(simId)>0:
-                        simId = simId[0][0]
-                        repIds.extend(anal.getRepIds(simId))
-        
-        pool = multiprocessing.Pool(processes=self.nThreads)
-        pool.map_async(analSim, repIds)
-        pool.close()
-        pool.join()
     
 
     def __init__(self,step = 10,nThreads = 2):
-        #this step number does not get into the multiprocessing pool. This is going to be
-        #problematic. 
+
         self.step = step
     
         self.projects = anal.projects
