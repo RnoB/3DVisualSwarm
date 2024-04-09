@@ -92,8 +92,8 @@ def analSim(simId):
     step = 10
     anal = dbFiller.Analyzer()
     repId = simId[0]
-    print(repId + r"\n")
     parameters = anal.getParameters(simId,project,exp)
+    print(parameters)
     X = anal.getDataSet(repId)
     path = anal.getDataPath(repId)
     N = parameters["N"]
