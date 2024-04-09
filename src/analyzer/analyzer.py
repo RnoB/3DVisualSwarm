@@ -93,7 +93,7 @@ def getDataSet(path):
     pathData = path + "/position.csv"
     #rawData = np.genfromtxt(pathData, delimiter=",")
     rawData = pd.read_csv(pathData, header=None, delimiter=",").values
-    data = separateData(rawData)
+    data = dbFiller.separateData(rawData)
     return data
 
 def analSim(p):
