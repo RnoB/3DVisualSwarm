@@ -90,6 +90,7 @@ def getAllDistance(X):
 
 def analSim(simId):
     repId = simId[0]
+    print(repId)
     parameters = anal.getParameters(simId,project,exp)
     X = anal.getDataSet(repId)
     path = anal.getDataPath(repId)
