@@ -98,27 +98,28 @@ class Analyzer:
                     
                     if len(simId)>0:
                         simId = simId[0][0]
-                        repIds = self.anal.getRepIds(simId)[0][0]
-                        
-                        parameters = self.anal.getParameters(simId,project,exp)
-                        X = self.anal.getDataSet(repIds)
-                        path = self.anal.getDataPath(repIds)
-                        N = parameters["N"]
-                        mode = parameters["mode"]
-                        center = centerOfMassSpeed(X,step = self.step)
-                        distance = getAllDistance(X)
-                        pol = polarization(X)
-                        dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
-                                        "min" : np.mean(distance["min"][-1000:]),
-                                        "max" : np.mean(distance["max"][-1000:]),
-                                        "minMean" : np.mean(distance["minMean"][-1000:]),
-                                        "maxMean" : np.mean(distance["maxMean"][-1000:])}
-                        dataCenter = {"v" : np.mean(center["v"][-1000:]),
-                                      "dphi" : np.mean(center["dphi"][-1000:])}
-                        group = {"polarization" : np.mean(pol[-1000:])}
-                        data = {"distance" : dataDistance,"center" : dataCenter,"group" : group}
-                        with open(path+"/globalData.json","w") as f:
-                            json.dump(data,f)
+                        repIds = self.anal.getRepIds(simId)
+                        for repId in repIds:
+                            repId = repId[0]
+                            parameters = self.anal.getParameters(simId,project,exp)
+                            X = self.anal.getDataSet(repId)
+                            path = self.anal.getDataPath(repId)
+                            N = parameters["N"]
+                            mode = parameters["mode"]
+                            center = centerOfMassSpeed(X,step = self.step)
+                            distance = getAllDistance(X)
+                            pol = polarization(X)
+                            dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
+                                            "min" : np.mean(distance["min"][-1000:]),
+                                            "max" : np.mean(distance["max"][-1000:]),
+                                            "minMean" : np.mean(distance["minMean"][-1000:]),
+                                            "maxMean" : np.mean(distance["maxMean"][-1000:])}
+                            dataCenter = {"v" : np.mean(center["v"][-1000:]),
+                                          "dphi" : np.mean(center["dphi"][-1000:])}
+                            group = {"polarization" : np.mean(pol[-1000:])}
+                            data = {"distance" : dataDistance,"center" : dataCenter,"group" : group}
+                            with open(path+"/globalData.json","w") as f:
+                                json.dump(data,f)
 
     def __init__(self,step = 10):
         self.step = step
