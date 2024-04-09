@@ -33,7 +33,7 @@ import json
 import multiprocessing 
 
 
-step0 = 10
+
 
 
 def angleDifference(A1, A2):
@@ -88,16 +88,23 @@ def getAllDistance(X):
     distance = {"mean" : np.array(dMean),"min" : np.array(dMin),"max" : np.array(dMax),"minMean" : np.array(dMinMean),"maxMean" : np.array(dMaxMean)}
     return distance
 
-def analSim(simId):
-    step = 10
-    anal = dbFiller.Analyzer()
-    repId = simId[0]
-    parameters = anal.getParameters(simId,project,exp)
-    print(parameters)
-    X = anal.getDataSet(repId)
-    path = anal.getDataPath(repId)
-    N = parameters["N"]
-    mode = parameters["mode"]
+
+def getDataSet(self,path):
+    pathData = path + "/position.csv"
+    #rawData = np.genfromtxt(pathData, delimiter=",")
+    rawData = pd.read_csv(pathData, header=None, delimiter=",").values
+    data = separateData(rawData)
+    return data
+
+def analSim(p):
+    step = p["step"]
+    repId = p["repId"]
+    N = p["N"]
+    mode = p["mode"]  
+    path = p["path"]
+
+    X = getDataSet(path)
+
     center = centerOfMassSpeed(X,step = step)
     distance = getAllDistance(X)
     pol = polarization(X)
@@ -115,12 +122,11 @@ def analSim(simId):
 
 
 def start(step = 10,nThreads = 2):
-    global step0
-    step0 = step
+
     anal = dbFiller.Analyzer()
     projects = anal.projects
     
-    repIds = []
+    sims = []
     for project in projects:
         experiments = anal.getExperiments(project)
         for exp in experiments:
@@ -131,10 +137,16 @@ def start(step = 10,nThreads = 2):
                 
                 if len(simId)>0:
                     simId = simId[0][0]
-                    repIds.extend(anal.getRepIds(simId))
+                    repIds = anal.getRepIds(simId)
+                    for repId in repIds:
+                        parameters = anal.getParameters(simId,project,exp)
+                        path = anal.getDataPath(repId)
+                        sims = {"repId" : repId[0],"simId" : simId,"step" : step,
+                                "N":parameters["N"],"mode":parameters["mode"],"path":path}
+
     
     pool = multiprocessing.Pool(processes=nThreads)
-    pool.map_async(analSim, repIds)
+    pool.map_async(analSim, parameters)
     pool.close()
     pool.join()
 
