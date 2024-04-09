@@ -141,8 +141,8 @@ def start(step = 10,nThreads = 2):
                     for repId in repIds:
                         parameters = anal.getParameters(simId,project,exp)
                         path = anal.getDataPath(repId[0])
-                        sims = {"repId" : repId[0],"simId" : simId,"step" : step,
-                                "N":parameters["N"],"mode":parameters["mode"],"path":path}
+                        sims.append({"repId" : repId[0],"simId" : simId,"step" : step,
+                                "N":parameters["N"],"mode":parameters["mode"],"path":path})
 
     for p in parameters:
         analSim(p)
