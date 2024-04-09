@@ -89,7 +89,7 @@ def getAllDistance(X):
     return distance
 
 
-def getDataSet(self,path):
+def getDataSet(path):
     pathData = path + "/position.csv"
     #rawData = np.genfromtxt(pathData, delimiter=",")
     rawData = pd.read_csv(pathData, header=None, delimiter=",").values
