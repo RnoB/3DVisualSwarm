@@ -171,9 +171,8 @@ class ExperimentView(generic.ListView):
                                 datas.append(d)
                         else:
                             print("no")
-                    print(len(repIds))
-                    print(datas)
-                    print(lDToDAvg(datas))
+
+                    globalData.append(lDToDAvg(datas))
 
                     videos.append(vid)
 
@@ -195,7 +194,7 @@ class ExperimentView(generic.ListView):
                             for k0 in d.keys():
                                 for k1 in d[k0].keys():
                                     d[k0][k1] = [xn[k],yn[k],d[k0][k1]]
-                            globalData.append(d)
+                            #globalData.append(d)
 
             print(len(globalData))                
             gData = lDToDL(globalData)
