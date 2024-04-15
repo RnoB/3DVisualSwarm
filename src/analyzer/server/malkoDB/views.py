@@ -140,8 +140,8 @@ class ExperimentView(generic.ListView):
                     fil = {context["xname"] : x0,context["yname"] : y0}
                     repIds = exp.filter(**fil).values_list("repId", flat=True)
                     vid = ""
-                    datas = []
                     for repId in repIds:
+                        datas = []
                         pathID = getUUIDPath(repId)
                         path = pather("",[project])
                         path = pather(path,pathID)
@@ -154,8 +154,9 @@ class ExperimentView(generic.ListView):
                                 datas.append(d)
                         else:
                             print("no")
-                        print(datas)
-                        print(lDToDL(datas))
+                    print(len(repIds))
+                    print(datas)
+                    print(lDToDL(datas))
 
                     videos.append(vid)
 
