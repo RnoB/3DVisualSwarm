@@ -25,6 +25,36 @@ def pather(path,params = []):
         path = path + '/' + str(param)
     return path
 
+def lDToDAvg(LD):
+    #https://stackoverflow.com/questions/5558418/list-of-dicts-to-from-dict-of-lists
+    DL = {}
+    common_keys0 = set.intersection(*map(set, LD))
+    for key0 in common_keys0:
+        DL[key0] = {}
+        for key1 in LD[0][key0].keys():
+            values = []
+            
+            for d in LD:
+                values.append(d[key0][key1])
+            values = np.array(values)
+
+            if key1 == "polarization":
+                rang = '[0,1]'
+                cmap = "div"
+            elif key1 == "dphi":
+                rang = '[-0.001,0.001]'
+                cmap = "div"
+            elif key1 == "v":
+                rang = '[.5,1.5]'
+                cmap = "div"
+            else:
+                rang = '['+str(np.min(values[:,2]))+','+str(np.max(values[:,2]))+']' 
+                cmap = "seq"
+            
+            DL[key0][key1] = np.mean(values)
+
+    return DL
+
 def lDToDL(LD):
     #https://stackoverflow.com/questions/5558418/list-of-dicts-to-from-dict-of-lists
     DL = {}
@@ -156,7 +186,7 @@ class ExperimentView(generic.ListView):
                             print("no")
                     print(len(repIds))
                     print(datas)
-                    print(lDToDL(datas))
+                    print(lDToDAvg(datas))
 
                     videos.append(vid)
 
