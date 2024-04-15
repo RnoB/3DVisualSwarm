@@ -25,7 +25,7 @@ def pather(path,params = []):
         path = path + '/' + str(param)
     return path
 
-def lDToDAvg(LD):
+def lDToDAvg(LD,x0,y0):
     #https://stackoverflow.com/questions/5558418/list-of-dicts-to-from-dict-of-lists
     DL = {}
     common_keys0 = set.intersection(*map(set, LD))
@@ -38,7 +38,7 @@ def lDToDAvg(LD):
                 values.append(d[key0][key1])
             values = np.array(values)
 
-            DL[key0][key1] = np.mean(values)
+            DL[key0][key1] = [x0,y0,np.mean(values)]
 
     return DL
 
@@ -172,7 +172,7 @@ class ExperimentView(generic.ListView):
                         else:
                             print("no")
 
-                    globalData.append(lDToDAvg(datas))
+                    globalData.append(lDToDAvg(datas,xn[k],yn[k]))
 
                     videos.append(vid)
 
