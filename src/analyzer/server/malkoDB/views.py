@@ -38,19 +38,6 @@ def lDToDAvg(LD):
                 values.append(d[key0][key1])
             values = np.array(values)
 
-            if key1 == "polarization":
-                rang = '[0,1]'
-                cmap = "div"
-            elif key1 == "dphi":
-                rang = '[-0.001,0.001]'
-                cmap = "div"
-            elif key1 == "v":
-                rang = '[.5,1.5]'
-                cmap = "div"
-            else:
-                rang = '['+str(np.min(values[:,2]))+','+str(np.max(values[:,2]))+']' 
-                cmap = "seq"
-            
             DL[key0][key1] = np.mean(values)
 
     return DL
