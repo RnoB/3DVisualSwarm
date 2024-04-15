@@ -155,6 +155,7 @@ class ExperimentView(generic.ListView):
                         else:
                             print("no")
                     print(len(repIds))
+                    print(datas)
                     print(lDToDL(datas))
 
                     videos.append(vid)
