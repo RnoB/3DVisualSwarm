@@ -154,7 +154,9 @@ class ExperimentView(generic.ListView):
                                 datas.append(d)
                         else:
                             print("no")
+                        print(datas)
                         print(lDToDL(datas))
+
                     videos.append(vid)
 
             for k in range(0,len(exp2)):
