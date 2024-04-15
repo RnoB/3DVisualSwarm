@@ -172,7 +172,7 @@ class ExperimentView(generic.ListView):
                         else:
                             print("no")
 
-                    globalData.append(lDToDAvg(datas,xn[k],yn[k]))
+                    globalData.append(lDToDAvg(datas,x0,y0))
 
                     videos.append(vid)
 
