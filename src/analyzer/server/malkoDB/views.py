@@ -141,6 +141,7 @@ class ExperimentView(generic.ListView):
                     repIds = exp.filter(**fil).values_list("repId", flat=True)
                     vid = ""
                     for repId in repIds:
+                        print(repId)
                         datas = []
                         pathID = getUUIDPath(repId)
                         path = pather("",[project])
