@@ -7,7 +7,7 @@
 	"experiment":
 	{
 		"type":"text",
-		"default":"sy"
+		"default":"single"
 	},
 	"engine":
 	{
@@ -98,13 +98,13 @@
 	"sx":
 	{
 		"type":"real",
-		"default":0.1
+		"default":0.1,
+		"range":[0.6,0.7,0.85,1.2,1.4,1.7]
 	},
 	"sy":
 	{
 		"type":"real",
-		"default":1,
-		"range":[1.0]
+		"default":1
 	},
 	"sz":
 	{
@@ -119,7 +119,7 @@
 	"mode":
 	{
 		"type":"integer",
-		"default":0
+		"default":1
 	},
 	"parameters":
 	{
