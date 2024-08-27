@@ -314,7 +314,7 @@ class Projector:
     def setThreads(self,nThreads = 1):
         bpy.context.scene.render.threads = nThreads
 
-    def defaultMaterial(self,name = "white",texture = False):
+    def defaultMaterial(self,name = "white",texture = False,noise = (5,10,2,2)):
 
         material0 = bpy.data.materials.new(name=name)
         material0.use_nodes = True
@@ -330,10 +330,10 @@ class Projector:
             vectorAdd.inputs[1].default_value = np.random.rand(3)
             noise = nodes.new(type='ShaderNodeTexNoise')
             noise.noise_dimensions = "3D"
-            noise.inputs[2].default_value = 5+10*np.random.random()
+            noise.inputs[2].default_value = noise[0]+noise[1]*np.random.random()
             noise.inputs[3].default_value = 0
             noise.inputs[4].default_value = 0
-            noise.inputs[5].default_value = 2+2*np.random.random()
+            noise.inputs[5].default_value = noise[2]+noise[3]*np.random.random()
             separateRGB = nodes.new(type='ShaderNodeSeparateRGB')
             material0.node_tree.links.new(vectorAdd.inputs[0], texCoord.outputs[0])
             material0.node_tree.links.new(noise.inputs[0], vectorAdd.outputs[0])
@@ -369,7 +369,7 @@ class Projector:
 
         basic_sphere.select_set(True)
         if self.texture:
-            material1 = self.defaultMaterial(name = "tex_"+str(np.random.randint(1e9)),texture = self.texture)
+            material1 = self.defaultMaterial(name = "tex_"+str(np.random.randint(1e9)),texture = self.texture,noise = self.noise)
             basic_sphere.active_material = material1
         else:
             basic_sphere.active_material = self.material0
@@ -472,7 +472,7 @@ class Projector:
             obj.select_set(True)
             bpy.ops.object.delete()
 
-    def __init__(self, size=512,dim = 3,texture = False,colors = False):
+    def __init__(self, size=512,dim = 3,texture = False,colors = False,noise = (5,10,2,2)):
         self.cleanScene()
         self.dim = dim
         if size%2 == 1:
@@ -487,6 +487,7 @@ class Projector:
                 size2 += 1
             self.size = [size,size2]
         self.texture = texture
+        self.noise = noise
         self.colors = colors
         self.setupRender()
         self.material0 = self.defaultMaterial()
