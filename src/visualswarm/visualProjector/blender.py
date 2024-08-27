@@ -369,7 +369,7 @@ class Projector:
 
         basic_sphere.select_set(True)
         if self.texture:
-            material1 = self.defaultMaterial(name = "tex_"+str(np.random.randint(1e9)),texture = self.texture,noise = self.noise)
+            material1 = self.defaultMaterial(name = "tex_"+str(np.random.randint(1e9)),texture = self.texture,n = self.noise)
             basic_sphere.active_material = material1
         else:
             basic_sphere.active_material = self.material0
