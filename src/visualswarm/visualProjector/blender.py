@@ -314,7 +314,7 @@ class Projector:
     def setThreads(self,nThreads = 1):
         bpy.context.scene.render.threads = nThreads
 
-    def defaultMaterial(self,name = "white",texture = False,noise = (5,10,2,2)):
+    def defaultMaterial(self,name = "white",texture = False,n = (5,10,2,2)):
 
         material0 = bpy.data.materials.new(name=name)
         material0.use_nodes = True
@@ -330,10 +330,10 @@ class Projector:
             vectorAdd.inputs[1].default_value = np.random.rand(3)
             noise = nodes.new(type='ShaderNodeTexNoise')
             noise.noise_dimensions = "3D"
-            noise.inputs[2].default_value = noise[0]+noise[1]*np.random.random()
+            noise.inputs[2].default_value = n[0]+n[1]*np.random.random()
             noise.inputs[3].default_value = 0
             noise.inputs[4].default_value = 0
-            noise.inputs[5].default_value = noise[2]+noise[3]*np.random.random()
+            noise.inputs[5].default_value = n[2]+n[3]*np.random.random()
             separateRGB = nodes.new(type='ShaderNodeSeparateRGB')
             material0.node_tree.links.new(vectorAdd.inputs[0], texCoord.outputs[0])
             material0.node_tree.links.new(noise.inputs[0], vectorAdd.outputs[0])
