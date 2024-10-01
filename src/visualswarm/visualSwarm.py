@@ -44,6 +44,13 @@ class Simulator:
         self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
         self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
 
+        flow = self.proj.allVisualFieldDt 
+        flowD = 0 * self.proj.allVisualFieldContourDt
+        self.vIntegral[:,6] = np.sum(flowD * self.proj.sine.cosThetaCosPhiAll-flow * self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
+        self.vIntegral[:,7] = np.sum(flowD * self.proj.sine.cosThetaSinPhiAll-flow * self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
+        self.vIntegral[:,8] = np.sum(flowD * self.proj.sine.sinThetaAll-flow * self.proj.sine.sinThetaAllD,axis = (0,1))
+
+
     def computeVelocity(self):
         self.du[:,0] = (self.drag * (self.u0 - self.u[:,0] ) + self.parametersV[0,0] * ( self.parametersV[0,1] * self.vIntegral[:,0] + self.parametersV[0,2] * self.vIntegral[:,3] ) )
         self.du[:,1] =  self.parametersV[1,0] * (( self.parametersV[1,1] * self.vIntegral[:,1] + self.parametersV[1,2] * self.vIntegral[:,4] ))
@@ -156,7 +163,7 @@ class Simulator:
         self.u = np.zeros((N,3))
         self.du = np.zeros((N,3))
         self.dx = np.zeros((N,3))
-        self.vIntegral = np.zeros((N,6))
+        self.vIntegral = np.zeros((N,9))
         self.u0 = u0
         self.u[:,0] = u0
         self.parametersV = np.array(parametersV)
