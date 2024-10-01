@@ -44,11 +44,11 @@ class Simulator:
         self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
         self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
 
-        flow =  self.proj.allVisualFieldDt 
-        flowD =  self.proj.allVisualFieldContourDt
-        self.vIntegral[:,6] = np.sum(flowD * self.proj.sine.cosThetaCosPhiAll-flow * self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
-        self.vIntegral[:,7] = np.sum(flowD * self.proj.sine.cosThetaSinPhiAll-flow * self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
-        self.vIntegral[:,8] = np.sum(flowD * self.proj.sine.sinThetaAll-flow * self.proj.sine.sinThetaAllD,axis = (0,1))
+        flow =  parametersV[3,0] * self.proj.allVisualFieldDt 
+        flowD =  parametersV[3,1] * self.proj.allVisualFieldContourDt
+        self.vIntegral[:,6] = np.sum(flowD * self.proj.sine.cosThetaCosPhiAll+flow * self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
+        self.vIntegral[:,7] = np.sum(flowD * self.proj.sine.cosThetaSinPhiAll+flow * self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
+        self.vIntegral[:,8] = np.sum(flowD * self.proj.sine.sinThetaAll+flow * self.proj.sine.sinThetaAllD,axis = (0,1))
 
 
     def computeVelocity(self):
@@ -136,7 +136,7 @@ class Simulator:
 
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
                       dt = 0.1,tMax = 100,u0 = 1,drag = .1,
-                      parametersV = np.array([[0,0,0],[0,0,0],[0,0,0]]),
+                      parametersV = np.array([[0,0,0],[0,0,0],[0,0,0],[0,0,0]]),
                       bufferSize = 100,ip = "localhost" , port = 1234,project = "project",write = True):
         
         self.engine = engine
