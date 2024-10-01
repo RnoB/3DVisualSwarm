@@ -327,6 +327,9 @@ class Projector:
         self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
         self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        self.allVisualFieldContour = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        self.allVisualFieldContourOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
         
@@ -359,6 +362,7 @@ class Projector:
             self.allVisualField[:,:,k] = np.copy(V)
 
     def derivateAllVisualField(self):
+        self.allVisualFieldContourOld = np.copy(self.allVisualFieldContour)
         self.allVisualFieldDPhi =\
          (np.roll(self.allVisualField[:,:,:],1,1)-np.roll(self.allVisualField[:,:,:],-1,1))
         if self.dim == 3:
@@ -368,6 +372,9 @@ class Projector:
         else:
             self.allVisualFieldContour = np.abs(self.allVisualFieldDPhi/2.0)
         self.allVisualFieldDt = (self.allVisualField - self.allVisualFieldOld) 
+        self.allVisualFieldContourDt = (self.allVisualFieldContour - self.allVisualFieldContourOld) 
+
+
 
 
     def moveObject(self,basic_sphere,x=0,y=0,z=0):
