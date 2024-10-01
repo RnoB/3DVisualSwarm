@@ -44,7 +44,7 @@ class Simulator:
         self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
         self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
 
-        flow = 0 * self.proj.allVisualFieldDt 
+        flow =  self.proj.allVisualFieldDt 
         flowD =  self.proj.allVisualFieldContourDt
         self.vIntegral[:,6] = np.sum(flowD * self.proj.sine.cosThetaCosPhiAll-flow * self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
         self.vIntegral[:,7] = np.sum(flowD * self.proj.sine.cosThetaSinPhiAll-flow * self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
