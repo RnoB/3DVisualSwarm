@@ -326,12 +326,12 @@ class Projector:
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
         self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
         self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.position)))
-        self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
-        self.allVisualFieldContour = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
-        self.allVisualFieldContourOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         
         self.sine.stack(len(self.position))
         self.listObjects.append(len(self.listObjects))
+        self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        self.allVisualFieldContour = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        self.allVisualFieldContourOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
         
 
 
