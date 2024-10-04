@@ -322,7 +322,8 @@ class Projector:
         return X
    
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
-        N = self.listObjects.append(len(self.listObjects))
+        self.listObjects.append(len(self.listObjects))
+        N = len(self.listObjects)
         self.position = np.vstack((self.position,np.array((x,y,z))))
         self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
         self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
