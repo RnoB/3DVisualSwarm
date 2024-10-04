@@ -118,9 +118,9 @@ class ProjectedSine:
 
         self.dThetadPhiIm = self.dThetaIm*self.dPhiIm
 
-        self.sinThetaIm = np.sin(self.theta2d) 
-        self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d)  
-        self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d) 
+        self.sinThetaIm = np.sin(self.theta2d) * self.dThetaIm
+        self.cosThetaCosPhiIm = np.cos(self.theta2d) * np.cos(self.phi2d) * self.dThetaIm  
+        self.cosThetaSinPhiIm = np.cos(self.theta2d) * np.sin(self.phi2d) * self.dThetaIm 
         
         self.sinThetaImD = np.sin(self.theta2d) * self.dThetadPhiIm
         self.cosThetaCosPhiImD = np.cos(self.theta2d) * np.cos(self.phi2d) * self.dThetadPhiIm 
@@ -410,7 +410,7 @@ class Projector:
     def cleanScene(self):
         pass
 
-    def __init__(self, size=512,dim = 3,texture = False,colors = False,tanApprox = False,insideInvisible = True):
+    def __init__(self, size=512,dim = 3,texture = False,colors = False,tanApprox = True,insideInvisible = True):
         self.dim = dim
         if size%2 == 1:
             size += 1
