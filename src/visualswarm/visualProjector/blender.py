@@ -361,42 +361,45 @@ class Projector:
         material0.node_tree.links.new(material_output.inputs[0], emission.outputs[0])
         return material0
 
-    def addObject(self,x=0,y=0,z=0,name = "agent"):
-        mesh = bpy.data.meshes.new(name)
-        basic_sphere = bpy.data.objects.new(name, mesh)
+    def addObject(self,x=0,y=0,z=0,name = "agent",nObjects = 1):
+        for k in range(0,N):
+            mesh = bpy.data.meshes.new(name)
+            basic_sphere = bpy.data.objects.new(name, mesh)
+    
+            # Add the object into the scene.
+            bpy.context.collection.objects.link(basic_sphere)
+    
+            # Select the newly created object
+            bpy.context.view_layer.objects.active = basic_sphere
+            basic_sphere.select_set(True)
+    
+            #bpy.context.view_layer.objects.active = obj
+            # go edit mode
+    
+            # Construct the bmesh sphere and assign it to the blender mesh.
+            bm = bmesh.new()
+            #bmesh.ops.create_icosphere(bm, subdivisions=16,  diameter=1)
+            bmesh.ops.create_uvsphere(bm, u_segments=20, v_segments=20, radius=.5)
+            bm.to_mesh(mesh)
+            bm.free()
+    
+            basic_sphere.select_set(True)
+            if self.texture:
+                material1 = self.defaultMaterial(name = "tex_"+str(np.random.randint(1e9)),texture = self.texture,n = self.noise)
+                basic_sphere.active_material = material1
+            else:
+                basic_sphere.active_material = self.material0
+            basic_sphere.location = mathutils.Vector((x,y,z))        
+            basic_sphere.select_set(False)
+            self.listObjects.append(basic_sphere)
 
-        # Add the object into the scene.
-        bpy.context.collection.objects.link(basic_sphere)
-
-        # Select the newly created object
-        bpy.context.view_layer.objects.active = basic_sphere
-        basic_sphere.select_set(True)
-
-        #bpy.context.view_layer.objects.active = obj
-        # go edit mode
-
-        # Construct the bmesh sphere and assign it to the blender mesh.
-        bm = bmesh.new()
-        #bmesh.ops.create_icosphere(bm, subdivisions=16,  diameter=1)
-        bmesh.ops.create_uvsphere(bm, u_segments=20, v_segments=20, radius=.5)
-        bm.to_mesh(mesh)
-        bm.free()
-
-        basic_sphere.select_set(True)
-        if self.texture:
-            material1 = self.defaultMaterial(name = "tex_"+str(np.random.randint(1e9)),texture = self.texture,n = self.noise)
-            basic_sphere.active_material = material1
-        else:
-            basic_sphere.active_material = self.material0
-        basic_sphere.location = mathutils.Vector((x,y,z))        
-        basic_sphere.select_set(False)
-        self.listObjects.append(basic_sphere)
-        self.allVisualField = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
-        self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
-        self.allVisualFieldContour = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
-        self.allVisualFieldContourOld = np.zeros((self.size[1],self.size[0],len(self.listObjects)))
+        N = len(self.listObjects)
+        self.allVisualField = np.zeros((self.size[1],self.size[0],N))
+        self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],N))
+        self.allVisualFieldContour = np.zeros((self.size[1],self.size[0],N))
+        self.allVisualFieldContourOld = np.zeros((self.size[1],self.size[0],N))
         
-        self.sine.stack(len(self.listObjects))
+        self.sine.stack(N)
 
     def computeVisualField(self,agent):
         self.camera.positionUpdate(agent.location)
