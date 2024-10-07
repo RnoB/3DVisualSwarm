@@ -321,15 +321,18 @@ class Projector:
         X[:,1] = y
         return X
    
-    def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent"):
-        self.listObjects.append(len(self.listObjects))
+    def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent",nObjects = 1):
+        for k in range(0,nObjects):
+            self.listObjects.append(len(self.listObjects))
+            self.position = np.vstack((self.position,np.array((x,y,z))))
+            self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
+            self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
+        
         N = len(self.listObjects)
-        self.position = np.vstack((self.position,np.array((x,y,z))))
-        self.rotation = np.vstack((self.rotation,np.array((0,0,0))))
-        self.scale = np.vstack((self.scale,np.array((2*radius,2*radius,2*radius))))
+        
         self.allVisualField = np.zeros((self.size[1],self.size[0],N))
         
-        self.sine.stack(len(self.position))
+        self.sine.stack(N)
         self.allVisualFieldOld = np.zeros((self.size[1],self.size[0],N))
         self.allVisualFieldContour = np.zeros((self.size[1],self.size[0],N))
         self.allVisualFieldContourOld = np.zeros((self.size[1],self.size[0],N))
