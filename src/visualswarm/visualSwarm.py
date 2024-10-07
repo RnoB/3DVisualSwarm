@@ -104,6 +104,7 @@ class Simulator:
         self.client.stop()
 
     def initializeSwarm(self,R = 20,dim = 3):
+        self.proj.addObject(0,0,0,nObjects = self.N)
         for k in range(0,self.N):
             x = R*random.random()-R/2
             y = R*random.random()-R/2
@@ -112,9 +113,9 @@ class Simulator:
             else:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
-            self.proj.addObject(x,y,z)
-
-            self.proj.rotateObject(self.proj.listObjects[-1],0,0,phi)
+            
+            self.proj.moveObjects(self.proj.listObjects[k],x,y,z)
+            self.proj.rotateObject(self.proj.listObjects[k],0,0,phi)
             obj = self.proj.listObjects[k]
 
             location = self.proj.getPosition(obj)
