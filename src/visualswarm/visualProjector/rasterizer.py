@@ -337,6 +337,8 @@ class Projector:
         self.allVisualFieldContour = np.zeros((self.size[1],self.size[0],N))
         self.allVisualFieldContourOld = np.zeros((self.size[1],self.size[0],N))
         
+        self.movComp = np.zeros((N))
+        
 
 
     def computeVisualField(self,agent):
@@ -359,14 +361,19 @@ class Projector:
 
 
     def computeAllVisualField(self):
-        self.allVisualFieldOld = np.copy(self.allVisualField)
+        if not self.compensation:
+            self.allVisualFieldOld = np.copy(self.allVisualField)
+            self.allVisualFieldContourOld = np.copy(self.allVisualFieldContour)
         
         for k in range(0,len(self.listObjects)):
+            if self.compensation:            
+                self.allVisualFieldContourOld[0,:,k] = np.roll(self.allVisualFieldContour[0,:,k],-int(self.movComp[k]))
+                self.allVisualFieldOld[0,:,k] = np.roll(self.allVisualField[0,:,k],-int(self.movComp[k]))
+                
             V = self.computeVisualField(self.listObjects[k])
             self.allVisualField[:,:,k] = np.copy(V)
 
     def derivateAllVisualField(self):
-        self.allVisualFieldContourOld = np.copy(self.allVisualFieldContour)
         self.allVisualFieldDPhi =\
          (np.roll(self.allVisualField[:,:,:],1,1)-np.roll(self.allVisualField[:,:,:],-1,1))
         if self.dim == 3:
@@ -406,6 +413,8 @@ class Projector:
         self.scale[basic_sphere] = np.array((x,y,z))
 
     def rotateObject(self,basic_sphere,dx=0,dy=0,dz=0):
+        if self.compensation:
+            self.movComp[basic_sphere] = dz/self.sine.dThetadPhiIm[0,0]
         self.rotation[basic_sphere]+=np.array((dx,dy,dz))
 
     def getObjects(self,idx = 0):
@@ -414,7 +423,7 @@ class Projector:
     def cleanScene(self):
         pass
 
-    def __init__(self, size=512,dim = 3,texture = False,colors = False,tanApprox = True,insideInvisible = True):
+    def __init__(self, size=512,dim = 3,texture = False,colors = False,tanApprox = True,insideInvisible = True,compensation = False):
         self.dim = dim
         if size%2 == 1:
             size += 1
@@ -427,7 +436,8 @@ class Projector:
             self.size = [size,size2]
         self.texture = texture
         self.colors = colors
-   
+        self.compensation = compensation
+        self.movComp = np.zeros((0,3))
         self.sine = ProjectedSine(self.size,self.dim)
         self.tanApprox = tanApprox
         self.position = np.zeros((0,3))
