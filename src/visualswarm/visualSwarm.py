@@ -113,7 +113,7 @@ class Simulator:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
             
-            self.proj.moveObjects(self.proj.listObjects[k],x,y,z)
+            self.proj.moveObject(self.proj.listObjects[k],x,y,z)
             self.proj.rotateObject(self.proj.listObjects[k],0,0,phi)
             obj = self.proj.listObjects[k]
 
