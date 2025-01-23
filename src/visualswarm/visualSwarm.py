@@ -44,19 +44,26 @@ class Simulator:
         self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
         self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
 
-        flowD = self.parametersV[3,0] * self.proj.allVisualFieldContourDt
-        flowO = self.parametersV[3,1] * self.proj.allVisualFieldDt * self.proj.allVisualFieldDPhi
-        
-        self.vIntegral[:,6] = np.sum(flowO * self.proj.sine.cosThetaSinPhiAll+flowD * self.proj.sine.cosThetaCosPhiAll+flow * self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
-        self.vIntegral[:,7] = np.sum(flowO * self.proj.sine.cosThetaCosPhiAll+flowD * self.proj.sine.cosThetaSinPhiAll+flow * self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
-        self.vIntegral[:,8] = np.sum((flowO+flowD) * self.proj.sine.sinThetaAll+flow * self.proj.sine.sinThetaAllD,axis = (0,1))
 
+        if self.temporalDerivative == 0:
+            flow =  self.proj.allVisualFieldContourDt
+            self.vIntegral[:,6] = -np.sum(flow * self.proj.sine.cosThetaCosPhiAll ,axis = (0,1))
+            self.vIntegral[:,7] = np.sum(flow * self.proj.sine.cosThetaSinPhiAll ,axis = (0,1))
+            self.vIntegral[:,8] = np.sum(flow * self.proj.sine.sinThetaAll,axis = (0,1))
+        else:
+            flow = self.proj.allVisualFieldDt * self.proj.allVisualFieldDPhi/2.0
+            self.vIntegral[:,6] = np.sum(flow * self.proj.sine.cosThetaSinPhiAll ,axis = (0,1))
+            self.vIntegral[:,7] = -np.sum(flow * self.proj.sine.cosThetaCosPhiAll ,axis = (0,1))
+            self.vIntegral[:,8] = np.sum(flow * self.proj.sine.sinThetaAll,axis = (0,1))
 
     def computeVelocity(self):
-        self.du[:,0] = (self.drag * (self.u0 - self.u[:,0] ) + self.parametersV[0,0] * ( self.parametersV[0,1] * self.vIntegral[:,0] + self.parametersV[0,2] * self.vIntegral[:,3]  + self.parametersV[0,3] * self.vIntegral[:,6] ) )
-        self.du[:,1] =  self.parametersV[1,0] * (( self.parametersV[1,1] * self.vIntegral[:,1] + self.parametersV[1,2] * self.vIntegral[:,4]  + self.parametersV[1,3] * self.vIntegral[:,7] ))
-        self.du[:,2] =  ( -self.drag * self.u[:,2] + self.parametersV[2,0] * ( self.parametersV[2,1] * self.vIntegral[:,2] + self.parametersV[2,2] * self.vIntegral[:,5] + self.parametersV[2,3] * self.vIntegral[:,8] ))
-
+        self.du[:,0] = (self.drag * (self.u0 - self.u[:,0] ) + \
+                        self.parametersV[0,0] * ( self.parametersV[0,1] * self.vIntegral[:,0] + self.parametersV[0,2] * self.vIntegral[:,3] ) ) + \
+                        self.parametersV[0,3] * self.vIntegral[:,6]
+        self.du[:,1] =  self.parametersV[1,0] * (( self.parametersV[1,1] * self.vIntegral[:,1] + self.parametersV[1,2] * self.vIntegral[:,4] )) + \
+                        self.parametersV[1,3] * self.vIntegral[:,7]
+        self.du[:,2] =  ( -self.drag * self.u[:,2] + self.parametersV[2,0] * ( self.parametersV[2,1] * self.vIntegral[:,2] + self.parametersV[2,2] * self.vIntegral[:,5] )) + \
+                        self.parametersV[2,3] * self.vIntegral[:,8]
         self.u += self.du*self.dt
 
         self.dx = self.u*self.dt
@@ -138,7 +145,8 @@ class Simulator:
 
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
                       dt = 0.1,tMax = 100,u0 = 1,drag = .1,
-                      parametersV = np.array([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]),
+                      parametersV = np.array([[0,0,0,0],[0,0,0,0],[0,0,0,0]]),
+                      temporalDerivative = 0,compensation = False,
                       bufferSize = 100,ip = "localhost" , port = 1234,project = "project",write = True):
         
         self.engine = engine
@@ -170,9 +178,11 @@ class Simulator:
         self.u[:,0] = u0
         self.parametersV = np.array(parametersV)
 
+        self.temporalDerivative = temporalDerivative
+
         self.positionWrite = []
 
-        self.proj = vp.Projector(size = size,dim = dim)
+        self.proj = vp.Projector(size = size,dim = dim,compensation = compensation)
         self.initializeSwarm(dim = dim)
         self.write = write
         if writer and self.write:

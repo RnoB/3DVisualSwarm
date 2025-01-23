@@ -367,8 +367,8 @@ class Projector:
         
         for k in range(0,len(self.listObjects)):
             if self.compensation:            
-                self.allVisualFieldContourOld[0,:,k] = np.roll(self.allVisualFieldContour[0,:,k],-int(self.movComp[k]))
-                self.allVisualFieldOld[0,:,k] = np.roll(self.allVisualField[0,:,k],-int(self.movComp[k]))
+                self.allVisualFieldContourOld[0,:,k] = np.roll(self.allVisualFieldContour[0,:,k],int(self.movComp[k]))
+                self.allVisualFieldOld[0,:,k] = np.roll(self.allVisualField[0,:,k],int(self.movComp[k]))
                 
             V = self.computeVisualField(self.listObjects[k])
             self.allVisualField[:,:,k] = np.copy(V)
