@@ -54,13 +54,13 @@ def startSimulation(repId):
 
     try:
 
-        parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"]],
-                                [repId["b0"],repId["b00"],repId["b1"]],
-                                [repId["c0"],repId["c00"],repId["c1"]]])
+        parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
+                                [repId["b0"],repId["b00"],repId["a1"],repId["b2"]],
+                                [repId["c0"],repId["c00"],repId["c1"],repId["c2"]]])
         N = repId["N"]
         sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
                       dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
-                      parametersV = parametersV,
+                      parametersV = parametersV,temporalDerivative = 0,compensation = True,
                       bufferSize = 1000,ip = config["writerIP"] , port = config["writerPort"],project = repId["project"])
         
         repId['repId'] = sim.getName()
