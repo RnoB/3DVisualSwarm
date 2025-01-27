@@ -188,6 +188,7 @@ class Simulator:
         if writer and self.write:
             self.client = writer.Client(N = 14,ip = ip,port = port,project = project)
             self.client.start()
+            self.client.setPrecision(4)
             self.name = self.client.getName()
         else:
             self.write = False
