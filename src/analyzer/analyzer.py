@@ -121,9 +121,9 @@ def analSim(p):
         json.dump(data,f)  
 
 
-def start(step = 10,nThreads = 2):
+def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db"):
 
-    anal = dbFiller.Analyzer()
+    anal = dbFiller.Analyzer(dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed)
     projects = anal.projects
     
     sims = []
@@ -192,7 +192,7 @@ class Analyzer:
 
     
 
-    def __init__(self,step = 10,nThreads = 2):
+    def __init__(self,step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db"):
 
         self.step = step
     
