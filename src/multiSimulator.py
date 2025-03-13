@@ -60,7 +60,7 @@ def startSimulation(repId):
         N = repId["N"]
         sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
                       dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
-                      parametersV = parametersV,temporalDerivative = 0,compensation = True,
+                      parametersV = parametersV,temporalDerivative = 1,compensation = True,
                       bufferSize = 1000,ip = config["writerIP"] , port = config["writerPort"],project = repId["project"])
         
         repId['repId'] = sim.getName()
