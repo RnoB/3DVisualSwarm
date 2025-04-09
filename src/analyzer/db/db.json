@@ -61,9 +61,15 @@
 		"default":-1
 	},
 	"a1":
-	{
+	{		
 		"type":"real",
-		"default":0.1
+		"default":0.1,
+		"range":[ 0.01,  0.02,  0.05,  0.1 ,  0.2 ,  0.5]
+	},
+	"a2":
+	{		
+		"type":"real",
+		"default":0.2
 	},
 	"b0":
 	{
@@ -79,6 +85,11 @@
 	{
 		"type":"real",
 		"default":0.1
+	},
+	"b2":
+	{		
+		"type":"real",
+		"default":0.2
 	},
 	"c0":
 	{
@@ -98,8 +109,7 @@
 	"sx":
 	{
 		"type":"real",
-		"default":0.1,
-		"range":[0.6,0.7,0.85,1.2,1.4,1.7]
+		"default":0.1
 	},
 	"sy":
 	{
