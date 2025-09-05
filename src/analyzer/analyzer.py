@@ -42,7 +42,7 @@ def angleDifference(A1, A2):
     return A
 
 def polarization(X):
-    phi = ((X[:,7,:]+np.pi)%2*np.pi)-np.pi
+    phi = (X[:,7,:]+np.pi)%(2*np.pi)-np.pi
     nx = np.shape(phi)[0]
     P = []
     for k in range(0,nx):
