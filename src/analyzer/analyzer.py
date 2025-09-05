@@ -196,5 +196,5 @@ class Analyzer:
 
         self.step = step
     
-        self.projects = anal.projects
+        self.projects = projects
         self.nThreads = nThreads
