@@ -64,6 +64,10 @@ def lDToDL(LD):
             elif key1 == "v":
                 rang = '[.5,1.5]'
                 cmap = "div"
+            elif key1 == "anisotropy":
+                rang = '[-1,1]'
+                cmap = "div"
+
             else:
                 rang = '['+str(np.min(values[:,2]))+','+str(np.max(values[:,2]))+']' 
                 cmap = "seq"
