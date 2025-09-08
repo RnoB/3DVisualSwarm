@@ -94,6 +94,7 @@ def getShape(X,center,N):
     phi = np.tile(center["phi"],(N,1)).T
     x0 = x[:,0,:]*np.cos(phi) - X[:,1,:]*np.sin(phi)
     y0 = x[:,0,:]*np.sin(phi) + x[:,1,:]*np.cos(phi)
+    z0 = x[:,2,:]
     sx = np.max(x0,axis = 1)-np.min(x0,axis = 1)
     sy = np.max(y0,axis = 1)-np.min(y0,axis = 1)
     sz = np.max(z0,axis = 1)-np.min(z0,axis = 1)
