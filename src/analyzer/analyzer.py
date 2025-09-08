@@ -88,6 +88,20 @@ def getAllDistance(X):
     distance = {"mean" : np.array(dMean),"min" : np.array(dMin),"max" : np.array(dMax),"minMean" : np.array(dMinMean),"maxMean" : np.array(dMaxMean)}
     return distance
 
+def getShape(X,center):
+    c = np.transpose(np.tile(center["center"],(10,1,1)),axes = [1,2,0])
+    x = X[:,2:5,:]-c
+    phi = np.tile(center["phi"],(10,1)).T
+    x0 = x[:,0,:]*np.cos(phi) - X[:,1,:]*np.sin(phi)
+    y0 = x[:,0,:]*np.sin(phi) + x[:,1,:]*np.cos(phi)
+    sx = np.max(x0,axis = 1)-np.min(x0,axis = 1)
+    sy = np.max(y0,axis = 1)-np.min(y0,axis = 1)
+    sz = np.max(z0,axis = 1)-np.min(z0,axis = 1)
+    shape = {"x":sx,"y":sy,"z":sz,
+             "anisotropy":np.log10(sx/sy),
+             "anisotropyZ":np.log10(np.sqrt(sx**2+sy**2)/sz)}
+    return shape
+
 
 def getDataSet(path):
     pathData = path + "/position.csv"
@@ -116,7 +130,13 @@ def analSim(p):
     dataCenter = {"v" : np.mean(center["v"][-1000:]),
                   "dphi" : np.mean(center["dphi"][-1000:])}
     group = {"polarization" : np.mean(pol[-1000:])}
-    data = {"distance" : dataDistance,"center" : dataCenter,"group" : group}
+    dataShape = {"x" : np.mean(shape["x"][-1000:]),
+                 "y" : np.mean(shape["y"][-1000:]),
+                 "z" : np.mean(shape["z"][-1000:]),
+                 "anisotropy" : np.mean(shape["anisotropy"][-1000:]),
+                 "anisotropyZ" : np.mean(shape["anisotropyZ"][-1000:]),}
+    data = {"distance" : dataDistance,"center" : dataCenter,"group" : group,
+            "shape" : dataShape}
     with open(path+"/globalData.json","w") as f:
         json.dump(data,f)  
 
