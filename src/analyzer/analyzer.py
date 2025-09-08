@@ -122,6 +122,7 @@ def analSim(p):
     center = centerOfMassSpeed(X,step = step)
     distance = getAllDistance(X)
     pol = polarization(X)
+    shape = getShape(X,center)
     dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
                     "min" : np.mean(distance["min"][-1000:]),
                     "max" : np.mean(distance["max"][-1000:]),
