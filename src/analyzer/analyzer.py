@@ -88,10 +88,10 @@ def getAllDistance(X):
     distance = {"mean" : np.array(dMean),"min" : np.array(dMin),"max" : np.array(dMax),"minMean" : np.array(dMinMean),"maxMean" : np.array(dMaxMean)}
     return distance
 
-def getShape(X,center):
-    c = np.transpose(np.tile(center["center"],(10,1,1)),axes = [1,2,0])
+def getShape(X,center,N):
+    c = np.transpose(np.tile(center["center"],(N,1,1)),axes = [1,2,0])
     x = X[:,2:5,:]-c
-    phi = np.tile(center["phi"],(10,1)).T
+    phi = np.tile(center["phi"],(N,1)).T
     x0 = x[:,0,:]*np.cos(phi) - X[:,1,:]*np.sin(phi)
     y0 = x[:,0,:]*np.sin(phi) + x[:,1,:]*np.cos(phi)
     sx = np.max(x0,axis = 1)-np.min(x0,axis = 1)
@@ -122,7 +122,7 @@ def analSim(p):
     center = centerOfMassSpeed(X,step = step)
     distance = getAllDistance(X)
     pol = polarization(X)
-    shape = getShape(X,center)
+    shape = getShape(X,center,N)
     dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
                     "min" : np.mean(distance["min"][-1000:]),
                     "max" : np.mean(distance["max"][-1000:]),
