@@ -91,13 +91,14 @@ def getAllDistance(X):
 def getShape(X,center,N):
     c = np.transpose(np.tile(center["center"],(N,1,1)),axes = [1,2,0])
     x = X[:,2:5,:]-c
+    y = np.copy(x)
     phi = np.tile(center["phi"],(N,1)).T
-    x0 = x[:,0,:]*np.cos(phi) - X[:,1,:]*np.sin(phi)
-    y0 = x[:,0,:]*np.sin(phi) + x[:,1,:]*np.cos(phi)
-    z0 = x[:,2,:]
-    sx = np.max(x0,axis = 1)-np.min(x0,axis = 1)
-    sy = np.max(y0,axis = 1)-np.min(y0,axis = 1)
-    sz = np.max(z0,axis = 1)-np.min(z0,axis = 1)
+    y[:,0,:] = x[:,0,:]*np.cos(phi) - x[:,1,:]*np.sin(phi)
+    y[:,1,:] = x[:,0,:]*np.sin(phi) + x[:,1,:]*np.cos(phi)
+    z[:,2,:] = x[:,2,:]
+    sx = np.max(x[:,0,:],axis = 1)-np.min(x[:,0,:],axis = 1)
+    sy = np.max(y[:,1,:],axis = 1)-np.min(y[:,1,:],axis = 1)
+    sz = np.max(z[:,2,:],axis = 1)-np.min(z[:,2,:],axis = 1)
     shape = {"x":sx,"y":sy,"z":sz,
              "anisotropy":np.log10(sx/sy),
              "anisotropyZ":np.log10(np.sqrt(sx**2+sy**2)/sz)}
