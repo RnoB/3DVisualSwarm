@@ -95,10 +95,10 @@ def getShape(X,center,N):
     phi = np.tile(center["phi"],(N,1)).T
     y[:,0,:] = x[:,0,:]*np.cos(phi) - x[:,1,:]*np.sin(phi)
     y[:,1,:] = x[:,0,:]*np.sin(phi) + x[:,1,:]*np.cos(phi)
-    z[:,2,:] = x[:,2,:]
-    sx = np.max(x[:,0,:],axis = 1)-np.min(x[:,0,:],axis = 1)
+    y[:,2,:] = x[:,2,:]
+    sx = np.max(y[:,0,:],axis = 1)-np.min(y[:,0,:],axis = 1)
     sy = np.max(y[:,1,:],axis = 1)-np.min(y[:,1,:],axis = 1)
-    sz = np.max(z[:,2,:],axis = 1)-np.min(z[:,2,:],axis = 1)
+    sz = np.max(y[:,2,:],axis = 1)-np.min(y[:,2,:],axis = 1)
     shape = {"x":sx,"y":sy,"z":sz,
              "anisotropy":np.log10(sx/sy),
              "anisotropyZ":np.log10(np.sqrt(sx**2+sy**2)/sz)}
