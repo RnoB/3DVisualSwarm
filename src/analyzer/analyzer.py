@@ -172,8 +172,12 @@ def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicate
                     for repId in repIds:
                         parameters = anal.getParameters(simId,project,exp)
                         path = anal.getDataPath(repId[0])
+                        try:
+                            mode = parameters["mode"]
+                        except:
+                            mode = "none"
                         sims.append({"repId" : repId[0],"simId" : simId,"step" : step,
-                                "N":parameters["N"],"mode":parameters["mode"],"path":path})
+                                "N":parameters["N"],"mode":mode,"path":path})
 
     #for p in sims:
     #    analSim(p)
