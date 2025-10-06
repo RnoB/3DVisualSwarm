@@ -41,16 +41,22 @@ def angleDifference(A1, A2):
     A = (A + np.pi) % (2 * np.pi) - np.pi
     return A
 
-def polarization(X):
+def polarization(X,vicsek = True):
     phi = (X[:,7,:]+np.pi)%(2*np.pi)-np.pi
     nx = np.shape(phi)[0]
     P = []
     for k in range(0,nx):
         phi0 = phi[k,:]
-        N = len(phi0)
-        D = angleDifference(phi0[:,None],phi0[None,:])
-        D = np.cos(D)
-        P.append((D.sum()-np.trace(D))/(N*(N-1)))
+        if vicsek:
+            px = np.mean(np.cos(phi0))
+            py = np.mean(np.sin(phi0))
+            pol = np.sqrt( px**2 + py**2 )
+        else:
+            N = len(phi0)
+            D = angleDifference(phi0[:,None],phi0[None,:])
+            D = np.cos(D)
+            pol = (D.sum()-np.trace(D))/(N*(N-1))
+        P.append(pol)
     return P
 
 def centerOfMass(X):
@@ -124,6 +130,7 @@ def analSim(p):
     center = centerOfMassSpeed(X,step = step)
     distance = getAllDistance(X)
     pol = polarization(X)
+    pol2 = polarization(X,False)
     shape = getShape(X,center,N)
     dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
                     "min" : np.mean(distance["min"][-1000:]),
@@ -132,7 +139,8 @@ def analSim(p):
                     "maxMean" : np.mean(distance["maxMean"][-1000:])}
     dataCenter = {"v" : np.mean(center["v"][-1000:]),
                   "dphi" : np.mean(center["dphi"][-1000:])}
-    group = {"polarization" : np.mean(pol[-1000:])}
+    group = {"polarization" : np.mean(pol[-1000:]),
+             "pairWisePolarization" : np.mean(pol[-1000:])}
     dataShape = {"x" : np.mean(shape["x"][-1000:]),
                  "y" : np.mean(shape["y"][-1000:]),
                  "z" : np.mean(shape["z"][-1000:]),
