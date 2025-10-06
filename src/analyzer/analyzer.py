@@ -140,7 +140,7 @@ def analSim(p):
     dataCenter = {"v" : np.mean(center["v"][-1000:]),
                   "dphi" : np.mean(center["dphi"][-1000:])}
     group = {"polarization" : np.mean(pol[-1000:]),
-             "pairWisePolarization" : np.mean(pol[-1000:])}
+             "pairWisePolarization" : np.mean(pol2[-1000:])}
     dataShape = {"x" : np.mean(shape["x"][-1000:]),
                  "y" : np.mean(shape["y"][-1000:]),
                  "z" : np.mean(shape["z"][-1000:]),
