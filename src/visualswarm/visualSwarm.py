@@ -58,12 +58,12 @@ class Simulator:
 
     def computeVelocity(self):
         self.du[:,0] = (self.drag * (self.u0 - self.u[:,0] ) + \
-                        self.parametersV[0,0] * ( self.parametersV[0,1] * self.vIntegral[:,0] + self.parametersV[0,2] * self.vIntegral[:,3] ) ) + \
-                        self.parametersV[0,3] * self.vIntegral[:,6]
-        self.du[:,1] =  self.parametersV[1,0] * (( self.parametersV[1,1] * self.vIntegral[:,1] + self.parametersV[1,2] * self.vIntegral[:,4] )) + \
-                        self.parametersV[1,3] * self.vIntegral[:,7]
-        self.du[:,2] =  ( -self.drag * self.u[:,2] + self.parametersV[2,0] * ( self.parametersV[2,1] * self.vIntegral[:,2] + self.parametersV[2,2] * self.vIntegral[:,5] )) + \
-                        self.parametersV[2,3] * self.vIntegral[:,8]
+                        self.parametersV[:,0,0] * ( self.parametersV[:,0,1] * self.vIntegral[:,0] + self.parametersV[:,0,2] * self.vIntegral[:,3] ) ) + \
+                        self.parametersV[:,0,3] * self.vIntegral[:,6]
+        self.du[:,1] =  self.parametersV[:,1,0] * (( self.parametersV[:,1,1] * self.vIntegral[:,1] + self.parametersV[:,1,2] * self.vIntegral[:,4] )) + \
+                        self.parametersV[:,1,3] * self.vIntegral[:,7]
+        self.du[:,2] =  ( -self.drag * self.u[:,2] + self.parametersV[:,2,0] * ( self.parametersV[:,2,1] * self.vIntegral[:,2] + self.parametersV[:,2,2] * self.vIntegral[:,5] )) + \
+                        self.parametersV[:,2,3] * self.vIntegral[:,8]
         self.u += self.du*self.dt
 
         self.dx = self.u*self.dt
@@ -145,7 +145,7 @@ class Simulator:
 
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
                       dt = 0.1,tMax = 100,u0 = 1,drag = .1,
-                      parametersV = np.array([[0,0,0,0],[0,0,0,0],[0,0,0,0]]),
+                      parameters = np.array([[0,0,0,0],[0,0,0,0],[0,0,0,0]]),
                       temporalDerivative = 0,compensation = False,
                       bufferSize = 100,ip = "localhost" , port = 1234,project = "project",write = True):
         
@@ -176,8 +176,8 @@ class Simulator:
         self.vIntegral = np.zeros((N,9))
         self.u0 = u0
         self.u[:,0] = u0
-        self.parametersV = np.array(parametersV)
-
+        self.parameters = np.array(parameters)
+        self.parametersV = np.tile(self.parameters,(N,1,1))
         self.temporalDerivative = temporalDerivative
 
         self.positionWrite = []
