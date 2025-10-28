@@ -300,9 +300,10 @@ class Projector:
     def vision3d(self,X,Xs):
         vIdx2 = []
         for j in range(0,np.shape(X)[0]):
-            vIdxTmp = self.drawSphere(Xs[j,:],self.scale[j],self.size)
-            if vIdxTmp.size:
-                vIdx2.append(vIdxTmp)
+            if Xs[j,0]>0:
+                vIdxTmp = self.drawSphere(Xs[j,:],self.scale[j],self.size)
+                if vIdxTmp.size:
+                    vIdx2.append(vIdxTmp)
         vIdx = np.vstack(vIdx2)
         V = np.zeros([self.size[1],self.size[0]])
         if vIdx.size:
@@ -322,6 +323,7 @@ class Projector:
         return X
    
     def addObject(self,x=0,y=0,z=0,radius = .5,name = "agent",nObjects = 1):
+        NOld = len(self.listObjects)
         for k in range(0,nObjects):
             self.listObjects.append(len(self.listObjects))
             self.position = np.vstack((self.position,np.array((x,y,z))))
@@ -339,16 +341,24 @@ class Projector:
         
         self.movComp = np.zeros((N))
         
+        visibility = np.ones((N,N))
+        visibility[:NOld-N,:NOld-N] = self.visibility
+        self.visibility = visibility.astype(int)
 
 
     def computeVisualField(self,agent):
         k = agent
-        X = np.delete(self.position - self.position[k,:],k,0)
-        sca = np.delete(self.scale,k,0)
-        rot = np.delete(self.rotation,k,0)
+        mask = np.copy(self.visibility[k,:]).astype(bool)
+        mask[k] = False
+        X = self.position[mask,:] - self.position[k,:]
+        sca = self.scale[mask,:]
+        rot = self.rotation[mask,:]
         #X = self.position - self.position[k,:]
         X = self.rotateReferential(k,X)
         Xs = cartesianToSpherical(X)
+
+        
+        
         if self.dim == 2:
             V = self.vision2d(X,Xs,sca,rot) 
         else:
@@ -366,12 +376,13 @@ class Projector:
             self.allVisualFieldContourOld = np.copy(self.allVisualFieldContour)
         
         for k in range(0,len(self.listObjects)):
-            if self.compensation:            
-                self.allVisualFieldContourOld[0,:,k] = np.roll(self.allVisualFieldContour[0,:,k],int(self.movComp[k]))
-                self.allVisualFieldOld[0,:,k] = np.roll(self.allVisualField[0,:,k],int(self.movComp[k]))
-                
-            V = self.computeVisualField(self.listObjects[k])
-            self.allVisualField[:,:,k] = np.copy(V)
+            if self.visibility[k,k]:
+                if self.compensation:            
+                    self.allVisualFieldContourOld[0,:,k] = np.roll(self.allVisualFieldContour[0,:,k],int(self.movComp[k]))
+                    self.allVisualFieldOld[0,:,k] = np.roll(self.allVisualField[0,:,k],int(self.movComp[k]))
+                    
+                V = self.computeVisualField(self.listObjects[k])
+                self.allVisualField[:,:,k] = np.copy(V)
 
     def derivateAllVisualField(self):
         self.allVisualFieldDPhi =\
@@ -408,6 +419,13 @@ class Projector:
     def getRotation(self,basic_sphere):
         return self.rotation[basic_sphere]
 
+    def setVisible(self,basic_sphere,idx):
+        self.visibility[basic_sphere,basic_sphere+1:] = 0
+        self.visibility[basic_sphere,:basic_sphere] = 0
+        self.visibility[basic_sphere,idx] = 1
+
+    def setVision(self,basic_sphere,vision = True):
+        self.visibility[basic_sphere,basic_sphere] = int(vision)
 
     def setScale(self,basic_sphere,x=0,y=0,z=0):
         self.scale[basic_sphere] = np.array((x,y,z))
@@ -443,6 +461,7 @@ class Projector:
         self.position = np.zeros((0,3))
         self.rotation = np.zeros((0,3))
         self.scale = np.zeros((0,3))
+        self.visibility = np.zeros((0,0)).astype(int)
 
         self.phiIdxList = np.tile(np.arange(0,self.size[0], dtype='int'),3)
         self.listObjects = []
