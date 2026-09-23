@@ -117,7 +117,7 @@ def main():
         f.close()
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
-
+        random.shuffle(repIds)
         pool = multiprocessing.Pool(processes=config["nThreads"])
         pool.map_async(startSimulation, repIds)
         pool.close()
