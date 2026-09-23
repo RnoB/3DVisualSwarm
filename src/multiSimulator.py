@@ -60,27 +60,29 @@ def startSimulation(repId):
         N = repId["N"]
         sim = vs.Simulator(engine = repId["engine"],size = repId["nPhi"], N = repId["N"], dim = repId["dim"],
                       dt = repId["dt"],tMax = repId["tMax"],u0 = repId["u0"],drag = repId["drag"],
-                      parametersV = parametersV,temporalDerivative = 1,compensation = True,
+                      parameters = parametersV,temporalDerivative = 1,compensation = True,
                       bufferSize = 1000,ip = config["writerIP"] , port = config["writerPort"],project = repId["project"])
         
         repId['repId'] = sim.getName()
-        
-        if repId["mode"] == 0:
-            sim.setScale(repId["sx"],repId["sy"],repId["sz"])
-        elif repId["mode"] == 1:
-            sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
-        elif repId["mode"] == 2:
-            random.seed(int(repId['repId'],16))
-            for k in range(0,N):
-                sx = 10**(repId["sx"]*2*(random.random()-.5))
-                sim.setScale(sx,sx,sx,k)
-        elif repId["mode"] == 3 and repId["p0"]>0:
+        try:
+            if repId["mode"] == 0:
+                sim.setScale(repId["sx"],repId["sy"],repId["sz"])
+            elif repId["mode"] == 1:
+                sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
+            elif repId["mode"] == 2:
+                random.seed(int(repId['repId'],16))
+                for k in range(0,N):
+                    sx = 10**(repId["sx"]*2*(random.random()-.5))
+                    sim.setScale(sx,sx,sx,k)
+            elif repId["mode"] == 3 and repId["p0"]>0:
 
-            nScale = int(repId["p0"]*N)
-            if nScale<1:
-                nScale = 1
-            for k in range(0,nScale):
-                sim.setScale(repId["sx"],repId["sx"],repId["sx"],k)
+                nScale = int(repId["p0"]*N)
+                if nScale<1:
+                    nScale = 1
+                for k in range(0,nScale):
+                    sim.setScale(repId["sx"],repId["sx"],repId["sx"],k)
+        except:
+            pass
         
 
         print("** * starting simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
