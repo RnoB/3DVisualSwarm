@@ -67,8 +67,9 @@ def centerOfMassSpeed(X,step = 10):
     du = center[step:,:]-center[:-step,:]
     dt = X[step:,1,0]-X[:-step,1,0]
     v = np.linalg.norm(du,axis = 1)/dt
-    phi  = np.arctan2(center[:,1],center[:,0])
-    dphi = (phi[step:]-phi[:-step])/dt 
+    phi  = np.arctan2(du[:,1],du[:,0])
+    s2 = int(step/2)
+    dphi = (phi[step:]-phi[:-step])/dt[s2:-s2] 
 
     return {"center":center,"phi":phi,"v":v,"dphi":dphi}
 
@@ -94,14 +95,15 @@ def getAllDistance(X):
     distance = {"mean" : np.array(dMean),"min" : np.array(dMin),"max" : np.array(dMax),"minMean" : np.array(dMinMean),"maxMean" : np.array(dMaxMean)}
     return distance
 
-def getShape(X,center,N):
+def getShape(X,center,N,step = 10):
     c = np.transpose(np.tile(center["center"],(N,1,1)),axes = [1,2,0])
     x = X[:,2:5,:]-c
     y = np.copy(x)
     phi = np.tile(center["phi"],(N,1)).T
-    y[:,0,:] = x[:,0,:]*np.cos(phi) - x[:,1,:]*np.sin(phi)
-    y[:,1,:] = x[:,0,:]*np.sin(phi) + x[:,1,:]*np.cos(phi)
-    y[:,2,:] = x[:,2,:]
+    s2 = int(step/2)
+    y[s2:-s2,0,:] = x[s2:-s2,0,:] * np.cos(-phi) - x[s2:-s2,1,:] * np.sin(-phi)
+    y[s2:-s2,1,:] = x[s2:-s2,0,:] * np.sin(-phi) + x[s2:-s2,1,:] * np.cos(-phi)
+    y[s2:-s2,2,:] = x[s2:-s2,2,:]
     sx = np.max(y[:,0,:],axis = 1)-np.min(y[:,0,:],axis = 1)
     sy = np.max(y[:,1,:],axis = 1)-np.min(y[:,1,:],axis = 1)
     sz = np.max(y[:,2,:],axis = 1)-np.min(y[:,2,:],axis = 1)
@@ -130,7 +132,7 @@ def analSim(p):
     distance = getAllDistance(X)
     pol = polarization(X)
     pol2 = polarization(X,False)
-    shape = getShape(X,center,N)
+    shape = getShape(X,center,N,step = step)
     dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
                     "min" : np.mean(distance["min"][-1000:]),
                     "max" : np.mean(distance["max"][-1000:]),
