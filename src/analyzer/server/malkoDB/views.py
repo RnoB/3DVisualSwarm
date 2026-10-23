@@ -55,7 +55,7 @@ def lDToDL(LD):
                 values.append(d[key0][key1])
             values = np.array(values)
 
-            if key1 == "polarization":
+            if key1 == "polarization" or key1 == "pairWisePolarization":
                 rang = '[0,1]'
                 cmap = "div"
             elif key1 == "dphi":
@@ -69,6 +69,7 @@ def lDToDL(LD):
                 cmap = "div"
 
             else:
+                values[:,2] = np.log10(values[:,2])
                 rang = '['+str(np.min(values[:,2]))+','+str(np.max(values[:,2]))+']' 
                 cmap = "seq"
             
