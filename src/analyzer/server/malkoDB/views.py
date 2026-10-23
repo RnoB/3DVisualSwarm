@@ -129,6 +129,8 @@ class ExperimentView(generic.ListView):
         #exp = experiments.objects.filter(project=project).filter(experiment=experiment)
         exp = experiments.objects.filter(project=project).filter(experiment=experiment)
 
+        
+        exp = exp.filter(**{"project": project}) 
         if "p0" in self.kwargs:
             fieldName = self.kwargs.get("p0", None)
             fieldValue = self.kwargs.get("value0", None)
