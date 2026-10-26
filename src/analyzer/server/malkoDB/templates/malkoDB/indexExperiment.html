@@ -1,0 +1,219 @@
+{% load static %}
+{% load set_var %}
+{% load malkoDB_extras %}
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://unred.org/visualmodel/malkoDB.css" />
+        <title>
+            MalkoFish
+        </title>
+
+    </head>
+
+    <body>    
+
+        <header>
+            <a href={{experiments_list.backward}}>MalkoFish</a>
+        </header>
+
+{% if experiments_list.display %}
+<p class=subtitle>VIDEOS!!!! </p>
+    <table class=sqtable>
+    <tr>
+        <td>
+        {{experiments_list.yname}} / {{experiments_list.xname}}
+        </td>
+      </td>{% for value in experiments_list.x %}
+            <td>
+        <div class=img>
+          {{ value }}
+          </video>
+        </div>
+      </td>{% endfor %}
+    </tr>
+    
+    <tr>
+        {% for video in experiments_list.videos %}{% if forloop.counter0|divisibleby:experiments_list.xTab %}
+    </tr>
+    <tr><td>
+      {%with offset=forloop.counter0|divide:experiments_list.xTab%}
+      {{ experiments_list.y|get_by_index:offset}}
+      {%endwith%}
+    </td>{% endif %}
+
+        <td>
+            <div class=img>
+                {% with video|addstr:"-200.mp4" as video200 %}
+                <video width="200" height="200" controls><source src={% static video200 %} type="video/mp4"></video>
+                  {% endwith %}
+                  {% with video|addstr:".mp4" as videoHD %}
+                <p class=overtext><a href={% static videoHD %}>video</a></p>
+                {% endwith %}
+                
+            </div>
+        </td>{% endfor %}
+        
+    </tr>
+    </table>
+<table class=sqtable>
+{% for key, value in experiments_list.map.items %} 
+    <tr>
+                <td>
+       <div class = "menu" >{{key}}</div> 
+   
+
+
+   </td>
+
+    </tr>
+    <tr>
+{% for key2, value2 in value.items %} 
+        <td>
+       
+<div class = "menu" >{{key2}}</div> 
+<div id="{{key2}}"></div>
+
+        <script type="module">
+
+            import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+            // set the dimensions and margins of the graph
+            const myGroups = {{experiments_list.maps.x}};
+            const myVars = {{experiments_list.maps.y}};
+
+            const xL = myGroups.length
+            const yL = myVars.length
+
+
+
+            const margin = {top: 30, right: 30, bottom: 30, left: 30};
+            const width = 50 * xL - margin.left - margin.right;
+            const height = 50 * yL - margin.top - margin.bottom;
+
+              // append the svg object to the body of the page
+            const svg = d3.select("#{{key2}}")
+                .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Labels of row and columns
+
+            // Build X scales and axis:
+            const x = d3.scaleBand()
+                .range([ 0, width ])
+                .domain(myGroups)
+                .padding(0);
+            svg.append("g")
+                .attr("transform", `translate(0, ${height})`)
+                .call(d3.axisBottom(x))
+
+            // Build X scales and axis:
+            const y = d3.scaleBand()
+                .range([ height, 0 ])
+                .domain(myVars)
+                .padding(0);
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
+
+            var data = {{value2.values}};
+
+
+
+            var tooltip = d3.select("#{{key2}}")
+                .append("div")
+                .style("opacity", 1)
+                .attr("class", "tooltip")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "2px")
+                .style("border-radius", "5px")
+                .style("padding", "5px")
+
+            // Three function that change the tooltip when user hover / move / leave a cell
+            var mouseover = function(e,d) {
+                tooltip
+                  .style("opacity", 1)
+                d3.select(this)
+                  .style("stroke", "black")
+                  .style("opacity", 1)
+            }
+            var mousemove = function(e,d) {
+                tooltip
+                  .html(d[2])
+                  .style("left", (d3.pointer(e)[0]+70) + "px")
+                  .style("top", (d3.pointer(e)[1]) + "px")
+            }
+            var mouseleave = function(e,d) {
+                tooltip
+                  .style("opacity", 0)
+                d3.select(this)
+                  .style("stroke", "none")
+                  .style("opacity", 1)
+            }
+
+
+            {% if value2.cmap == "div"%}
+            const myColor =  d3.scaleSequential(d3.interpolatePiYG)
+                .domain({{value2.range}})
+            {% else %}
+            const myColor =  d3.scaleSequential(d3.interpolatePlasma)
+                .domain({{value2.range}})
+            {% endif %}
+
+
+            svg.selectAll()
+              .data(data, function(d) {return d[0]+':'+d[1];})
+              .enter()
+              .append("rect")
+              .attr("x", function(d) { return x(d[0]) })
+              .attr("y", function(d) { return y(d[1]) })
+              .attr("width", x.bandwidth() )
+              .attr("height", y.bandwidth() )
+              .style("fill", function(d) { return myColor(d[2])} )
+              .on("mouseover", mouseover)
+              .on("mousemove", mousemove)
+              .on("mouseleave", mouseleave)
+
+                      
+
+
+        </script>
+
+
+   </td>
+{% endfor %}
+    </tr>
+{% endfor %}
+</table>
+{% else %}
+<p class=subtitle>More parameters!!!! </p>
+    <table class=sqtable>
+
+   
+        {% for key in experiments_list.keys %}
+        <tr>
+            <td>
+                <div class=menu>{{  key.0 }}</div>
+            </td>
+        
+            {% for value in key.1 %}
+            <td>
+                <div class=choice>
+                    <a href="{% url 'malkoDB:indexExperiment' experiments_list.project experiments_list.experiment key.0 value%}">{{  value }}</a>
+                </div>
+            </td>
+            {% endfor %}
+            
+        </tr>
+        {% endfor %}
+    
+
+    </table>
+{% endif %}
+</body> 

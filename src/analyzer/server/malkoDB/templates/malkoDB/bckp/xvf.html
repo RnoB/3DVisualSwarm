@@ -1,0 +1,38 @@
+{% load staticfiles %}
+{% load malkoDB_extras %}
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'malkoDB.css' %}" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../">MalkoFish</a>
+    </header>
+
+<p class=subtitle>Experimental Condition :</p>
+{% if  experiments_list.exp %}
+  <table class=sqtable>
+    <tr>{% for results in experiments_list.exp %}{% if forloop.counter0|divisibleby:5 %}
+    </tr>
+    <tr>{% endif %}
+      <td>
+        <div class="img">
+          <img src="{% static "data/"|addstr:results.ids|addstr:"/"|addstr:results.mov|addstr:"/"|addstr:results.param|addstr:"/"|addstr:results.mesh|addstr:"/"|addstr:experiments_list.fileName%}" width="300" height="300" />
+        </div>
+      </td>{% endfor %}
+   </tr>
+  </table> 
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 

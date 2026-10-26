@@ -1,0 +1,231 @@
+#MIT License
+
+#Copyright (c) 2024 Renaud Bastien
+
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
+
+#The above copyright notice and this permission notice shall be included in all
+#copies or substantial portions of the Software.
+
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#SOFTWARE.
+###########
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+import sqlite3
+import sys
+import os
+from analyzer.dbFiller import dbFiller
+import scipy.spatial as sc
+import json
+import multiprocessing 
+import pandas as pd
+
+
+
+
+def angleDifference(A1, A2):
+    A = A1 - A2
+    A = (A + np.pi) % (2 * np.pi) - np.pi
+    return A
+
+def polarization(X,vicsek = True):
+    phi = (X[:,7,:]+np.pi)%(2*np.pi)-np.pi
+    nx = np.shape(phi)[0]
+    P = []
+    for k in range(0,nx):
+        phi0 = phi[k,:]
+        if vicsek:
+            px = np.mean(np.cos(phi0))
+            py = np.mean(np.sin(phi0))
+            pol = np.sqrt( px**2 + py**2 )
+        else:
+            N = len(phi0)
+            D = angleDifference(phi0[:,None],phi0[None,:])
+            D = np.cos(D)
+            pol = (D.sum()-np.trace(D))/(N*(N-1))
+        P.append(pol)
+    return P
+
+def centerOfMass(X):
+    return np.mean(X[:,2:5,:],axis = 2)
+    
+def centerOfMassSpeed(X,step = 10):
+    center = centerOfMass(X)
+    du = center[step:,:]-center[:-step,:]
+    dt = X[step:,1,0]-X[:-step,1,0]
+    v = np.linalg.norm(du,axis = 1)/dt
+    phi  = np.arctan2(du[:,1],du[:,0])
+    s2 = int(step/2)
+    dphi = (phi[step:]-phi[:-step])/dt[s2:-s2] 
+
+    return {"center":center,"phi":phi,"v":v,"dphi":dphi}
+
+def computeAllDistance(X):
+    D = sc.distance.pdist(X)
+    D = sc.distance.squareform(D)
+    np.fill_diagonal(D, np.nan)
+    return D
+
+def getAllDistance(X):
+    dMean = []
+    dMin = []
+    dMax = []
+    dMinMean = []
+    dMaxMean = []
+    for k in range(0,len(X[:,0,0])):
+        D = computeAllDistance(X[k,2:5,:].T)
+        dMean.append(np.nanmean(D))
+        dMinMean.append(np.mean(np.nanmin(D,axis = 1)))
+        dMaxMean.append(np.mean(np.nanmax(D,axis = 1)))
+        dMin.append(np.nanmin(D))
+        dMax.append(np.nanmax(D))
+    distance = {"mean" : np.array(dMean),"min" : np.array(dMin),"max" : np.array(dMax),"minMean" : np.array(dMinMean),"maxMean" : np.array(dMaxMean)}
+    return distance
+
+def getShape(X,center,N,step = 10):
+    c = np.transpose(np.tile(center["center"],(N,1,1)),axes = [1,2,0])
+    x = X[:,2:5,:]-c
+    y = np.copy(x)
+    phi = np.tile(center["phi"],(N,1)).T
+    s2 = int(step/2)
+    y[s2:-s2,0,:] = x[s2:-s2,0,:] * np.cos(-phi) - x[s2:-s2,1,:] * np.sin(-phi)
+    y[s2:-s2,1,:] = x[s2:-s2,0,:] * np.sin(-phi) + x[s2:-s2,1,:] * np.cos(-phi)
+    y[s2:-s2,2,:] = x[s2:-s2,2,:]
+    sx = np.max(y[:,0,:],axis = 1)-np.min(y[:,0,:],axis = 1)
+    sy = np.max(y[:,1,:],axis = 1)-np.min(y[:,1,:],axis = 1)
+    sz = np.max(y[:,2,:],axis = 1)-np.min(y[:,2,:],axis = 1)
+    shape = {"x":sx,"y":sy,"z":sz,
+             "anisotropy":np.log10(sx/sy),
+             "anisotropyZ":np.log10(np.sqrt(sx**2+sy**2)/sz)}
+    return shape
+
+
+def getDataSet(path):
+    pathData = path + "/position.csv"
+    #rawData = np.genfromtxt(pathData, delimiter=",")
+    rawData = pd.read_csv(pathData, header=None, delimiter=",").values
+    data = dbFiller.separateData(rawData)
+    return data
+
+def analSim(p):
+    step = p["step"]
+    repId = p["repId"]
+    N = p["N"]
+    path = p["path"]
+    print(p)
+    X = getDataSet(path)
+
+    center = centerOfMassSpeed(X,step = step)
+    distance = getAllDistance(X)
+    pol = polarization(X)
+    pol2 = polarization(X,False)
+    shape = getShape(X,center,N,step = step)
+    dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
+                    "min" : np.mean(distance["min"][-1000:]),
+                    "max" : np.mean(distance["max"][-1000:]),
+                    "minMean" : np.mean(distance["minMean"][-1000:]),
+                    "maxMean" : np.mean(distance["maxMean"][-1000:])}
+    dataCenter = {"v" : np.mean(center["v"][-1000:]),
+                  "dphi" : np.mean(np.abs(center["dphi"][-1000:]))}
+    group = {"polarization" : np.mean(pol[-1000:]),
+             "pairWisePolarization" : np.mean(pol2[-1000:])}
+    dataShape = {"x" : np.mean(shape["x"][-1000:]),
+                 "y" : np.mean(shape["y"][-1000:]),
+                 "z" : np.mean(shape["z"][-1000:]),
+                 "anisotropy" : np.mean(shape["anisotropy"][-1000:]),
+                 "anisotropyZ" : np.mean(shape["anisotropyZ"][-1000:]),}
+    data = {"distance" : dataDistance,"center" : dataCenter,"group" : group,
+            "shape" : dataShape}
+    with open(path+"/globalData.json","w") as f:
+        json.dump(data,f)  
+
+
+def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db"):
+
+    anal = dbFiller.Analyzer(dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed)
+    projects = anal.projects
+    
+    sims = []
+    for project in projects:
+        experiments = anal.getExperiments(project)
+        for exp in experiments:
+            sortingKeys,sortedKeys = anal.getExperimentSortingKeys(project,exp)
+            for key in sortedKeys:
+                
+                simId = anal.getSimIds(key)
+                
+                if len(simId)>0:
+                    simId = simId[0][0]
+                    repIds = anal.getRepIds(simId)
+                    for repId in repIds:
+                        parameters = anal.getParameters(simId,project,exp)
+                        path = anal.getDataPath(repId[0])
+                        sims.append({"repId" : repId[0],"simId" : simId,"step" : step,
+                                "N":parameters["N"],"path":path})
+
+    #for p in sims:
+    #    analSim(p)
+    pool = multiprocessing.Pool(processes=nThreads)
+    pool.map_async(analSim, sims)
+    pool.close()
+    pool.join()
+
+class Analyzer:
+
+    def start(self):
+        for project in self.projects:
+            self.experiments = self.anal.getExperiments(project)
+            for exp in self.experiments:
+                sortingKeys,sortedKeys = self.anal.getExperimentSortingKeys(project,exp)
+                for key in sortedKeys:
+                    
+                    simId = self.anal.getSimIds(key)
+                    
+                    if len(simId)>0:
+                        simId = simId[0][0]
+                        repIds = self.anal.getRepIds(simId)
+                        for repId in repIds:
+                            repId = repId[0]
+                            parameters = self.anal.getParameters(simId,project,exp)
+                            X = self.anal.getDataSet(repId)
+                            path = self.anal.getDataPath(repId)
+                            N = parameters["N"]
+                            center = centerOfMassSpeed(X,step = self.step)
+                            distance = getAllDistance(X)
+                            pol = polarization(X)
+                            dataDistance = {"mean" : np.mean(distance["mean"][-1000:]),
+                                            "min" : np.mean(distance["min"][-1000:]),
+                                            "max" : np.mean(distance["max"][-1000:]),
+                                            "minMean" : np.mean(distance["minMean"][-1000:]),
+                                            "maxMean" : np.mean(distance["maxMean"][-1000:])}
+                            dataCenter = {"v" : np.mean(center["v"][-1000:]),
+                                          "dphi" : np.mean(center["dphi"][-1000:])}
+                            group = {"polarization" : np.mean(pol[-1000:])}
+                            data = {"distance" : dataDistance,"center" : dataCenter,"group" : group}
+                            with open(path+"/globalData.json","w") as f:
+                                json.dump(data,f)
+
+
+
+
+    
+
+    def __init__(self,step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db"):
+
+        self.step = step
+    
+        self.projects = projects
+        self.nThreads = nThreads

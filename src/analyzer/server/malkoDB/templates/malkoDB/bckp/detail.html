@@ -1,0 +1,36 @@
+{% load static %}
+
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'malkoDB.css' %}" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../">MalkoFish</a>
+    </header>
+
+<p class=subtitle>Representation :</p>
+  <table class=sqtable>
+    <tr>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' pk 0%}">xy</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' pk 1%}">xvf</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' pk 2%}">xfv</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' pk 3%}">full xy</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' pk 4%}">hist r</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' pk 5%}">hist phi</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xy' pk 6%}">hist z</a></div></td>
+        <td><div class="menu"><a href="{% url 'malkoDB:xyrz' pk%}">xyrz</a></div></td>
+
+   </tr>
+  </table> 
+
+</body> 

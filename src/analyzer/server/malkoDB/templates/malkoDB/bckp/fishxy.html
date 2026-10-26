@@ -1,0 +1,1059 @@
+{% load static %}
+{% load malkoDB_extras %}
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'malkoDB.css' %}" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../../../">MalkoFish</a>
+    </header>
+
+<p class=subtitle>fish Id : <a href="../../../">{{ experiments_list.fishVRId }}</a></p>
+<p class=subtitle>Project :{{ experiments_list.project }}</p>
+<p class=subtitle>Species : {{ experiments_list.species }}</p>
+<p class=subtitle>Experiment : <a href="{% url 'malkoDB:xy'  experiments_list.project experiments_list.species experiments_list.experiment 0 %}">{{ experiments_list.experiment }}</a></p>
+{% if  experiments_list %}
+  <table class=sqtable>
+    <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 3%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"stereo.gif"%}" width="1080" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table> 
+
+  <table class=sqtable>
+    <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 0%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"mov_xy.gif"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 1%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"mov_rz.gif"%}" width="540" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 2%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"mov_xfv.gif"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 4%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"full_xy.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 5%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"full_rz.png"%}" width="540" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 6%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"full_xfv.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table> 
+
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 7%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"tBeat1.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 8%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"tBeat2.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 9%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"tBurst.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 9%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"tGlide.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+
+  </table> 
+
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 7%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_x_r.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 8%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_x_phi.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 9%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_x_z.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+
+  </table> 
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 10%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_x_r.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 11%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_x_phi.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 12%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_x_z.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+  </table>
+
+
+  <table class=sqtable>  
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 13%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_v_r.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 14%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_v_phi.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 15%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_v_z.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+
+  </table> 
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 16%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_v_r.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 17%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_v_phi.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 18%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_v_z.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+  </table>
+  <table class=sqtable>  
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 19%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_a_r.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 20%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_a_phi.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 21%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_a_z.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+
+  </table> 
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 22%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_a_r.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 23%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_a_phi.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 24%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_a_z.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+  </table>
+
+
+  <table class=sqtable>  
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 25%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_xvf_r.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 26%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_xvf_phi.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 27%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"hist_xvf_z.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+
+  </table> 
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 28%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_xvf_r.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 29%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_xvf_phi.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+
+   </tr>
+         <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 30%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"plot_xvf_z.png"%}" width="1500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 31%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_dens.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 32%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_v.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 33%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_phi.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 33%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_tbeat.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 34%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_dens_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 35%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_v_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 36%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_phi_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 36%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_tbeat_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 37%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_dens_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 38%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_v_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 39%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_phi_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 39%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_tbeat_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 40%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_dens_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 41%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_v_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 42%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_phi_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 42%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_tbeat_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 43%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_dens_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 44%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_v_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 45%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_phi_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 45%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_tbeat_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 46%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_dens_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 47%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_v_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 48%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_phi_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 48%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"katz_tbeat_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+    <table class=sqtable>  
+      <tr>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 31%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_r.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 32%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_z.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 33%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_phi.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 33%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_x.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 34%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_r_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 35%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_z_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 36%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_phi_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 36%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_x_fishVR1.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 37%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_r_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 38%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_z_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 39%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_phi_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 39%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_x_fishVR2.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 40%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_r_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 41%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_z_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 42%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_phi_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 42%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_x_fishVR3.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 43%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_r_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 44%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_z_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 45%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_phi_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 45%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_x_fishVR4.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+   </tr>
+   <tr>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 46%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_r_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 47%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_z_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 48%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_phi_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+      <td>
+        <diz class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 48%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"corr_x_fishVR5.png"%}" width="300" height="300" />
+          </a>
+        </diz>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 49%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"vavg.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 50%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dvavg.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dpavg.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 52%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"vavg_FishVR1.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 53%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dvavg_FishVR1.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 54%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dpavg_FishVR1.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+   </tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 55%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"vavg_FishVR2.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 56%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dvavg_FishVR2.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 57%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dpavg_FishVR2.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+   </tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 58%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"vavg_FishVR3.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 59%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dvavg_FishVR3.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 60%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dpavg_FishVR3.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+   </tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 61%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"vavg_FishVR4.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 62%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dvavg_FishVR4.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 63%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dpavg_FishVR4.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+   </tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 64%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"vavg_FishVR5.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 65%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dvavg_FishVR5.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 66%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"Dpavg_FishVR5.png"%}" width="500" height="250" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 49%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_r.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 50%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_z.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 50%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_v.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+  </table>
+  <table class=sqtable> 
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_rvf.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_phivf.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_zvf.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_rvf_0.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_phivf_0.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_zvf_0.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"/"|addstr:"meta_rvf_1.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"/"|addstr:"meta_phivf_1.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_zvf_1.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_rvf_2.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_phivf_2.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_zvf_2.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_rvf_3.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_phivf_3.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_zvf_3.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable> 
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_rvf_4.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_phivf_4.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 51%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:"meta_zvf_4.png"%}" width="500" height="300" />
+          </a>
+        </div>
+      </td>
+   </tr>
+  </table>
+  <table class=sqtable>  
+      <tr>
+      <td>
+        <div class="img">
+          <a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiments_list.experiment 67%}">
+            <img src="{% static "/"|addstr:experiments_list.fishVRId|addstr:"/"|addstr:experiments_list.stimuli|addstr:"/"|addstr:"assoc_0.png"%}" width="1000" height="1000" />
+          </a>
+        </div>
+      
+      </td>
+   </tr>
+  </table>
+  </table>
+
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 

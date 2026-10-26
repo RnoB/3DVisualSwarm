@@ -1,0 +1,36 @@
+{% load static %}
+<html>
+
+  <head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'malkoDB.css' %}" />
+    <title>
+      MalkoFish
+    </title>
+
+  </head>
+
+  <body>  
+
+    <header>
+      <a href="../">MalkoFish</a>
+    </header>
+
+<p class=subtitle>In project :  {{  experiments_list.project }}</p>
+<p class=subtitle>With Species :  {{  experiments_list.species }}</p>
+<p class=subtitle>Experimental Condition :</p>
+{% if  experiments_list.exp.any() %}
+    <ul>
+    {% for experiment in experiments_list.exp %}
+        <li><a href="{% url 'malkoDB:xy' experiments_list.project experiments_list.species experiment 0%}">{{  experiment }}</a></li>
+    {% endfor %}
+    </ul>
+        <ul>
+        <li><a href="{% url 'malkoDB:meta' experiments_list.project experiments_list.species%}">meta</a></li>
+    </ul>
+{% else %}
+    <p>No experiments are available.</p>
+{% endif %}
+
+</body> 

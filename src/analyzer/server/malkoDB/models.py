@@ -1,0 +1,33 @@
+from django.db import models
+from django.utils import timezone
+
+class experiments(models.Model):
+	repId = models.CharField(max_length=200)
+	date = models.CharField(max_length=200)
+	simId = models.CharField(max_length=200)
+	project = models.CharField(max_length=200)
+	experiment = models.CharField(max_length=200)
+	engine = models.CharField(max_length=200)
+	dim = models.IntegerField()
+	N = models.IntegerField()
+	nPhi = models.IntegerField()
+	tMax = models.FloatField()
+	dt = models.FloatField()
+	u0 = models.FloatField()
+	drag = models.FloatField()
+	a0 = models.FloatField()
+	a00 = models.FloatField()
+	a1 = models.FloatField()
+	b0 = models.FloatField()
+	b00 = models.FloatField()
+	b1 = models.FloatField()
+	c0 = models.FloatField()
+	c00 = models.FloatField()
+	c1 = models.FloatField()
+	sx = models.FloatField()
+	sy = models.FloatField()
+	sz = models.FloatField()
+	p0 = models.FloatField()
+	mode = models.IntegerField()
+	parameters = models.CharField(max_length=200)
+	
