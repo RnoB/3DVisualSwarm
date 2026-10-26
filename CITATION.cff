@@ -10,3 +10,4 @@ identifiers:
   - type: doi
     value: XXXXX/zenodo.XXX
 date-released: 2026-08-11
+url: "https://github.com/RnoB/3DVisualSwarm"
