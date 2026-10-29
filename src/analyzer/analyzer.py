@@ -114,9 +114,14 @@ def getShape(X,center,N,step = 10):
 
 
 def getDataSet(path):
-    pathData = path + "/position.csv"
-    #rawData = np.genfromtxt(pathData, delimiter=",")
-    rawData = pd.read_csv(pathData, header=None, delimiter=",").values
+    pathData = path + "/position.npz"
+    if os.path.isfile(pathData):
+        rawData = np.load(pathData)["data"]
+    else:
+        pathCsv = path + "/position.csv"
+        rawData = pd.read_csv(pathCsv, header=None, delimiter=",").values
+        np.savez_compressed(pathData,data = rawData)
+        os.remove(pathCsv)
     data = dbFiller.separateData(rawData)
     return data
 
