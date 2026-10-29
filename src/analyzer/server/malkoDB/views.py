@@ -157,14 +157,12 @@ class ExperimentView(generic.ListView):
             xn = exp.order_by(context["yname"],context["xname"],'?').values_list(context["xname"], flat=True)
             videos = []
             globalData = []
-            print(len(exp2))
-            print(context)
 
             for y0 in context["y"]:
                 for x0 in context["x"]:
 
                     fil = {context["xname"] : x0,context["yname"] : y0}
-                    print(fil)
+
                     repIds = exp.filter(**fil).values_list("repId", flat=True)
                     vid = ""
                     datas = []

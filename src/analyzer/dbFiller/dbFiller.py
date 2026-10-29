@@ -380,9 +380,16 @@ class Analyzer:
 
 
     def getDataSet(self,repId):
-        pathData = self.getDataPath(repId) + "/position.csv"
-        #rawData = np.genfromtxt(pathData, delimiter=",")
-        rawData = pd.read_csv(pathData, header=None, delimiter=",").values
+        pathData = self.getDataPath(repId) + "/position.npz"
+        
+        if os.path.isfile(pathData):
+            rawData = np.load(pathData)["data"]
+        else:
+            pathCsv = self.getDataPath(repId) + "/position.csv"
+            rawData = pd.read_csv(pathCsv, header=None, delimiter=",").values
+            np.savez_compressed(pathData,data = rawData)
+            os.remove(pathCsv)
+        
         data = separateData(rawData)
         return data
 
