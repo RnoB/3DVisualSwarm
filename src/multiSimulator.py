@@ -23,6 +23,8 @@
 
 from visualswarm import visualSwarm as vs
 from analyzer.dbFiller import dbFiller
+import threading
+from writerserver import writer
 import sys
 import multiprocessing 
 import os
@@ -97,7 +99,7 @@ def startSimulation(repId):
     except Exception as e:
 
         traceback.print_exc()
-        print()
+
 
 def main():
     global config
@@ -109,7 +111,7 @@ def main():
         print('----  you need a file called ms.json  ----')
         print('---- or to give the path to this file ----')
         print('---- i am nice so i just made you one ----')
-        jsonFaker = '{\n\t"dbSimulations":"./analyzer/db/simulations.db",\n\t"dbReplicates":"./analyzer/db/replicates.db",\n\t"replicates":1,\n\t"nThreads":30,\n\t"writerIP":"XXX.XXX.XXX.XXX",\n\t"writerPort":YYYY\n}'
+        jsonFaker = '{\n\t"dbSimulations":"./analyzer/db/simulations.db",\n\t"dbReplicates":"./analyzer/db/replicates.db",\n\t"replicates":1,\n\t"nThreads":30,\n\t"writerIP":"XXX.XXX.XXX.XXX",\n\t"writerPort":YYYY\n\t"writerPath":""\n}'
         with open('ms.json', 'w') as f:
             f.write(jsonFaker)
         print(jsonFaker)
@@ -117,6 +119,14 @@ def main():
         f = open(jsonFile)
         config = json.load(f)
         f.close()
+        try:
+            if len(config["writerPath"])>0:
+                writerServer = writer.Server(path = config["writerPath"],ip = config["writerIP"], port = config["writerPort"])
+                writerServer.start() 
+        except Exception as e:
+
+            traceback.print_exc()
+                
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
         random.shuffle(repIds)
