@@ -268,7 +268,8 @@ class Projector:
                 
                 vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
                 vIdx=vIdx%self.size[0]
-            except:
+            except Exception as e:
+                print(e)
                 if self.insideInvisible:
                     vIdx = []
                 else:
