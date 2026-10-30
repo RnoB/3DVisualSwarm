@@ -264,7 +264,12 @@ class Projector:
 
                 dPsi1 = int(self.size[0] * (np.pi+np.arctan2(y1,x1))/(2*np.pi))
                 dPsi2 = int(self.size[0] * (np.pi+np.arctan2(y2,x2))/(2*np.pi))
-                vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
+                if dPsi1<dPsi2:
+                    vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
+                else:
+                    vIdx2.append(np.arange(dPsi1,sim.proj.size[0],1).astype(int))
+                    vIdx2.append(np.arange(0,dPsi2,1).astype(int))
+                    vIdx = np.hstack(vIdx2).astype(int)
                 
                 vIdx[vIdx<0]=self.size[0]+vIdx[vIdx<0]
                 vIdx=vIdx%self.size[0]
