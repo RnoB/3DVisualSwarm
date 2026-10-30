@@ -267,6 +267,7 @@ class Projector:
                 if dPsi1<dPsi2:
                     vIdx = np.arange(dPsi1,dPsi2,1).astype(int)
                 else:
+                    vIdx2 = []
                     vIdx2.append(np.arange(dPsi1,sim.proj.size[0],1).astype(int))
                     vIdx2.append(np.arange(0,dPsi2,1).astype(int))
                     vIdx = np.hstack(vIdx2).astype(int)
