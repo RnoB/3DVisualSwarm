@@ -120,7 +120,7 @@ class Simulator:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
 
-            self.u[k,0] = u0 + 2*(random.random()-0.5)*noiseSpeed
+            self.u[k,0] = self.u0 + 2*(random.random()-0.5)*noiseSpeed
             
             self.proj.moveObject(self.proj.listObjects[k],x,y,z)
             self.proj.rotateObject(self.proj.listObjects[k],0,0,phi)
