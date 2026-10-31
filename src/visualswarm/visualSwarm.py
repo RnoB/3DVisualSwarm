@@ -109,7 +109,7 @@ class Simulator:
     def stop(self):
         self.client.stop()
 
-    def initializeSwarm(self,R = 20,dim = 3):
+    def initializeSwarm(self,R = 20,dim = 3,noiseSpeed = .2):
         self.proj.addObject(0,0,0,nObjects = self.N)
         for k in range(0,self.N):
             x = R*random.random()-R/2
@@ -119,6 +119,8 @@ class Simulator:
             else:
                 z = 0
             phi = 2*np.pi*random.random()-np.pi
+
+            self.u[k,0] = u0 + 2*(random.random()-0.5)*noiseSpeed
             
             self.proj.moveObject(self.proj.listObjects[k],x,y,z)
             self.proj.rotateObject(self.proj.listObjects[k],0,0,phi)
@@ -175,7 +177,7 @@ class Simulator:
         self.dx = np.zeros((N,3))
         self.vIntegral = np.zeros((N,9))
         self.u0 = u0
-        self.u[:,0] = u0
+        
         self.parameters = np.array(parameters)
         self.parametersV = np.tile(self.parameters,(N,1,1))
         self.temporalDerivative = temporalDerivative
