@@ -27,6 +27,8 @@ import threading
 from writerserver import writer
 import sys
 import multiprocessing 
+from multiprocessing import Manager, Pool, Lock
+
 import os
 import json
 import datetime
@@ -36,8 +38,7 @@ import numpy as np
 import random
 import time
 
-lockDB = False
-config = {}
+
 
 def addReplicate(repId):
     global lockDB
@@ -54,9 +55,6 @@ def addReplicate(repId):
 
 def startSimulation(repId):
     global lockDB
-    global config
-    print(config)
-    time.sleep(60)
     try:
 
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
@@ -103,9 +101,15 @@ def startSimulation(repId):
 
         traceback.print_exc()
 
+def init(l):
+    global lockDB
+    global config
+    f = open(jsonFile)
+    config = json.load(f)
+    lock = l
 
 def main():
-    global config
+    
     try:
         jsonFile = sys.argv[1]
     except:
@@ -122,6 +126,7 @@ def main():
         f = open(jsonFile)
         config = json.load(f)
         f.close()
+        lock = Lock()
         try:
             if len(config["writerPath"])>0:
                 writerServer = writer.Server(path = config["writerPath"],ip = config["writerIP"], port = config["writerPort"])
@@ -129,13 +134,15 @@ def main():
         except Exception as e:
 
             traceback.print_exc()
-        print(config)
+        
         
                 
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
-        repIds = db.checkReplicates(config["replicates"])
+        allRepIds = db.checkReplicates(config["replicates"])
+        repIds = []
+
         random.shuffle(repIds)
-        pool = multiprocessing.Pool(processes=config["nThreads"])
+        pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,))
         pool.map_async(startSimulation, repIds)
         pool.close()
         pool.join()
