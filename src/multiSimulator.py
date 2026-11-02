@@ -41,17 +41,15 @@ import time
 
 
 def addReplicate(repId):
-    global lockDB
     values = [repId["simId"],repId["repId"],datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
-    while lockDB:
-        time.sleep(random.random())
-    lockDB = True
+    
+    lockDB.acquire()
     conn = sqlite3.connect(config["dbReplicates"], check_same_thread=False)
     c = conn.cursor()
     c.execute("INSERT INTO simulations VALUES (?,?,?)",values)
     conn.commit()
     conn.close()
-    lockDB = False
+    lockDB.release()
 
 def startSimulation(repId):
     global lockDB
@@ -101,13 +99,11 @@ def startSimulation(repId):
 
         traceback.print_exc()
 
-def init(l):
+def init(l,c):
     global lockDB
     global config
-    f = open(jsonFile)
-    config = json.load(f)
-    lock = l
-
+    config = config
+    
 def main():
     
     try:
@@ -142,7 +138,7 @@ def main():
         repIds = []
 
         random.shuffle(repIds)
-        pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,))
+        pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,jsonFile,))
         pool.map_async(startSimulation, repIds)
         pool.close()
         pool.join()
