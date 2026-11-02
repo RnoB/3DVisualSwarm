@@ -121,7 +121,7 @@ def main():
         f = open(jsonFile)
         config = json.load(f)
         print(config)
-        break
+
         f.close()
         try:
             if len(config["writerPath"])>0:
@@ -130,6 +130,7 @@ def main():
         except Exception as e:
 
             traceback.print_exc()
+            break
                 
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
