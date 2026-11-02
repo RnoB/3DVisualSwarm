@@ -52,7 +52,7 @@ def addReplicate(repId):
     lockDB.release()
 
 def startSimulation(repId):
-    
+    print(config)
     try:
 
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
