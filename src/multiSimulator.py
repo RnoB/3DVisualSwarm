@@ -53,7 +53,7 @@ def addReplicate(repId):
 
 def startSimulation(repId):
     global lockDB
-
+    global config
     try:
 
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
