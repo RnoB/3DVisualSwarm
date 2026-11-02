@@ -53,6 +53,7 @@ def addReplicate(repId):
 
 def startSimulation(repId):
     print(config)
+    time.sleep(60)
     try:
 
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
