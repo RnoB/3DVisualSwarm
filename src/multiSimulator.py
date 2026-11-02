@@ -120,6 +120,8 @@ def main():
     else:
         f = open(jsonFile)
         config = json.load(f)
+        print(config)
+        break
         f.close()
         try:
             if len(config["writerPath"])>0:
