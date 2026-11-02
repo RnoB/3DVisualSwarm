@@ -158,16 +158,19 @@ def analSim(p):
         json.dump(data,f)  
 
 
-def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db"):
+def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db",project = [],experiment = []):
 
     anal = dbFiller.Analyzer(dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed)
     projects = anal.projects
-    
+    if len(project) > 0:
+        projects = project
     sims = []
-    for project in projects:
+    for proj in projects:
         experiments = anal.getExperiments(project)
+        if len(experiment) > 0:
+            experiments = experiment
         for exp in experiments:
-            sortingKeys,sortedKeys = anal.getExperimentSortingKeys(project,exp)
+            sortingKeys,sortedKeys = anal.getExperimentSortingKeys(proj,exp)
             for key in sortedKeys:
                 
                 simId = anal.getSimIds(key)
@@ -176,7 +179,7 @@ def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicate
                     simId = simId[0][0]
                     repIds = anal.getRepIds(simId)
                     for repId in repIds:
-                        parameters = anal.getParameters(simId,project,exp)
+                        parameters = anal.getParameters(simId,proj,exp)
                         path = anal.getDataPath(repId[0])
                         sims.append({"repId" : repId[0],"simId" : simId,"step" : step,
                                 "N":parameters["N"],"path":path})
