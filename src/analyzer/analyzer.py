@@ -162,13 +162,13 @@ def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicate
 
     anal = dbFiller.Analyzer(dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed)
     projects = anal.projects
-    if len(project) > 0:
-        projects = project
+    #if len(project) > 0:
+    #    projects = project
     sims = []
     for proj in projects:
         experiments = anal.getExperiments(project)
-        if len(experiment) > 0:
-            experiments = experiment
+        #if len(experiment) > 0:
+        #    experiments = experiment
         for exp in experiments:
             sortingKeys,sortedKeys = anal.getExperimentSortingKeys(proj,exp)
             for key in sortedKeys:
