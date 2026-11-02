@@ -37,7 +37,6 @@ import random
 
 lockDB = False
 
-manager = Manager()
 config = {}
 
 def addReplicate(repId):
