@@ -135,11 +135,10 @@ def main():
         
                 
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
-        allRepIds = db.checkReplicates(config["replicates"])
-        repIds = []
-
+        repIds = db.checkReplicates(config["replicates"])
+        
         random.shuffle(repIds)
-        print(repIds)
+
         pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,jsonFile,))
         pool.map_async(startSimulation, repIds)
         pool.close()
