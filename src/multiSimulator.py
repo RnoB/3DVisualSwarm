@@ -36,8 +36,7 @@ import numpy as np
 import random
 
 lockDB = False
-
-#config = {}
+config = {}
 
 def addReplicate(repId):
     global lockDB
@@ -53,9 +52,8 @@ def addReplicate(repId):
     lockDB = False
 
 def startSimulation(repId):
-    global config
     global lockDB
-    print(config)
+
     try:
 
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
@@ -94,7 +92,7 @@ def startSimulation(repId):
         sim.start()
         sim.stop()
         
-        addReplicate(repId,lockDB)
+        addReplicate(repId)
         
         print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
     
@@ -120,8 +118,6 @@ def main():
     else:
         f = open(jsonFile)
         config = json.load(f)
-        print(config)
-
         f.close()
         try:
             if len(config["writerPath"])>0:
@@ -130,7 +126,6 @@ def main():
         except Exception as e:
 
             traceback.print_exc()
-            
                 
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
