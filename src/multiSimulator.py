@@ -36,7 +36,7 @@ import numpy as np
 import random
 
 lockDB = False
-config = {}
+
 
 def addReplicate(repId):
     global lockDB
@@ -117,7 +117,7 @@ def main():
         print(jsonFaker)
     else:
         f = open(jsonFile)
-        config = json.load(f)
+        config = manager.dict(json.load(f))
         f.close()
         try:
             if len(config["writerPath"])>0:
