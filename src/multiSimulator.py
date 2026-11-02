@@ -55,6 +55,8 @@ def addReplicate(repId):
 def startSimulation(repId):
     global lockDB
     global config
+    print(config)
+    time.sleep(60)
     try:
 
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
@@ -128,7 +130,7 @@ def main():
 
             traceback.print_exc()
         print(config)
-        time.sleep(60)
+        
                 
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
