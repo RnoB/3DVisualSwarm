@@ -27,7 +27,6 @@ import threading
 from writerserver import writer
 import sys
 import multiprocessing 
-from multiprocessing import Process, Manager
 import os
 import json
 import datetime
@@ -41,7 +40,7 @@ lockDB = False
 manager = Manager()
 config = {}
 
-def addReplicate(repId,lockDB):
+def addReplicate(repId):
     global lockDB
     values = [repId["simId"],repId["repId"],datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
     while lockDB:
