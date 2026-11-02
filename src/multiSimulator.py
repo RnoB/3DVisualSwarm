@@ -37,7 +37,7 @@ import random
 
 lockDB = False
 
-config = {}
+#config = {}
 
 def addReplicate(repId):
     global lockDB
