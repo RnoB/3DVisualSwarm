@@ -130,7 +130,7 @@ def main():
         except Exception as e:
 
             traceback.print_exc()
-            break
+            time.sleep(60)
                 
         db = dbFiller.Filler(dbSimulations = config["dbSimulations"],dbReplicates = config["dbReplicates"])
         repIds = db.checkReplicates(config["replicates"])
