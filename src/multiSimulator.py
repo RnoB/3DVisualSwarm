@@ -27,6 +27,7 @@ import threading
 from writerserver import writer
 import sys
 import multiprocessing 
+from multiprocessing import Process, Manager
 import os
 import json
 import datetime
@@ -37,8 +38,10 @@ import random
 
 lockDB = False
 
+manager = Manager()
+config = {}
 
-def addReplicate(repId):
+def addReplicate(repId,lockDB):
     global lockDB
     values = [repId["simId"],repId["repId"],datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
     while lockDB:
@@ -52,6 +55,7 @@ def addReplicate(repId):
     lockDB = False
 
 def startSimulation(repId):
+    global config
     global lockDB
 
     try:
@@ -92,7 +96,7 @@ def startSimulation(repId):
         sim.start()
         sim.stop()
         
-        addReplicate(repId)
+        addReplicate(repId,lockDB)
         
         print("** * **  done simulations : " + str(repId["simId"]) + " replicates : " +str(repId['repId']))
     
@@ -117,7 +121,7 @@ def main():
         print(jsonFaker)
     else:
         f = open(jsonFile)
-        config = manager.dict(json.load(f))
+        config = json.load(f)
         f.close()
         try:
             if len(config["writerPath"])>0:
