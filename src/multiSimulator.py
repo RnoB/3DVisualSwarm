@@ -52,8 +52,7 @@ def addReplicate(repId):
     lockDB.release()
 
 def startSimulation(repId):
-    print(config)
-    time.sleep(60)
+
     try:
 
         parametersV = np.array([[repId["a0"],repId["a00"],repId["a1"],repId["a2"]],
@@ -140,7 +139,7 @@ def main():
         
         random.shuffle(repIds)
 
-        pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,jsonFile,))
+        pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,config,))
         pool.map_async(startSimulation, repIds)
         pool.close()
         pool.join()
