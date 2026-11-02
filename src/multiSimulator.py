@@ -102,7 +102,8 @@ def startSimulation(repId):
 def init(l,c):
     global lockDB
     global config
-    config = config
+    config = c
+    lockDB = l
     
 def main():
     
