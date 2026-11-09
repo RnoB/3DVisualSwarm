@@ -77,8 +77,8 @@ def main():
         dbAnalyzed = config["dbReplicates"]
         step = config["step"]
         project = config["project"]
-        experiment = config["experiment"]
-        nThreads = config["nThreads"]
+        experiment = [config["experiment"]]
+        nThreads = [config["nThreads"]]
 
         analyzer.start(step = step,nThreads = nThreads,dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed,project = project,experiment = experiment)
 
