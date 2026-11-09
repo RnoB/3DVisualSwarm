@@ -79,8 +79,8 @@ def main():
         project = config["project"]
         experiment = config["experiment"]
         nThreads = config["nThreads"]
-
-        analyzer.start(step = step,nThreads = nThreads,dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed,project = project,experiment = experiment)
+        print(config)
+        #analyzer.start(step = step,nThreads = nThreads,dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed,project = project,experiment = experiment)
 
 if __name__ == "__main__":
     main()
