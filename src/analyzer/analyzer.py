@@ -164,11 +164,16 @@ def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicate
     projects = anal.projects
     if len(project) > 0:
         projects = project
+    else:
+        projects = anal.projects
+    
     sims = []
     for proj in projects:
-        experiments = anal.getExperiments(proj)
         if len(experiment) > 0:
             experiments = experiment
+        else:
+            experiments = anal.getExperiments(proj)
+        
         for exp in experiments:
             sortingKeys,sortedKeys = anal.getExperimentSortingKeys(proj,exp)
             for key in sortedKeys:
