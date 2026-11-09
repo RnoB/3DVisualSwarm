@@ -158,9 +158,9 @@ def analSim(p):
         json.dump(data,f)  
 
 
-def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db",project = [],experiment = []):
+def start(step = 10,nThreads = 2,dbSimulations = 'db/simulations.db',dbReplicates = "db/replicates.db",dbAnalyzed = "db/analyzed.db",project = [],experiment = [],pathData = "/data/"):
 
-    anal = dbFiller.Analyzer(dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed)
+    anal = dbFiller.Analyzer(dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed,path= pathData)
     projects = anal.projects
     if len(project) > 0:
         projects = project

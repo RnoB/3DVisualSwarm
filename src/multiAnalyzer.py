@@ -64,14 +64,8 @@ def main():
         config = json.load(f)
         f.close()
         
-        try:
-            if len(config["writerPath"])>0:
-                writerServer = writer.Server(path = config["writerPath"],ip = config["writerIP"], port = config["writerPort"])
-                writerServer.start() 
-        except Exception as e:
 
-            traceback.print_exc() 
-                
+        path = config["writerPath"]       
         dbSimulations =config["dbSimulations"]
         dbReplicates = config["dbReplicates"]
         dbAnalyzed = config["dbReplicates"]
@@ -80,7 +74,7 @@ def main():
         experiment = [config["experiment"]]
         nThreads = config["nThreads"]
 
-        analyzer.start(step = step,nThreads = nThreads,dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed,project = project,experiment = experiment)
+        analyzer.start(step = step,nThreads = nThreads,dbSimulations = dbSimulations,dbReplicates = dbReplicates,dbAnalyzed = dbAnalyzed,project = project,experiment = experiment,path = path)
 
 if __name__ == "__main__":
     main()
