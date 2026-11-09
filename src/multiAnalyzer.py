@@ -63,16 +63,14 @@ def main():
         f = open(jsonFile)
         config = json.load(f)
         f.close()
-        lock = Lock()
+        
         try:
             if len(config["writerPath"])>0:
                 writerServer = writer.Server(path = config["writerPath"],ip = config["writerIP"], port = config["writerPort"])
                 writerServer.start() 
         except Exception as e:
 
-            traceback.print_exc()
-        
-        
+            traceback.print_exc() 
                 
         dbSimulations =config["dbSimulations"]
         dbReplicates = config["dbReplicates"]
