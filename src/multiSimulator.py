@@ -70,6 +70,9 @@ def startSimulation(repId):
                 sim.setScale(repId["sx"],repId["sy"],repId["sz"])
             elif repId["mode"] == 1:
                 sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
+            elif repId["mode"] == 4:
+                sim.setScale(repId["sx"],repId["sx"],repId["sx"],0)
+                sim.setScale(repId["sx"],repId["sx"],repId["sx"],1)
             elif repId["mode"] == 2:
                 random.seed(int(repId['repId'],16))
                 for k in range(0,N):
