@@ -40,9 +40,17 @@ class Simulator:
         self.vIntegral[:,1] = np.sum(self.proj.allVisualField*self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
         self.vIntegral[:,2] = np.sum(self.proj.allVisualField*self.proj.sine.sinThetaAllD,axis = (0,1))
 
-        self.vIntegral[:,3] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
-        self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
-        self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
+        if self.temporalContour:
+            visualFieldDt2 = self.proj.allVisualFieldDt**2
+            self.vIntegral[:,3] = np.sum(self.proj.visualFieldDt2*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
+            self.vIntegral[:,4] = np.sum(self.proj.visualFieldDt2*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
+            self.vIntegral[:,5] = np.sum(self.proj.visualFieldDt2*self.proj.sine.sinThetaAll,axis = (0,1))        
+        else:
+            self.vIntegral[:,3] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
+            self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
+            self.vIntegral[:,5] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.sinThetaAll,axis = (0,1))
+
+
 
 
         if self.temporalDerivative == 0:
@@ -148,7 +156,7 @@ class Simulator:
     def __init__(self,engine = "rasterizer",size = 200, N = 2, dim = 3,
                       dt = 0.1,tMax = 100,u0 = 1,drag = .1,
                       parameters = np.array([[0,0,0,0],[0,0,0,0],[0,0,0,0]]),
-                      temporalDerivative = 0,compensation = False,
+                      temporalDerivative = 0,compensation = False,temporalContour = False,
                       bufferSize = 100,ip = "localhost" , port = 1234,project = "project",write = True):
         
         self.engine = engine
