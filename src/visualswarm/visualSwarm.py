@@ -189,6 +189,7 @@ class Simulator:
         self.parameters = np.array(parameters)
         self.parametersV = np.tile(self.parameters,(N,1,1))
         self.temporalDerivative = temporalDerivative
+        self.temporalContour = temporalContour 
 
         self.positionWrite = []
 
