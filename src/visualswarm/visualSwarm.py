@@ -41,7 +41,7 @@ class Simulator:
         self.vIntegral[:,2] = np.sum(self.proj.allVisualField*self.proj.sine.sinThetaAllD,axis = (0,1))
 
         if self.temporalContour:
-            visualFieldDt2 = ((self.proj.allVisualFieldDt/2)**2)
+            visualFieldDt2 = (self.proj.allVisualFieldDt**2)/2.0
             self.vIntegral[:,3] = np.sum(visualFieldDt2*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
             self.vIntegral[:,4] = np.sum(visualFieldDt2*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
             self.vIntegral[:,5] = np.sum(visualFieldDt2*self.proj.sine.sinThetaAll,axis = (0,1))        
