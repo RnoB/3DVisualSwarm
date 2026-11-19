@@ -42,9 +42,9 @@ class Simulator:
 
         if self.temporalContour:
             self.visualFieldDt2 = (self.proj.allVisualFieldDt**2)/2.0
-            self.vIntegral[:,3] = np.sum(self.visualFieldDt2*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
-            self.vIntegral[:,4] = np.sum(self.visualFieldDt2*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
-            self.vIntegral[:,5] = np.sum(self.visualFieldDt2*self.proj.sine.sinThetaAll,axis = (0,1))        
+            self.vIntegral[:,3] = np.sum(self.visualFieldDt2*self.proj.sine.cosThetaCosPhiAllD,axis = (0,1))
+            self.vIntegral[:,4] = np.sum(self.visualFieldDt2*self.proj.sine.cosThetaSinPhiAllD,axis = (0,1))
+            self.vIntegral[:,5] = np.sum(self.visualFieldDt2*self.proj.sine.sinThetaAllD,axis = (0,1))        
         else:
             self.vIntegral[:,3] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaCosPhiAll,axis = (0,1))
             self.vIntegral[:,4] = np.sum(self.proj.allVisualFieldContour*self.proj.sine.cosThetaSinPhiAll,axis = (0,1))
