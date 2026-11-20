@@ -141,11 +141,11 @@ def main():
         repIds = db.checkReplicates(config["replicates"])
         
         random.shuffle(repIds)
-
-        pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,config,))
-        pool.map_async(startSimulation, repIds)
-        pool.close()
-        pool.join()
+        if "start" not in config.keys() or config["start"]:
+            pool = Pool(processes=config["nThreads"], initializer=init, initargs=(lock,config,))
+            pool.map_async(startSimulation, repIds)
+            pool.close()
+            pool.join()
 
 if __name__ == "__main__":
     main()
